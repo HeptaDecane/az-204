@@ -2524,9 +2524,177 @@ What should you do?**
 - Enable multiple revision mode.
 
 > When deploying multiple microservices to Azure Container Apps that need to be on the same virtual network and write logs to the same Log Analytics workspace, using a **single environment** for all containers is the best choice. In Azure Container Apps, an environment provides the shared network boundary, allowing all container apps within the same environment to communicate over a virtual network if configured. Additionally, a single environment enables centralized log collection in a single Log Analytics workspace, as logging settings are configured at the environment level.
-> 
+>
+> **Enable single revision mode:**  
+> In Azure Container Apps, revision modes control how updates to the application are managed. Single revision mode means only one version of the container app is active at a time, which simplifies traffic management because updates automatically replace the existing version.  
+>  While this mode can be useful for controlling app updates, it does not impact networking, logging, or deployment to the same virtual network. Therefore, it does not help fulfill the requirements of shared logging or network configuration.
+>
+> **Use a separate environment for each container:**  
+> Each environment in Azure Container Apps serves as a separate network and logging boundary. If you deploy each container app in its own environment, each would be isolated in its own virtual network configuration, and logging would also be separate.
+>
+> **Use a private container registry image and single image for all containers:**  
+> While using a private registry is recommended for security, this does not relate to network configuration or shared logging. Also, microservices are typically deployed as separate images to maintain independent functionality, so using a single image is generally unnecessary and unrelated to the requirements. 
+>
+> **Enable multiple revision mode:**    
+> Multiple revision mode allows multiple versions (revisions) of a container app to run simultaneously, with traffic split across revisions according to the configuration. This is useful for A/B testing, gradual rollout, or canary deployments.  
+> While helpful for deployment strategies, multiple revision mode does not address network or logging requirements and is irrelevant to this scenario.
 
 - https://chatgpt.com/share/6731f168-aa28-8000-b2cc-80359bdfd702
 - https://learn.microsoft.com/en-us/azure/container-apps/environment
+
+---
+
+### Q084
+**You are developing several microservices to run on Azure Container Apps. External HTTP ingress traffic has been enabled for the microservices.  
+A deployed microservice must be updated to allow users to test new features. You have the following requirements:  
+• Enable and maintain a single URL for the updated microservice to provide to test users.  
+• Update the microservice that corresponds to the current microservice version.  
+You need to configure Azure Container Apps.  
+Which features should you configure?**
+
+**Requirements:**
+- Single URL for test users
+    - [Revision label](#q084)
+    - Revision mode
+    - Container image
+    - Container registry
+
+- Current microservice activation
+    - Revision label
+    - [Revision mode](#q084)
+    - Container image
+    - Container registry
+
+> **Revision Label:** For container apps with external HTTP traffic, labels are a portable means to direct traffic to specific revisions. A label provides a unique URL that you can use to route traffic to the revision that the label is assigned.
+>
+> **Revision Mode:** The revision mode controls whether only a single revision or multiple revisions of your container app can be simultaneously active.
+
+- https://learn.microsoft.com/en-us/azure/container-apps/revisions
+
+---
+
+### Q085
+**You plan to develop an Azure Functions app with an HTTP trigger.  
+The app must support the following requirements:  
+• Event-driven scaling  
+• Ability to use custom Linux images for function execution  
+You need to identify the app's hosting plan and the maximum amount of time that the app function can take to respond to incoming requests.  
+Which configuration setting values should you use?**
+
+**Configuration Settings:**
+
+- **Hosting Plan**
+    - Consumption
+    - Dedicated
+    - [Premium](#q085)
+
+- **Timeout Value**
+    - [230 seconds](#q085)
+    - 10 minutes
+    - unlimited
+
+> **Event-driven scaling:** The **Consumption** and **Premium** plans support automatic scaling based on events, while the **Dedicated** plan does not.  
+> **Custom Linux images:** Only the **Premium** plan supports using custom container images, including custom Linux images. The **Consumption** and **Dedicated** plans do not support this feature.  
+>
+> **Timeout requirements:** The **Premium** plan supports a configurable timeout, which can be set to a maximum of **unlimited**. However, Regardless of the function app timeout setting, **230 seconds** is the maximum amount of time that an HTTP triggered function can take to respond to a request.  
+
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale#overview-of-plans
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale#scale
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale#timeout
+
+---
+
+### Q086
+**You develop a Python application for image rendering. The application uses GPU resources to optimize rendering processes.  
+You have the following requirements:  
+• The application must be deployed to a Linux container.  
+• The container must be stopped when the image rendering is complete.  
+• The solution must minimize cost.  
+You need to deploy the application to Azure.**
+
+- **Compute target**
+    - [Azure Container Instances](#q086)
+    - Azure Kubernetes Service
+    - Azure Container Apps
+    - Azure App Service
+
+> **Azure Container Instances (ACI):** ACI is a good choice for running containers without managing infrastructure and provides a cost-effective, serverless compute option that allows GPU usage. Since you want the container to be stopped when the image rendering is complete to minimize cost, you can use the "Single" container group mode in Azure Container Instances. This mode is suitable for scenarios where you want to run a single container task and stop it when it's done.
+
+- **Container termination**
+    - [Restart Policy](#q086)
+    - Environment Variables
+    - System-Assigned Managed Identity
+    - User-Assigned Managed Identity
+
+> **Restart Policy:** The restart policy in ACI can be set to `OnFailure` or `Never`, which enables the container to stop once the image rendering job is done. Using the `Never` policy ensures that the container will not restart after the task completes, helping to control costs.
+
+- https://chatgpt.com/share/67324bf8-0930-8000-99ce-199f1d0f4979
+- https://learn.microsoft.com/en-gb/azure/container-instances/container-instances-overview
+- https://learn.microsoft.com/en-us/azure/container-instances/container-instances-gpu
+- https://learn.microsoft.com/en-us/azure/container-instances/container-instances-restart-policy
+
+---
+
+### Q087
+**You plan to develop an Azure Functions app with an Azure Blob Storage trigger. The app will be used infrequently, with a limited duration of individual executions.  
+The app must meet the following requirements:  
+• Event-driven scaling  
+• Support for deployment slots  
+• Minimize costs  
+You need to identify the hosting plan and the maximum duration when executing the app.  
+Which configuration setting values should you use?**
+
+**Configuration Settings:**
+
+- **Hosting Plan**
+    - [Consumption](#q087)
+    - Dedicated
+    - Premium
+
+- **Maximum Execution Time**
+    - 230 seconds
+    - [10 minutes](#q087)
+    - unlimited
+
+
+> The **Consumption plan** is suitable because it provides event-driven scaling, supports deployment 2 slots, minimizes costs for infrequent usage.  
+> **Maximum Execution Time: 10 minutes** (the maximum execution time on the Consumption plan is up to 5 minutes by default, but this can be increased to 10 minutes in configuration).
+
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale#service-limits
+
+---
+
+### Q088
+**You are developing an ASP.NET Core app hosted in Azure App Service.  
+The app requires custom claims to be returned from Microsoft Entra ID for user authorization. The claims must be removed when the app registration is removed.  
+You need to include the custom claims in the user access token.  
+What should you do?**
+
+- Require the https://graph.microsoft.com/.default scope during authentication.
+- Configure the app to use the OAuth 2.0 authorization code flow.
+- Implement custom middleware to retrieve role information from Azure AD.
+- Add the groups to the `groupMembershipClaims` attribute in the app manifest.
+- [Add the roles to the `appRoles` attribute in the app manifest.](#q088)
+  
+> **Require the https://graph.microsoft.com/.default scope during authentication**  
+> The https://graph.microsoft.com/.default scope is used to request permissions to access the Microsoft Graph API on behalf of the signed-in user. It provides access to a broad set of data within Microsoft 365, such as user profiles, files, or email. However, this does not add custom claims to the access token for the app itself.
+>
+> **Configure the app to use the OAuth 2.0 authorization code flow**  
+> The OAuth 2.0 authorization code flow is a standard authentication flow used for securely obtaining access tokens and ID tokens in web applications. This flow allows the app to authenticate users and obtain tokens that can be used to access resources. Although the authorization code flow is essential for authenticating users, it does not add custom claims to the tokens. 
+>
+> **Implement custom middleware to retrieve role information from Azure AD**  
+> sing middleware to retrieve role information would add unnecessary complexity and potentially require extra API calls to Microsoft Graph. It doesn't add custom claims directly to the token; instead, it fetches information dynamically, which isn't as efficient or secure as embedding claims directly in the token.
+>
+> **Add the groups to the `groupMembershipClaims` attribute in the app manifest**  
+> The `groupMembershipClaims` attribute in the app manifest allows Microsoft Entra ID to include group memberships in the token. When enabled, the token may include group IDs, or links to group memberships if there are many groups. This attribute is useful if your app needs to check a user's group memberships, but it's limited to groups and does not support custom claims. 
+>
+> **Add the roles to the `appRoles` attribute in the app manifest**  
+> The `appRoles` attribute in the app manifest allows you to define custom roles or claims for the app. These roles can be assigned to users or service principals and are automatically included in the access token when users authenticate. This is particularly useful for custom claims needed for user authorization. Adding custom roles in the appRoles attribute is a straightforward way to define custom claims, which will be automatically included in the token. It also ensures these roles and claims are removed if the app registration is deleted, meeting all requirements.
+
+- https://chatgpt.com/share/673251cb-c0e0-8000-b6fc-2fa7d6e81266
+- https://learn.microsoft.com/en-us/entra/identity-platform/howto-add-app-roles-in-apps
+- https://learn.microsoft.com/en-us/entra/identity-platform/reference-app-manifest
+
+---
 
 > •
