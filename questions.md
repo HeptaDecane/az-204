@@ -2134,4 +2134,399 @@ Which configuration values should you use?**
 
 ---
 
+### Q071
+**You develop a software as a service (SaaS) offering to manage photographs. Users upload photos to a web service which then stores the photos in Azure Storage Blob storage. The storage account type is General-purpose V2.  
+When photos are uploaded, they must be processed to produce and save a mobile-friendly version of the image. The process to produce a mobile-friendly version of the image must start in less than one minute.  
+You need to design the process that starts the photo processing.  
+Solution: Use the Azure Blob Storage change feed to trigger photo processing.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q071)
+
+> The Azure Blob Storage change feed is designed for tracking and auditing changes over time, but it is not suitable for triggering real-time or near real-time processing due to its latency. Change feed captures blob creation, modification, and deletion events, but it is not meant for immediate triggering of processes as it can take several minutes or longer to update.
+
+- https://chatgpt.com/share/67317f18-2b50-8000-a8c8-75cf701e7f82
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal
+
+---
+
+### ~~Q072~~
+**You provision virtual machines (VMs) as development environments.  
+One VM does not start. The VM is stuck in a Windows update process. You attach the OS disk for the affected VM to a recovery VM.  
+You need to correct the issue.  
+In which order should you perform the actions?**
+
+- Run the following command at an elevated command prompt:  
+    `dism /image: \ /get=packages > c:\temp \Patch. txt`
+- Run the following command at an elevated command prompt:  
+    `dism / Image:<Attached OS disks>:\ / RemovePackage /PackageName:<package name to delete>`
+- Detach the OS disk and recreate the VIM
+- Open C: \temp\Patch.txt file and locate the update that is in a pending state
+
+
+> 1. **Run the following command at an elevated command prompt:**  
+> `dism /image:<Attached OS disk>:\ /get-packages > c:\temp\Patch.txt`  
+> This command lists all installed packages on the attached OS disk and outputs them to a file, helping identify the problematic update.
+>
+> 2. **Open C:\temp\Patch.txt file and locate the update that is in a pending state.**  
+> Open the file to identify the update package that is causing the VM to hang.
+>
+> 3. **Run the following command at an elevated command prompt:**  
+> `dism /image:<Attached OS disk>:\ /remove-package /PackageName:<package name to delete>`  
+> Use this command to remove the problematic update package identified in the previous step.
+>
+> 4. **Detach the OS disk and recreate the VM.**  
+> After removing the problematic update, detach the OS disk from the recovery VM, reattach it to the original VM, and then restart it to verify that it boots correctly.
+
+- https://chatgpt.com/share/67318210-b40c-8000-b156-ace9585c8a97
+- https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/windows/troubleshoot-stuck-updating-boot-error
+
+---
+
+### Q073
+**You develop an HTTP triggered Azure Function app to process Azure Storage blob data. The app is triggered using an output binding on the blob.  
+The app continues to time out after four minutes. The app must process the blob data. You need to ensure the app does not time out and processes the blob data.  
+Solution: Update the functionTimeout property of the host.json project file to 10 minutes.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q073)
+
+> Regardless of the function app timeout setting, 230 seconds is the maximum amount of time that an HTTP triggered function can take to respond to a request. 
+
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale#timeout
+
+---
+
+### Q074
+You are developing an Azure Durable Function based application that processes a list of input values. The application is monitored using a console application that retrieves JSON data from an Azure Function diagnostic endpoint.  
+During processing a single instance of invalid input does not cause the function to fail. Invalid input must be available to the monitoring application.  
+You need to implement the Azure Durable Function and the monitoring console application.
+How should you complete the code segments?   
+
+```
+[FunctionName("App" )]|
+public static async Task<List<string>> RunOrchestrator ([OrchestrationTrigger] IDurableOrchestrationContext context) 
+{
+    Entityid[] input = ...
+    int errindex = ...
+    SLOT_1;
+
+}
+
+using (var client = new HttpClient())
+{
+    while (true){
+        var response = await client.GetAsync("...");
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadAsStringÄsync();
+        dynamic result = JsonConvert.DeserializeObject(json);
+        if (result.runtimeStatus == "SLOT_2"){
+            return result.SLOT_3;
+        }
+    }
+}   
+```
+
+- SLOT_1
+    - context.SetOutput(input[errindex])
+    - context.SetCustomStatus(input[errindex])
+    - context.SignalEntity(input[errindex], "error")
+    - await context.CallEntityAsync(input[errindex], "error")
+
+- SLOT_2
+    - Failed
+    - Awaited
+    - Listening
+    - Completed
+
+- SLOT_3
+    - input
+    - output
+    - runtimeStatus
+    - customStatus
+
+---
+
+### Q075
+**You are developing an Azure Durable Function to manage an online ordering process.  
+The process must call an external API to gather product discount information.  
+You need to implement the Azure Durable Function.  
+Which Azure Durable Function types should you use?**
+
+- [Orchestrator](#q075)
+- Entity
+- Client
+- [Activity](#q075)
+
+> **Orchestrator** - This function type coordinates the workflow, managing the sequence of function calls, including any decision-making processes, such as calling an external API to get discount information and managing order-related tasks.  
+>
+> **Activity** - This function type performs tasks such as calling external services or performing CPU-bound work. Here, it would be used to call the external API to retrieve the product discount information.
+>
+> **Client** - serve as the entry point for starting and managing orchestrations. Client functions initiate orchestrator functions and can query or terminate them as needed.
+>
+> **Entity** - Manage stateful objects in a Durable Function application. Entity functions encapsulate state and provide methods to modify it, making them useful for scenarios where small amounts of state need to be managed over time without an orchestrator.
+ 
+- https://chatgpt.com/share/67319628-3cac-8000-b198-d91005d5c57c
+
+---
+
+### Q076
+**You are authoring a set of nested Azure Resource Manager templates to deploy multiple Azure resources.  
+The templates must be tested before deployment and must follow recommended practices.  
+You need to validate and test the templates before deployment.  
+Which tools should you use?**
+
+**Requirements:**
+
+- **Determine whether the templates follow recommended practices.**
+    - Parameter file
+    - Template function
+    - [Azure Resource Manager test toolkit](#q076)
+    - User-defined function
+    - What-if operation
+    - Azure Deployment Manager
+  
+- **Test and validate changes that templates will make to the environment.**
+    - Parameter file
+    - Template function
+    - Azure Resource Manager test toolkit
+    - User-defined function
+    - [What-if operation](#q076)
+    - Azure Deployment Manager
+
+> **Parameter file** - This is a JSON file that contains parameter values for the ARM template. It allows you to separate the values used in a deployment from the template itself, making it easy to reuse the same template with different configurations. 
+>
+> **Template function** - These are built-in functions within ARM templates that allow you to perform tasks like string manipulation, resource ID retrieval, and mathematical calculations directly within the template.  
+>
+> **Azure Resource Manager test toolkit** - The Azure Resource Manager Test Toolkit (also known as ARM TTK) is a command-line tool that evaluates ARM templates against Azure's best practices. It checks for common mistakes, misconfigurations, and adherence to Azure standards.
+>
+> **User-defined function** - These are custom functions that can be defined within ARM templates to encapsulate reusable logic, similar to a function in programming. These are written in JSON syntax and can perform calculations or generate complex expressions.
+>
+> **What-if operation** - The `What-if` operation is an ARM template feature that allows you to see a preview of the changes that a deployment would make to your Azure environment, such as adding, modifying, or deleting resources.
+>
+> **Azure Deployment Manager** - Azure Deployment Manager (ADM) is a tool for orchestrating complex multi-step deployments in Azure. It allows you to deploy ARM templates in a phased approach, often useful for coordinating large deployments across multiple regions or services.
+
+- https://chatgpt.com/share/67319a14-27c8-8000-82d2-d90e1f0b588f
+- https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/test-toolkit
+- https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-what-if?tabs=azure-powershell
+
+---
+
+### Q077
+**You develop Azure Durable Functions to manage vehicle loans.   
+The loan process includes multiple actions that must be run in a specified order. One of the actions includes a customer credit check process, which may require multiple days to process.  
+You need to implement Azure Durable Functions for the loan process.  
+Which Azure Durable Functions type should you use?**
+
+- [orchestrator](#q077)
+- client
+- entity
+- activity
+
+> **Orchestrator function:** This is used to define the workflow or sequence of tasks in Durable Functions. It manages the order of operations and handles long-running processes, such as waiting for a customer credit check, which can take multiple days. The orchestrator function can pause and resume as needed, allowing for delays like waiting for external actions (e.g., credit check results) to complete.
+>
+> **Client function:** The client function initiates the orchestration but does not manage the workflow itself. It triggers the orchestration and returns control to the caller after starting the process.
+>
+> **Entity function:** This is used for managing stateful entities that maintain state over time but are not suitable for orchestrating workflows involving multiple tasks.
+>
+> **Activity function:** Activity functions are the tasks that are executed as part of the orchestration. They perform the actual work (such as checking the credit score), but they cannot manage the flow or ordering of tasks.
+
+- https://chatgpt.com/share/6731a000-a700-8000-b43c-2e8e766dd062
+
+---
+
+### Q078
+**You are developing an Azure Function app.  
+All functions in the app meet the following requirements:  
+• Run until either a successful run or until 10 run attempts occur.  
+• Ensure that there are at least 20 seconds between attempts for up to 15 minutes.  
+You need to configure the `host.json` file.  
+How should you complete the code segment?**
+
+```
+{
+    "SLOT_1": {
+        "strategy": "SLOT_2",
+        "SLOT_3": 10,
+        "minimumInterval": "00:00:20",
+        "maximumInterval": "00:15:00"
+    }
+}
+```
+
+- SLOT_1
+    - [retry](#q078)
+    - healthMonitor
+    - singleton
+
+- SLOT_2
+    - [exponentialBackoff](#q078)
+    - counterThreshold
+    - fixedDelay
+
+- SLOT_3
+    - [maxRetryCount](#q078)
+    - healthCheckInterval
+    - healthCheckThreshold
+
+
+> **Exponential backoff** retry strategy is a technique for retrying failed operations in a manner that avoids overloading the system being accessed. It works by increasing the amount of time that is waited between each retry attempt, using an exponential function to calculate the wait time.  
+> For exponential backoff `minimumInterval`/`maxInterval` are used. For fixed delay `delayInterval` is used
+
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-error-pages?tabs=exponential-backoff%2Cisolated-process%2Cnode-v4%2Cpython-v2&pivots=programming-language-csharp#retry-strategies
+
+---
+
+### Q079
+**You develop Azure Web Apps for a commercial diving company. Regulations require that all divers fill out a health questionnaire every 15 days after each diving job starts.  
+You need to configure the Azure Web Apps so that the instance count scales up when divers are filling out the questionnaire and scales down after they are complete.  
+You need to configure autoscaling.  
+What are two possible auto scaling configurations to achieve this goal?**
+
+- Recurrence profile
+- [CPU usage-based autoscaling](#q079)
+- Fixed date profile
+- [Predictive autoscaling](#q079)
+
+> **Recurrence Profile:** This auto-scaling option allows you to define a set schedule when scaling actions should occur. For instance, you can configure your app to scale up during high-demand periods (e.g., weekdays during business hours) and scale down during off-peak hours (e.g., weekends or late nights). This is useful for predictable traffic patterns.  
+>
+> **CPU Usage-Based Autoscaling:** This option scales the number of instances based on the CPU usage of the app service. You can set thresholds for CPU utilization, and the system will automatically adjust the number of instances to maintain optimal performance. For example, you can configure scaling to occur when CPU usage exceeds 70% for a specific period.  
+>
+> **Fixed Date Profile:** With this auto-scaling option, scaling actions are based on specific fixed dates (e.g., a particular day of the week or a calendar date). You can use this option to adjust resources based on known events or seasons, like scaling up during the holiday season or a marketing campaign.
+>
+> **Predictive Autoscaling:** Predictive autoscaling uses machine learning algorithms to analyze historical traffic patterns and predict future resource requirements. Based on these predictions, it automatically adjusts the number of instances before the demand spike occurs, minimizing delays in scaling.
+
+- https://chatgpt.com/share/6731ca94-a2ac-8000-9e60-d76aca50de05
+- https://learn.microsoft.com/en-us/azure/azure-monitor/autoscale/autoscale-overview
+- https://learn.microsoft.com/en-us/azure/azure-monitor/autoscale/autoscale-predictive
+- https://learn.microsoft.com/en-us/azure/azure-monitor/autoscale/autoscale-multiprofile?tabs=templates
+
+---
+
+### Q080
+**You are developing an online game that allows players to vote for their favorite photo that illustrates a word. The game is built by using Azure Functions and uses durable entities to track the vote count.  
+The voting window is 30 seconds. You must minimize latency.  
+You need to implement the Azure Function for voting.  
+How should you complete the code?**
+```
+[FunctionName ("Vote" )]
+public static async Task<HttpResponseMessage> Run(
+    [HttpTrigger("POST", Route="pic/{id}")] HttpRequestMessage req,
+    SLOT_1 c,
+    string id
+){
+    var eid = new EntityId("pic", id);
+    await c.SLOT_2(eid, "vote");
+    return req.CreateResponse(HttpStatusCode.OK);
+}
+```
+
+- SLOT_1
+    - CallEntityAsync
+    - SignalEntityAsync
+    - [[DurableClient] IDurableEntityClient](#q080)
+    - [DurableClient] IDurableOrchestrationClient
+
+- SLOT_2
+    - CallEntityAsync
+    - [SignalEntityAsync](#q080)
+    - [DurableClient] IDurableEntityClient
+    - [DurableClient] IDurableOrchestrationClient
+
+
+> **SLOT_1:**   
+> `[DurableClient] IDurableEntityClient` provides access to durable entities, which is needed to interact with the voting entity.  
+> `[DurableClient] IDurableOrchestrationClient` is an attribute that binds the function to an orchestration client, which is used for starting, managing, and querying orchestrations.  
+>  An orchestration client is used for handling orchestrations (multi-step workflows) and is not intended for direct interaction with durable entities. Thus, this is not suitable for SLOT_1 because we need an entity client, not an orchestration client.
+>
+> **SLOT_2:**
+> `CallEntityAsync` invokes an operation on a durable entity and waits for it to complete, returning a response.  Although it could be used to perform the voting operation, it would add latency by waiting for each response.  
+> `SignalEntityAsync` is an asynchronous, **one-way operation** that sends a signal to a durable entity without waiting for the response. This is ideal for actions like voting where the function does not need to wait for the entity's response to continue processing.
+
+```csharp
+//completed code
+[FunctionName("Vote")]
+public static async Task<HttpResponseMessage> Run(
+    [HttpTrigger("POST", Route="pic/{id}")] HttpRequestMessage req,
+    [DurableClient] IDurableEntityClient c,
+    string id
+){
+    var eid = new EntityId("pic", id);
+    await c.SignalEntityAsync(eid, "vote");
+    return req.CreateResponse(HttpStatusCode.OK);
+}
+```
+
+- https://chatgpt.com/share/6731dc5e-2114-8000-b67b-ceda959b4777
+  
+---
+
+### Q081
+**You have an App Service plan named asp1 based on the Free pricing tier.  
+You plan to use asp1 to implement an Azure Function app with a queue trigger. Your solution must minimize cost.  
+You need to identify the configuration options that will meet the requirements.  
+Which value should you configure?**
+
+**Configuration Option:**
+
+- **Azure App Service Feature**
+    - [Always On](#q081)
+    - Managed Identity
+    - Continuous Deployment
+
+- **Azure App Service pricing tier**
+    - [Basic](#q081)
+    - Shared
+    - Standard
+
+> **Always On** - Required for non-Consumption plans to keep the function app running continuously, which is crucial if you move to a dedicated plan.  
+> **Free** and **Shared** tier App Service plans aren't supported by Azure Functions. To ensure the function runs continuously and can handle queue triggers effectively, you should choose at least the **Basic** tier or higher. The **Basic** tier provides dedicated resources at minimal cost.
+
+- https://chatgpt.com/share/6731ec22-bef0-8000-ab96-5a6923f1a342
+- https://learn.microsoft.com/en-us/azure/azure-functions/dedicated-plan
+
+---
+
+### Q082
+**You are developing several microservices to run on Azure Container Apps.  
+The microservices must allow HTTPS access by using a custom domain.  
+You need to configure the custom domain in Azure Container Apps.  
+In which order should you perform the actions?**
+
+- Validate the custom domain name.
+- Enable ingress.
+- Bind the certificate.
+- Add DNS records to the domain provider.
+- Add the custom domain name.
+
+> 1. Enable ingress
+> 2. Add the custom domain name
+> 3. Bind the certificate
+> 4. Add DNS records to the domain provider
+> 5. Validate the custom domain name
+
+- https://learn.microsoft.com/en-us/azure/container-apps/custom-domains-certificates
+
+---
+
+### Q083
+**You are developing several microservices to run on Azure Container Apps. External HTTP ingress traffic has been enabled for the microservices.  
+The microservices must be deployed to the same virtual network and write logs to the same Log Analytics workspace.  
+You need to deploy the microservices.  
+What should you do?**
+
+- Enable single revision mode.
+- Use a separate environment for each container.
+- Use a private container registry image and single image for all containers.
+- [Use a single environment for all containers.](#q083)
+- Enable multiple revision mode.
+
+> When deploying multiple microservices to Azure Container Apps that need to be on the same virtual network and write logs to the same Log Analytics workspace, using a **single environment** for all containers is the best choice. In Azure Container Apps, an environment provides the shared network boundary, allowing all container apps within the same environment to communicate over a virtual network if configured. Additionally, a single environment enables centralized log collection in a single Log Analytics workspace, as logging settings are configured at the environment level.
+> 
+
+- https://chatgpt.com/share/6731f168-aa28-8000-b2cc-80359bdfd702
+- https://learn.microsoft.com/en-us/azure/container-apps/environment
+
 > •
