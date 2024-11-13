@@ -2697,4 +2697,327 @@ What should you do?**
 
 ---
 
+### Q089
+**You are developing a microservice to run on Azure Container Apps for a company. External HTTP ingress traffic has been enabled.  
+The company requires that updates to the microservice must not cause downtime.  
+You need to deploy an update to the microservices.  
+What should you do?**
+
+- [Enable single revision mode.](#q089)
+- Use multiple environments for each container.
+- Use a private container registry and single image for all containers.
+- Use a single environment for all containers.
+- Enable multiple revision mode.
+
+> In **single revision mode**, Container Apps ensures your app doesn't experience downtime when creating a new revision. The existing active revision isn't deactivated until the new revision is ready.  
+> A new revision is considered ready when:  
+> - The revision has provisioned successfully  
+> - The revision has scaled up to match the previous revisions replica count (respecting the new revision's min and max replica count)  
+> - All the replicas have passed their startup and readiness probes  
+
+- https://learn.microsoft.com/en-us/azure/container-apps/revisions#zero-downtime-deployment
+
+---
+
+### Q090
+**A company uses Azure Container Apps. A container app named App1 resides in a resource group named RG1.  
+The company requires testing of updates to App1.  
+You enable multiple revision modes on App1.  
+You need to ensure traffic is routed to each revision of App1.  
+How should you complete the code segment?**
+```
+az SLOT_1 SLOT_2 traffic set
+--name App1
+--resource-group RG1
+--revision-weight <REVISION_1>=80 <REVISION_2>=20
+```
+
+- SLOT_1
+    - container
+    - [containerapp](#q090)
+    - network
+    - resource
+  
+- SLOT_2
+    - app
+    - connection
+    - [ingress](#q090)
+    - revision
+
+> You can configure traffic splitting between revisions using the `az containerapp ingress traffic set` command. You can specify the revisions by name with the `--revision-weight` parameter or by revision label with the `--label-weight` parameter.  
+```bash
+az containerapp ingress traffic set
+--name APP_NAME
+--resource-group RESOURCE_GROUP
+--revision-weight LABEL_1=80 LABEL_2=20
+```
+
+> https://learn.microsoft.com/en-us/azure/container-apps/traffic-splitting?pivots=azure-cli
+
+---
+
+### Q091
+**You deploy an Azure Container Apps app and disable ingress on the container app.  
+Users report that they are unable to access the container app. You investigate and observe that the app has scaled to 0 instances.  
+You need to resolve the issue with the container app.  
+Solution: Enable ingress, create an HTTP scale rule, and apply the rule to the container app.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q091)
+
+> The HTTP scale rule in Azure App Service allows you to automatically scale your app based on HTTP traffic. However, if the Azure container app is scaled down to 0 instances, the HTTP scale rule will not work because there are no instances to scale.   
+> In other words, the HTTP scale rule only applies when there are active instances of the app to handle incoming HTTP requests. When the app is scaled down to 0 instances, no requests are being processed, and the scale rule does not have any effect.  
+> So to address this first, we need to ensure that there is at least one instance of the container app running to handle incoming requests. This may involve adjusting the scaling settings, configuring minimum instance limits, or implementing a health check mechanism to keep at least one instance running at all times, even during periods of low traffic.  
+
+- https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=azure-cli#default-scale-rule
+
+---
+
+### Q092
+**You deploy an Azure Container Apps app and disable ingress on the container app.  
+Users report that they are unable to access the container app. You investigate and observe that the app has scaled to 0 instances.  
+You need to resolve the issue with the container app.  
+Solution: Enable ingress, create a custom scale rule, and apply the rule to the container app.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q092)
+
+> Make sure you create a scale rule or set `minReplicas` to 1 or more if you don't enable ingress. If ingress is disabled and you don't define a `minReplicas` or a "custom scale rule", then your container app will scale to zero and have no way of starting back up.  
+
+- https://learn.microsoft.com/en-us/azure/container-apps/scale-app?pivots=azure-cli#custom
+
+---
+
+### Q093
+**You deploy an Azure Container Apps app and disable ingress on the container app.  
+Users report that they are unable to access the container app. You investigate and observe that the app has scaled to 0 instances.  
+You need to resolve the issue with the container app.  
+Solution: Enable ingress and configure the minimum replicas to 1 for the container app.  
+Does the solution meet the goal?**
+
+- [Yes](#q093)
+- No
+
+> **Ingress Disabled:** When ingress is disabled, the container app cannot receive external traffic, which prevents users from accessing it. Enabling ingress allows external traffic to reach the app.  
+> **Scaling to 0 Instances:** By configuring the minimum replicas to 1, the app will maintain at least one active instance, even when idle, which prevents it from scaling down to 0 and becoming inaccessible.
+
+- https://chatgpt.com/share/673321e8-8634-8000-a4d0-097d067c770f
+
+---
+
+### Q094 - Case study
+**<u>Background:</u>  
+Munsons Pickles and Preserves Farm is an agricultural cooperative corporation based in Washington, US, with farms located across the United States.  
+The company supports agricultural production resources by distributing seeds fertilizers, chemicals, fuel, and farm machinery to the farms.**  
+
+**<u>Current Environment:</u>  
+The company is migrating all applications from an on-premises datacenter to Microsoft Azure.  
+Applications support distributors, farmers, and internal company staff.**
+
+**<u>Corporate website:</u>  
+The company hosts a public website located at http://www.munsonspicklesandpreservesfarm.com. The site supports farmers and distributors who request agricultural production resources.**
+
+**<u>Farms:</u>     
+The company created a new customer tenant in the Microsoft Entra admin center to support authentication and authorization for applications.**
+
+**<u>Distributors:</u>     
+Distributors integrate their applications with data that is accessible by using APIs hosted at http://www.munsonspicklesandpreservesfarm.com/api to receive and update resource data.**
+
+**The application components must meet the following requirements:**
+- **Corporate website:**
+    - **The site must be migrated to Azure App Service.**
+    - **Costs must be minimized when hosting in Azure.**
+    - **Applications must automatically scale independent of the compute resources.**
+    - **All code changes must be validated by internal staff before release to production.**
+    - **File transfer speeds must improve, and webpage-load performance must increase.**
+    - **All site settings must be centrally stored, secured without using secrets, and encrypted at rest and in transit.**
+    - **A queue-based load leveling pattern must be implemented by using Azure Service Bus queues to support high volumes of website agricultural production resource requests.**
+- **Farms:**
+    - **Farmers must authenticate to applications by using Microsoft Entra ID.**
+- **Distributors:**
+    - **The company must track a custom telemetry value with each API call and monitor performance of all APIs.**
+    - **API telemetry values must be charted to evaluate variations and trends for resource data.**
+- **Internal staff:**
+    - **App and API updates must be validated before release to production.**
+    - **Staff must be able to select a link to direct them back to the production app when validating an app or API update.**
+    - **Staff profile photos and email must be displayed on the website once they authenticate to applications by using their Microsoft Entra ID.**
+- **Security**
+    - **All web communications must be secured by using TLS/HTTPS.**
+    - **Web content must be restricted by country/region to support corporate compliance standards.**
+    - **The principle of least privilege must be applied when providing any user rights or process access rights.**
+    - **Managed identities for Azure resources must be used to authenticate services that support Microsoft Entra ID authentication.**
+
+**Issues:**
+- **Corporate website:**
+    - **Farmers report HTTP 503 errors at the same time as internal staff report that CPU and memory usage are high.**
+    - **Distributors report HTTP 502 errors at the same time as internal staff report that average response times and networking traffic are high.**
+    - **Internal staff report webpage load sizes are large and take a long time to load.**
+    - **Developers receive authentication errors to Service Bus when they debug locally.**
+- **Distributors:**
+    - **Many API telemetry values are sent in a short period of time. Telemetry traffic, data costs, and storage costs must be reduced while preserving a statistically correct analysis of the data points sent by the APIs.**
+
+**You need to configure App Service to support the corporate website migration.  
+Which configuration should you use?**
+
+- App Service Plan
+    - Basic
+    - [Standard](#q094)
+    - Premium
+    - Isolated
+
+> **Standard:** It meets the need for auto-scaling and cost efficiency while providing the necessary features such as SSL and custom domains.
+
+- Code change validation feature
+    - [Deployment slot](#q094)
+    - Custom container
+    - Domain certificate
+    - Deployment credentials
+
+> **Deployment Slot:** Enables the company to validate all code changes in a pre-production environment, ensuring stability and performance before changes are made live.
+
+---
+
+### Q095
+**You have an Azure Cosmos DB for NoSQL API account named account1 and a database named `db1`. An application named `app1` will access `db1` to perform read and write operations.  
+You plan to modify the consistency levels for read and write operations performed by `app1` on `db1`.  
+You must enforce the consistency level on a per-operation basis whenever possible.  
+You need to configure the consistency level for read and write operations.  
+Which locations should you configure?**
+
+- Read Opetation:
+    - [app1](#q095)
+    - db1
+    - account1
+
+- Write Operation:
+    - [app1](#q095)
+    - db1
+    - account1
+
+> **Per-operation consistency** means that you can set the consistency level for each individual read or write operation within your application code, instead of having a single, global consistency level for the entire database. This allows you to fine-tune consistency based on the specific needs of different parts of your application, overriding the default consistency level set at the account or database level when necessary.    
+> This feature is typically managed through the database client library, where you specify the desired consistency level for each query or write operation within your application code.  
+>  
+> **Account level (`account1`):** The default consistency level for the entire Cosmos DB account can be set here. However, this is a default and cannot be overridden on a per-operation basis once set.  
+> **Database level (`db1`):** Cosmos DB does not support setting the consistency level at the database level.  
+> **Client level (`app1`):** For per-operation consistency, you need to specify it within the application code, which allows you to override the default consistency level for specific read and write operations.
+
+- https://chatgpt.com/share/67346fd7-6118-8000-b3ea-e2aa9306ad3d
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-manage-consistency#override-the-default-consistency-level
+
+---
+
+### Q096
+**You are creating an Azure Functions app project in your local development environment by using Azure Functions Core Tools.  
+You must create the project in either Python or C# without using a template.  
+You need to specify the command and its parameter required to create the Azure Functions app project.  
+Which command and parameter should you specify?**
+
+**Syntax Element**
+- Command
+    - func new
+    - [func init](#q096)
+    - func azure
+
+>**`func new`:** This command is used to create a new function within an existing Azure Functions project. It prompts for the function template type (e.g., HTTP trigger, Queue trigger) and other relevant details.  
+It does not initialize a new project but rather adds functions to an existing one.  
+>
+>**`func init`:** This command is used to initialize a new Azure Functions project in the specified language and runtime environment.  
+This is the correct command when creating a new Functions project, as it sets up the necessary project files and folders.  
+>
+>**`func azure`:** This is not a valid command in Azure Functions Core Tools. It’s not used to create or configure Azure Functions projects or functions.
+
+- Parameter
+    - --language
+    - [--worker-runtime](#q096)
+    - --taget-framework
+
+>**`--language`:** Used primarily when the runtime supports multiple languages; often optional, especially when there’s only one language option for a given runtime. e.g. `func init MyFunctionApp --worker-runtime node --language typescript`.  
+>
+>**`--worker-runtime`:** Specifies the runtime stack for the Azure Functions app project. Sets up the project structure with configuration files that target the specified runtime, allowing the Azure Functions host to manage execution in that environment.  
+> Accepts values such as `dotnet`, `python`, `node`, `java`, `powershell`, etc., depending on the runtime environment you need.
+>
+> **`--target-framework`:** Specifies the target framework for the project. This is used in .NET projects to specify the version of the .NET framework to target. It is not typically used in Python projects.
+
+- https://chatgpt.com/share/67347897-6914-8000-bf1d-ee1b99965165
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-core-tools-reference?tabs=v2#func-init
+
+---
+
+### Q097
+**You have an Azure App Service plan named APSPlan1 set to the Basic B1 pricing tier. APSPlan1 contains an App Service web app named WebApp1.  
+You plan to enable schedule-based autoscaling for APSPlan1.  
+You need to minimize the cost of running WebApp1.  
+Solution: Scale up ASPPlan1 to the Premium V2 pricing tier.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q097)
+
+> Scaling up `APSPlan1` to the `Premium V2` pricing tier would increase costs rather than minimize them. To enable schedule-based autoscaling while minimizing costs, it would be more cost-effective to consider scaling within the Basic tier if possible or to select the **`Standard`** tier, which supports autoscaling without the additional expense associated with Premium V2.
+
+- https://chatgpt.com/share/67348248-eacc-8000-9174-26bbfb7c08e4
+
+---
+
+### Q098
+**You are developing a solution that uses the Azure Storage Client library for .NET. You have the following code: (Line numbers are included for reference only.)**
+```csharp
+01    CloudBlockBlob src = null;
+02    try 
+03    {
+04        src = container.ListBlobs().OfType<CloudBlockBlob>().FirstOrDefault();
+05        var id = await src.AcquireLeaseAsync(null);
+06        var dst = container.GetBlockBlobReference(src.Name);
+07        string cpid = await dst.StartCopyAsync(src);
+08        await dst.FetchAttributeAsync () ;
+09        return id;
+10    }
+11    catch (Exception e)
+12    {
+13        throw;
+14    }
+15    finally
+16    {
+17       if(src != null)
+18            await src. FetchAttributesAsync () ;
+19        if (src.Properties.LeaseState != LeaseState.Available)
+20            await src.BreakLeaseAsync(new TimeSpan(0)) ;
+21    }
+```
+**For each of the following statements, select Yes if the statement is true. Otherwise, select No.**
+
+- The code creates an infinite lease
+    - [Yes](#q098)
+    - No
+>  In line 05, the code calls `src.AcquireLeaseAsync(null);`. Passing `null` as the lease duration creates an infinite lease. Otherwise, this must be `TimeSpan` of 15 to 60 seconds.  An infinite lease has no expiration until it is explicitly released or broken.  
+
+- The code at line 06 always creates a new blob
+    - Yes
+    - [No](#q098)
+> Line 06 retrieves a reference to an existing blob with `container.GetBlockBlobReference(src.Name);`. This method does not create a new blob; it simply creates a reference to the blob, allowing further operations. The blob is only created if data is uploaded to it.  
+
+- The finally block releases the lease
+    - [Yes](#q098)
+    - No
+> In the finally block, lines 17-20 check if `src` has an active lease. If the lease state is not `LeaseState.Available`, line 20 attempts to break the lease using `src.BreakLeaseAsync(new TimeSpan(0));`. This operation effectively releases the lease.
+
+-https://chatgpt.com/share/673498d5-3adc-8000-b938-3747012e16cd
+
+---
+
+### Q099
+**You are building a website that uses Azure Blob storage for data storage. You configure Azure Blob storage lifecycle to move all blobs to the archive tier after 30 days.    
+Customers have requested a service-level agreement (SLA) for viewing data older than 30 days.  
+You need to document the minimum SLA for data recovery.  
+Which SLA should you use?**
+
+- at least two days
+- between one and 15 hours
+- at least one day
+- between zero and 60 minutes
+
+- https://learn.microsoft.com/en-us/azure/storage/blobs/archive-rehydrate-overview#rehydration-priority
+
 > •
