@@ -3014,10 +3014,126 @@ You need to document the minimum SLA for data recovery.
 Which SLA should you use?**
 
 - at least two days
-- between one and 15 hours
+- [between one and 15 hours](#q099)
 - at least one day
 - between zero and 60 minutes
 
+> **Standard priority:** The rehydration request is processed in the order it was received and might take up to 15 hours to complete for objects under 10 GB in size.  
+> **High priority:** The rehydration request is prioritized over standard priority requests and might complete in less than one hour for objects under 10 GB in size.
+
 - https://learn.microsoft.com/en-us/azure/storage/blobs/archive-rehydrate-overview#rehydration-priority
+
+---
+
+### Q100
+**You are developing a ticket reservation system for an airline.  
+The storage solution for the application must meet the following requirements:  
+• Ensure at least 99.99% availability and provide low latency.  
+• Accept reservations even when localized network outages or other unforeseen failures occur.  
+• Process reservations in the exact sequence as reservations are submitted to minimize overbooking or selling the same seat to multiple travelers.  
+• Allow simultaneous and out-of-order reservations with a maximum five-second tolerance window.  
+You provision a resource group named airlineResourceGroup in the Azure South-Central US region.  
+You need to provision a SQL API Cosmos DB account to support the app.  
+How should you complete the Azure CLI commands?**
+```
+resourceGroupName='airlineResourceGroup'
+name='docdb-airline-reservations'
+databaseName='docdb-tickets-database'
+collectionName='docdb-tickets-collection'
+consistencyLevel=SLOT_1
+
+az cosmosdb create
+--name $name
+SLOT_2
+--resource-group $resourceGroupName
+--max-interval 5
+SLOT_3
+--default-consistency-level $consistencyLevel
+```
+
+- SLOT_1
+    - Strong
+    - Eventual
+    - ConsistentPrefix
+    - [BoundedStaleness](#q100)
+
+- SLOT_2
+    - --enable-virtual-network true
+    - --[enable-automatic-failover true](#q100)
+    - --kind 'GlobalDocumentDB'
+    - --kind 'MongoDB'
+- SLOT_3
+    - --locations 'southcentralus'
+    - --locations 'eastus'
+    - [--locations 'southcentralus=0 eastus=1 westus=2'](#q100)
+    - --locations 'southcentralus=0'
+
+> **BoundedStaleness:** The reads are guaranteed to honor the consistent-prefix guarantee. The reads might lag behind writes by at most "K" versions (that is, "updates") of an item or by "T" time interval. 
+>
+> For multi-region Cosmos accounts that are configured with a single-write region, enable automatic-failover by using Azure CLI or Azure portal.
+After you **enable automatic failover**, whenever there is a regional disaster, Cosmos DB will automatically failover your account.
+>
+> Need multi-region to accept reservations even when localized network outages or other unforeseen failures occur.  
+> `--locations'southcentralus=0 eastus=1 westus=2` Specifies the regions for Cosmos DB to distribute data, along with the priority order in case of a failover. Each region is assigned a priority (0, 1, 2, etc.), where 0 is the primary region. Cosmos DB will use `southcentralus` as the primary write region (0) and will automatically fail over to eastus (1) if `southcentralus` is unavailable.
+
+- https://chatgpt.com/share/6734ec79-8730-8000-a4bc-b80d500c1864
+- https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels
+- https://learn.microsoft.com/en-us/azure/reliability/reliability-cosmos-db-nosql?toc=%2Fazure%2Fcosmos-db%2Ftoc.json
+
+---
+
+### Q101
+**You are preparing to deploy a Python website to an Azure Web App using a container. The solution will use multiple containers in the same container group.  
+The Dockerfile that builds the container is as follows:**
+```dockerfile
+FROM python:3
+ADD website.py
+CMD ["python", "./website.py"]
+```
+**You build a container by using the following command. The Azure Container Registry instance named images is a private registry. `docker build -t images.azurecr.io/website:v1.0.0`  
+The user name and password for the registry is "admin".  
+The Web App must always run the same version of the website regardless of future builds.  
+You need to create an Azure Web App to run the website.   
+How should you complete the commands?**
+```
+az configure --defaults web=website
+az configure --defaults group=website
+az appservice plan create --name websitePlan SLOT_1
+
+az webapp create --plan websitePlan SLOT_2
+
+az webapp config SLOT_3
+```
+
+- SLOT_1
+    - --Sku SHARED
+    - --tags container
+    - --sku B1 --hyper-v
+    - [--sku B1 --is-linux](#q101)
+
+> The appropriate `SKU is B1 --is-linux` to indicate a Linux-based basic pricing tier. Multi-container groups currently support only Linux containers. For Windows containers, Azure Container Instances only supports deployment of a single container instance. 
+
+- SLOT_2
+    - --deployment-source-url images.azurecr.io/website:v1.0.0
+    - --deployment-source-url images.azurecr.io/website:latest
+    - [--deployment-container-image-name images.azurecr.io/website:v1.0.0](#q101)
+    - --deployment-container-image-name images.azurecr.io/website:latest
+
+> This command creates the Web App and specifies the container image that should be deployed. To ensure it runs the exact specified version of the image (`v1.0.0`), we'll use `--deployment-container-image-name images.azurecr.io/website:v1.0.0`.   
+> `-deployment-source-url` option in Azure CLI is used to specify a URL for the source code or repository that should be deployed to the Azure Web App. This option points to a location (usually a Git repository or archive file) where Azure can pull the application's code or content directly.
+
+- SLOT_3
+    - set -python-version 2.7 --generic-configurations user=admin password=admin
+    - set -python-version 3.6 -generic-configurations user=admin password=admin
+    - [container set --docker-registry-server-url https://images.azurecr.io -u admin-p admin](#q101)
+    - container set --docker-registry-server-url https://images.azurecr.io/website -u admin-p admin
+
+> This command configures the Web App for container deployment by setting the Docker registry URL and providing the admin credentials. The correct command is container set `--docker-registry-server-url https://images.azurecr.io -u admin -p admin`.
+
+- https://chatgpt.com/share/6734f4f7-d800-8000-af3d-10e97a661e49
+- https://learn.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-create
+- https://learn.microsoft.com/en-us/azure/container-instances/container-instances-container-groups
+
+---
 
 > •
