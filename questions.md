@@ -3144,11 +3144,39 @@ How should you configure the Scale rule?**
 
 - Metric Source
     - Storage queue
-    - Service bus queue
+    - [Service bus queue](#q102)
     - Current resource
     - Storage queue (classic)
+> Since the messages are in a Service Bus queue, this is the correct source.
+
 - Metric Name
     - Message count
-    - Active message count
+    - [Active message count](#q102)
+> This metric tracks the number of unprocessed and valid queue messages.
+
 - Time grain statistic
-> •
+    - Total
+    - Maximum
+    - [Average](#q102)
+    - Count
+> Using the average ensures you assess the trend over time and smooth out spikes or dips.
+
+- Operator
+    - Greater than
+    - Greated than or equal to
+    - Less than
+    - [Less than or equal to](#q102)
+> This ensures the scale-down condition triggers when the queue length is consistently low.
+
+- Operation
+    - Increase count by
+    - Increase count to
+    - [Decrease count by](#q102)
+    - Decrease count to
+> This decreases the App Service instance count gradually, preventing abrupt scale changes.
+
+- https://chatgpt.com/share/673d866b-1e80-8000-b029-c60413c62da6
+
+---
+
+### Q103
