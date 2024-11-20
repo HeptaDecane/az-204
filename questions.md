@@ -3136,4 +3136,19 @@ az webapp config SLOT_3
 
 ---
 
+### Q102
+**You are developing a back-end Azure App Service that scales based on the number of messages contained in a Service Bus queue.  
+A rule already exists to scale up the App Service when the average queue length of unprocessed and valid queue messages is greater than 1000.  
+You need to add a new rule that will continuously scale down the App Service as long as the scale up condition is not met.  
+How should you configure the Scale rule?**
+
+- Metric Source
+    - Storage queue
+    - Service bus queue
+    - Current resource
+    - Storage queue (classic)
+- Metric Name
+    - Message count
+    - Active message count
+- Time grain statistic
 > •
