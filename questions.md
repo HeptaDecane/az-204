@@ -3180,3 +3180,123 @@ How should you configure the Scale rule?**
 ---
 
 ### Q103
+**You have an application that uses Azure Blob storage.  
+You need to update the metadata of the blobs.  
+Which three methods should you use to develop the solution? 
+To answer, move the appropriate methods from the list of methods to the answer area and arrange them in the correct order.**
+
+- Metadata.Add
+- SetMetadataAsync
+- FetchAttributesAsync
+- UploadFileStream
+- SetPropertiesAsync
+
+> 1. **`FetchAttributesAsync`**  
+This retrieves the existing blob properties and metadata. You need this step to get the current metadata before modifying it. For v12 use `GetPropertiesAsync`,
+>
+>2. **`Metadata.Add`**  
+Use this method to add or update the metadata key-value pairs in the blob's metadata collection.
+>
+> 3. **`SetMetadataAsync`**  
+This saves the updated metadata to the blob in Azure Blob Storage.  
+
+- https://chatgpt.com/share/67402757-b054-8000-a767-f82147daf424
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-properties-metadata?tabs=dotnet#set-and-retrieve-metadata
+
+---
+
+### Q104
+**You are developing an Azure solution to collect point-of-sale (POS) device data from 2,000 stores located throughout the world.  
+A single device can produce 2 megabytes (MB) of data every 24 hours. Each store location has one to ve devices that send data.   
+You must store the device data in Azure Blob storage. Device data must be correlated based on a device identier. Additional stores are expected to open in the future.  
+You need to implement a solution to receive the device data.  
+Solution: Provision an Azure Event Grid. Congure the machine identier as the partition key and enable capture.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q104)
+
+> Azure Event Grid is not designed for directly ingesting or processing large volumes of data, such as device-generated telemetry. Event Grid is primarily used for event-driven architectures, where it delivers event notifications to subscribers. It does not natively support features like a partition key for data correlation or automatic capture of raw data into Azure Blob Storage.
+
+- https://chatgpt.com/share/67402e19-7bd8-8000-b4ff-7f0f78a640f6
+- https://arindam-das.medium.com/demystifying-azures-eventing-services-a-comparison-of-event-hub-event-grid-and-service-bus-d578693dcf16
+- https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-capture-overview
+
+---
+
+### Q105
+**A .NET application needs to receive a message each time an Azure virtual machine nishes processing data.  
+The messages must NOT persist after being processed by the receiving application.  
+You need to implement the .NET object that will receive the messages.  
+Which object should you use?**
+
+- [QueueClient](#q105)
+- SubscriptionClient
+- TopicClient
+- CloudQueueClient
+
+> I would say it is about Microsoft.AzureService.Bus.QueueClient as the difference between Azure.Storage.Queues.CloudQueueClient (v12) is just a legacy version of the Azure.Storage.Queues.QueueClient (v11) So the question is really about what kind of queue message tool you should use. And the key word here is that "message must NOT persist after being processed". So correct answer would be Microsoft.AzureService.Bus.QueueClient (A) as it supports "At-Most-Once" (using ReceiveAndDelete receive mode) deliver mode while Azure.Storage.Queues.CloudQueueClient doesn't.
+
+- https://chatgpt.com/share/67405f3f-c0f0-8000-8689-e50e5f2d6e05
+- https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-azure-and-service-bus-queues-compared-contrasted#consider-using-service-bus-queues
+
+---
+
+### Q106
+**You are maintaining an existing application that uses an Azure Blob GPv1 Premium storage account. Data older than three months is rarely used.  
+Data newer than three months must be available immediately. Data older than a year must be saved but does not need to be available immediately.  
+You need to congure the account to support a lifecycle management rule that moves blob data to archive storage for data not modied in the last year.  
+Which three actions should you perform in sequence? To answer, move the appropriate actions from the list of actions to the answer area and arrange them in the correct order.**
+
+- Upgrade the storage account to GPv2
+- Create a new GPv2 Standard account and set its default access tier level to cool
+- Change the storage account access tier from hot to cool
+- Copy the data to be archived to a Standard GPv2 storage account and then delete the data from the original storage account
+
+> 1. Upgrade the storage account to GPv2
+> Object storage data tiering between hot, cool, and archive is supported in Blob Storage and General Purpose v2 (GPv2) accounts. General Purpose v1 (GPv1) accounts don't support tiering. You can easily convert your existing GPv1 or Blob Storage accounts to GPv2 accounts through the Azure portal.  
+>
+> 2. Create a new GPV2 standard account with default access level to cool
+>
+> 3. Copy the data to be archived to a Standard GPv2 storage account and then delete the data from the original storage account
+
+- https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview
+- https://learn.microsoft.com/en-us/azure/storage/common/storage-account-upgrade?tabs=azure-portal
+
+---
+
+### Q107
+**You must connect to a No-SQL globally-distributed database by using the .NET API.  
+You need to create an object to congure and execute requests in the database.  
+Which code segment should you use?**
+
+- new Container(EndpointUri, PrimaryKey);
+- new Database(EndpointUri, PrimaryKey);
+- [new CosmosClient(EndpointUri, PrimaryKey);](#q107)
+
+> **CosmosClient:** This is the main entry point for interacting with Azure Cosmos DB using the .NET SDK. It allows you to connect to a Cosmos DB account by specifying the `EndpointUri` and `PrimaryKey`.
+```csharp
+string EndpointUri = "<your-endpoint-uri>";
+string PrimaryKey = "<your-primary-key>";
+
+// Initialize the CosmosClient
+CosmosClient cosmosClient = new CosmosClient(EndpointUri, PrimaryKey);
+
+```
+
+---
+
+### Q108
+**You have an existing Azure storage account that stores large volumes of data across multiple containers.  
+You need to copy all data from the existing storage account to a new storage account. The copy process must meet the following requirements:  
+• Automate data movement.  
+• Minimize user input required to perform the operation.  
+• Ensure that the data movement process is recoverable.  
+What should you use?**
+
+- AzCopy
+- Azure Storage Explorer
+- Azure portal
+- .NET Storage Client Library
+
+•
