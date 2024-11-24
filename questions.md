@@ -3294,9 +3294,498 @@ You need to copy all data from the existing storage account to a new storage acc
 • Ensure that the data movement process is recoverable.  
 What should you use?**
 
-- AzCopy
+- [AzCopy](#q108)
 - Azure Storage Explorer
 - Azure portal
 - .NET Storage Client Library
 
-•
+> AzCopy, The Azcopy tool can be used to copy data from one storage account to another. You can use the tool within automation scripts
+to ensure the data can be copied automatically.
+
+- https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-blobs-copy
+
+---
+
+### Q109
+**You are developing a web service that will run on Azure virtual machines that use Azure Storage. You congure all virtual machines to use managed identities.  
+You have the following requirements:  
+• Secret-based authentication mechanisms are not permitted for accessing an Azure Storage account.  
+• Must use only Azure Instance Metadata Service endpoints.  
+You need to write code to retrieve an access token to access Azure Storage. To answer, drag the appropriate code segments to the correct locations.  
+
+```
+var url = "SLOT_1";
+var queryString = "...";
+var client = new HttpClient();
+var response = await client.GetAsync(url + queryString);
+var payload = await response.Content.ReadAsStringAsync();
+return SLOT_2;
+```
+
+- SLOT_1
+    - http://localhost:50342/oauth2/token
+    - http://169.254.169.254:50432/oauth2/token
+    - http://localhost/metadata/identity/oauth2/token
+    - [http://169.254.169.254/metadata/identity/oauth2/token](#q109) 
+  
+- SLOT_2
+    - Document.Parse(payload)
+    - new MultipartContent (payload)
+    - new NetworkCredential("Azure", payload)
+    - [JsonConvert. DeserializeObject<Dictionary<string, string>>(payload)](#q109)
+
+> **SLOT_1:** http://169.254.169.254/metadata/identity/oauth2/token  
+> The **Azure Instance Metadata Service** provides information about the virtual machine and its identity. The URL  http://169.254.169.254/metadata/identity/oauth2/token    is the endpoint used to request an access token when managed identities are enabled. The metadata path is mandatory for IMDS, and the endpoint only works from the Azure environment.  
+>
+> **SLOT_2:** JsonConvert.DeserializeObject<Dictionary<string, string>>(payload)  
+> The response from the IMDS endpoint is a JSON payload. To extract the access token, the payload must be deserialized into a dictionary or a similar structure. Using `JsonConvert.DeserializeObject<Dictionary<string, string>>(payload)` is the correct way to parse the token from the JSON response.
+
+- https://chatgpt.com/share/67418365-db74-8000-bbc2-0e8f310a68ed
+- https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token
+
+---
+
+### Q110
+**You are developing a new page for a website that uses Azure Cosmos DB for data storage. 
+The feature uses documents that have the following format:**  
+```
+{
+    "name": "John",
+    "city" : "Seattle"
+}
+```
+**You must display data for the new page in a specic order. You create the following query for the page:**  
+```
+SELECT *
+FROM People p
+ORDER BY p. name, p.city DESC
+```
+**You need to congure a Cosmos DB policy to support the query. How should you congure the policy?**
+
+```
+{
+    "automatic" : true
+    "indexingMode" : "consistent"
+    "includedPaths" : [{"path" : "/*"}],
+    "excludedPaths" : [],
+    "SLOT_1":[
+        {"path": "/name", "order": "descending"},
+        {"path": "/city", "order": "SLOT_2"}
+    ]
+}
+```
+
+- SLOT_1
+  - orderBy
+  - sortOrder
+  - ascending
+  - descending
+  - [compositeIndexes](#q110)
+
+- SLOT_2
+  - orderBy
+  - sortOrder
+  - [ascending](#q110)
+  - descending
+  - compositeIndexes
+
+> The SQL query is equivalent to `SELECT * FROM People p ORDER BY p.name ASC, p.city DESC`.  
+> To support the `ORDER BY` clause  with two or more properties in a query, you need to configure **composite indexes** in Azure Cosmos DB. Composite indexes allow efficient sorting on multiple fields.   
+> The order of composite index paths (ascending or descending) should also match the order in the `ORDER BY` clause.  
+> The composite index also supports an `ORDER BY` clause with the opposite order on all paths.  
+> i.e. index on `(A asc, B asc)` works for queries with `ORDER BY` `(A asc, B asc)` and `(A desc, B desc)`. Not working with `ORDER BY` `(A asc, B desc)`, `(A desc, B asc)` or even `(B asc, A asc)`.
+
+- https://learn.microsoft.com/en-us/azure/cosmos-db/index-policy#order-by-queries-on-multiple-properties
+
+---
+
+### Q111
+**You are building a traffic monitoring system that monitors traffic along six highways. The system produces time series analysis-based reports for each highway.  
+Data from traffic sensors are stored in Azure Event Hub. Traffic data is consumed by four departments.  
+Each department has an Azure Web App that displays the time series-based reports and contains a WebJob that processes the incoming data from Event Hub. All Web Apps run on App Service Plans with three instances.  
+Data throughput must be maximized. Latency must be minimized.  
+You need to implement the Azure Event Hub. Which settings should you use?**
+
+- Number of Partitions
+    - 3
+    - 4
+    - [6](#q111)
+    - 12
+
+- Partition Key
+    - [Highway](#q111)
+    - Department
+    - Timestamp
+    - VM Name
+
+> The rationale is that since there are 6 highways, partitioning by highway ensures that events related to each highway are processed in order and kept separate. This structure supports scalability and ordered event processing, which is essential for time series analysis in the system.  
+> The partition key determines how events are distributed across partitions. Using **"Highway"** as the partition key ensures that all events related to a particular highway are sent to the same partition. This is crucial for maintaining the order of events and for processing highway-specific time series analysis effectively.  
+
+- https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features#partitions
+
+---
+
+### Q112
+**You are developing a microservices solution. You plan to deploy the solution to a multinode Azure Kubernetes Service (AKS) cluster.  
+You need to deploy a solution that includes the following features:  
+• reverse proxy capabilities  
+• congurable trac routing  
+• TLS termination with a custom certicate  
+Which components should you use?**  
+
+**Componnts**
+- Helm
+- Draft
+- Brigade
+- KubeCtl
+- Ingress Controller
+- CoreDNS
+- Virtual Kubelet
+
+**Actions**
+- Deploy solution : SLOT_1
+- View cluster and external IP addressing : SLOT_2
+- Implement a single, public IP endpoint that is routed to multiple microservices.: SLOT_3
+
+
+> **1. Deploy solution : Helm**  
+> Helm helps you manage Kubernetes applications — Helm Charts help you define, install, and upgrade even the most complex Kubernetes application. To create the ingress controller, use Helm to install nginx-ingress.  
+>
+> **2. View cluster and external IP addressing : Kubectl**  
+> The Kubernetes command-line tool, kubectl, allows you to run commands against Kubernetes clusters. To find the cluster IP address of a Kubernetes pod, use the kubectl get pod command on your local machine, with the option -o wide .
+>
+> **3. Implement a single, public IP endpoint that is routed to multiple microservices.: Ingress Controller**  
+> An ingress controller is a piece of software that provides reverse proxy, configurable traffic routing, and TLS termination for Kubernetes services. Kubernetes ingress resources are used to configure the ingress rules and routes for individual Kubernetes services. Using an ingress controller and ingress rules, a single IP address can be used to route traffic to multiple services in a Kubernetes cluster.
+
+- https://chatgpt.com/share/6742e26a-8560-8000-a66b-b77972318443
+
+---
+
+### Q113
+**You are implementing an order processing system. A point of sale application publishes orders to topics in an Azure Service Bus queue. The Label property for the topic includes the following data:**  
+| Property | Description |  
+| --- | --- |
+| ShipLocation | the country/region where the order will be shipped |
+| CorrelationId | a priority value for the order | 
+| Quantity | a user-defined field that stores the quantity of items in an order |
+| AuditedAt | a user-defined field that records the date an order is audited |
+
+**The system has the following requirements for subscriptions:**
+| subscription | Comments | 
+| --- | --- |
+| FutureOrders | This subscription is reserved for future use and must not receive any orders |
+| HighPriorityOrders | Handle all high priority orders and international orders |
+| InternationalOrders | Handle orders where the country/region is not United States |
+| HighQuantityOrders | Handle orders with quantities greater than 100 units |
+| AllOrders | This subscription is used for auditing purposes. This subscription must receive every single order. AllOrders has an Action defined that updates the `AuditedAt` property to include the date and time it was received by the subscription. |
+
+**You need to implement ltering and maximize throughput while evaluating lters. Which lter types should you implement?**
+
+- FutureOrders
+    - [SqlFilter](#q113)
+    - CorrelationFilter
+    - NoFilter
+> **`SqlFilter`** with a condition that will never be true (e.g., `1 = 0`). This ensures no messages are received.
+
+- HighPriorityOrders
+    - SqlFilter
+    - [CorrelationFilter](#q113)
+    - NoFilter
+> **`CorrelationFilter`** holds a set of conditions that are matched against one or more of an arriving message's user and system properties. A common use is to match against the `CorrelationId` property,
+
+- InternationalOrders
+    - [SqlFilter](#q113)
+    - CorrelationFilter
+    - NoFilter
+> **`SqlFilter`** to evaluate the `ShipLocation` field.  
+> `ShipLocation <> 'United States'`
+
+- HighQuantityOrders
+    - [SqlFilter](#q113)
+    - CorrelationFilter
+    - NoFilter
+> **`SqlFilter`** to evaluate the `Quantity` field.  
+> `Quantity > 100`
+
+- AllOrders
+    - SqlFilter
+    - CorrelationFilter
+    - [NoFilter](#q113)
+> No filtering is needed because this subscription is supposed to receive all orders.
+
+- https://learn.microsoft.com/en-us/azure/service-bus-messaging/topic-filters#filters
+
+---
+
+### Q114
+**Your company has several websites that use a company logo image. You use Azure Content Delivery Network (CDN) to store the static image.  
+You need to determine the correct process of how the CDN and the Point of Presence (POP) server will distribute the image and list the items in the correct order.  
+In which order do the actions occur?**
+
+- If no edge servers in the POP have the image in cache, the POP requests the file from the origin server.
+- A user requests the image from the CDN URL. The DNS routes the request to the best performing POP location.
+- Subsequent requests for the file may be directed to the same POP using the CDN logo image URL. The POP edge server returns the file from cache if the TTL has not expired.
+- The origin server returns the logo image to an edge server in the POP. An edge server in the POP caches the logo image and returns the image to the client.
+
+> **1. A user requests the image from the CDN URL. The DNS routes the request to the best performing POP location.**  
+> This is the first step where the client makes a request, and the CDN uses DNS to determine the optimal POP based on factors like latency and geography.
+>
+> **2. If no edge servers in the POP have the image in cache, the POP requests the file from the origin server.**  
+> If the requested image is not cached on the POP edge servers, they forward the request to the origin server where the file is stored.
+>
+> **3. The origin server returns the logo image to an edge server in the POP. An edge server in the POP caches the logo image and returns the image to the client.**  
+> The origin server fulfills the request by sending the image to the edge server in the POP, which caches it and serves it to the user.  
+>
+> **4. Subsequent requests for the file may be directed to the same POP using the CDN logo image URL. The POP edge server returns the file from cache if the TTL has not expired.**  
+> For subsequent requests, if the Time-to-Live (TTL) of the cached image hasn't expired, the POP edge server serves the image directly from its cache, improving performance and reducing load on the origin server.
+
+- https://chatgpt.com/share/67433b8a-d18c-8000-a805-a47d6a1fa47f
+
+---
+
+### Q115
+**You are developing an Azure Cosmos DB solution by using the Azure Cosmos DB SQL API. The data includes millions of documents. Each document may contain hundreds of properties.  
+The properties of the documents do not contain distinct values for partitioning. Azure Cosmos DB must scale individual containers in the database to meet the performance needs of the application by spreading the workload evenly across all partitions over time.  
+You need to select a partition key. Which two partition keys can you use?**
+
+- a single property value that does not appear frequently in the documents
+- a value containing the collection name
+- a single property value that appears frequently in the documents
+- [a concatenation of multiple property values with a random sux appended](#q115)
+- [a hash suffix appended to a property value](#q115)
+
+> **A single property value that does not appear frequently in the documents**  
+**Not recommended:** If the property value does not appear frequently, it could result in "hot partitions," where only one or a few partitions handle most of the requests. This creates an uneven workload and reduces scalability.
+>
+> **A value containing the collection name**  
+**Not recommended:** Using the collection name as a partition key can cause all data to be routed to a single partition, defeating the purpose of partitioning.
+>
+> **A single property value that appears frequently in the documents**  
+**Not recommended:** If a single property value appears frequently (e.g., all documents have the same value), all the data will be stored in one partition, leading to a hot partition.
+>
+> **A concatenation of multiple property values with a random suffix appended**  
+**Recommended:** Combining multiple property values with a random suffix ensures that the partition key values are distributed more evenly, reducing the risk of hot partitions. This approach spreads the workload across multiple partitions effectively.
+>
+> **A hash suffix appended to a property value**  
+**Recommended:** Appending a hash suffix to a property value is another effective way to achieve even distribution of data across partitions. It ensures that the workload is spread out evenly and avoids hot partitions.
+
+- https://chatgpt.com/share/6743545b-12c0-8000-b07b-be1b06540193
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/synthetic-partition-keys
+
+---
+
+### Q116
+**You are developing an Azure-hosted e-commerce web application. The application will use Azure Cosmos DB to store sales orders.  
+You are using the latest SDK to manage the sales orders in the database. You create a new Azure Cosmos DB instance.   
+You include a valid endpoint and valid authorization key to an appSettings.json file in the code
+project.  
+You are evaluating the following application code:
+```csharp
+using System;
+using System. Threading.Tasks;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+namespace SalesOrders {
+    public class SalesOrder { }
+
+    internal class ManageSalesOrders {
+        private static async Task GenerateSalesOrders (){
+            ConfigurationRoot configuration = new ConfigurationBuilder().AddJsonFile ("appsettings.json").Build();
+            string endpoint = configuration ["EndPointUrl"];
+            string authKey = configuration ["AuthorizationKey"];
+            using CosmosClient client = new CosmosClient (endpoint, authKey) ;
+            Database database = null;
+            using (await client.GetDatabase("SalesOrders").DeleteStreamAsync ()) {} 
+            database = await client.CreateDatabaseIfNotExistsAsync("SalesOrders") ;
+            Container container1 = await database.CreateContainerAsync(id: "Container1", partitionKeyPath: "/AccountNumber");
+            Container container2 = await database.CreateContainerAsync(id: "Container2", partitionKeyPath: "/AccountNumber");
+            SalesOrder salesOrder1 = new SalesOrder () { AccountNumber = "123456" };
+            await container1.CreateItemAsync(salesOrder1, new PartitionKey (salesOrder1.AccountNumber));
+            SalesOrder salesOrder2 = new SalesOrder () { AccountNumber = "654321" };
+            await container1.CreateItemAsync(salesOrder2, new PartitionKey (salesOrder2.AccountNumber));
+            SalesOrder salesOrder3 = new SalesOrder () { AccountNumber = "109876" };
+            await container2.CreateItemAsync(salesOrder3, new PartitionKey (salesOrder3.AccountNumber)) ;
+            _ = await database.CreateUserAsync ("User1") ;
+            User user1 = database.GetUser("'User1") ;
+            _ = await user1.ReadAsync () ;
+        }
+    }
+}   
+```
+**For each of the following statements, select Yes if the statement is true. Otherwise, select No.**
+
+- A database named SalesOrders is created. The database will include two containers.
+    - [Yes](#q116)
+    - No
+
+- Container 1 will contain two items.
+    - [Yes](#q116)
+    - No
+
+- Container2 will contain one item.
+    - [Yes](#q116)
+    - No
+
+> **A database named SalesOrders is created. The database will include two containers.**   
+**Yes:** The database is created (or reused), and two containers (`container1` and `container2`) are added.
+>
+> **Container1 will contain two items.**   
+**Yes:** Two items (`salesOrder1` and `salesOrder2`) are added to `container1`.
+>
+> **Container2 will contain one item.**   
+**Yes:** One item (`salesOrder3`) is added to `container2`.
+
+- https://chatgpt.com/share/67436d05-8f9c-8000-b47f-d47afa1c15f1
+
+---
+
+### Q117
+**You develop an Azure solution that uses Cosmos DB.  
+The current Cosmos DB container must be replicated and must use a partition key that is optimized for queries.  
+You need to implement a change feed processor solution.  
+Which change feed processor components should you use? To answer, drag the appropriate components to the correct requirements.**
+
+**Components:**
+- Host
+- Delegate
+- Lease container
+- Monitored container
+
+**Requirements:**
+- Store the data from which the change feed is generated. : SLOT_1
+- Coordinate processing of the change feed across multiple workers. :  SLOT_2
+- Use the change feed processor to listen for changes. : SLOT_3
+- Handle each batch of changes. : SLOT_4
+
+> Store the data from which the change feed is generated: **Monitored container**  
+The monitored container is the container in Cosmos DB where the data is stored and from which changes are captured in the change feed.
+>
+> Coordinate processing of the change feed across multiple workers: **Lease container**  
+The lease container stores the leases used by the change feed processor to distribute and coordinate processing across multiple worker instances.
+>
+> Use the change feed processor to listen for changes: **Host**   
+The host is responsible for running the change feed processor and listening for changes in the monitored container.
+>
+>Handle each batch of changes: **Delegate**  
+The delegate is the user-provided code (a delegate or callback) that processes each batch of changes delivered by the change feed.
+
+- https://chatgpt.com/share/67437055-d764-8000-b69d-62263d212ca4
+
+---
+
+### Q118
+
+**You are developing a web application that will use Azure Storage. Older data will be less frequently used than more recent data.  
+You need to congure data storage for the application. You have the following requirements:  
+• Retain copies of data for five years.  
+• Minimize costs associated with storing data that is over one year old.  
+• Implement Zone Redundant Storage for application data.  
+What should you do?**
+
+**Requirements:**
+- Configure an Azure Storage account
+    - Implement Blob Storage
+    - Implement Azure Cosmos DB
+    - Implement Storage (general purpose v1)
+    - [Implement StorageV2 (general purpose v2)](#q118)
+
+Configure data retention
+    - Snapshot blobs and move them to the archive tier
+    - [Set a lifecycle management policy to move blobs to the cool tier](#q118)
+    - Use AzCopy to copy the data to an on-premises device for backup
+    - Set a lifecycle management policy to move blobs to the archive tier
+
+> Only storage accounts that are configured for LRS, GRS, or RA-GRS support moving blobs to the archive tier. The archive tier isn't supported for ZRS, GZRS, or RA-GZRS accounts.
+
+- https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview#archive-access-tier
+
+---
+
+### Q119
+**A company develops a series of mobile games. All games use a single leaderboard service. You have the following requirements:  
+• Code must be scalable and allow for growth.  
+• Each record must consist of a playerId, gameId, score, and time played.  
+• When users reach a new high score, the system will save the new score using the SaveScore function below.  
+Each game is assigned an Id based on the series title. You plan to store customer information in Azure Cosmos DB.  
+The following data already exists in the database:
+| PartitionKey | RowKey | Email |
+|--------------|--------|-------|
+| Harp | Smith | wharp@contoso.com |
+| Smith | Smith | ssmith@contoso.com |
+| Smith | Jeff | jsmith@contoso.com |
+
+**You develop the following code to save scores in the data store.**
+```csharp
+public void SaveScore (string gameId, string playerId, int score, long timePlayed){
+    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
+    CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+    CloudTable table = tableClient.GetTableReference("scoreTable");
+    table.CreateIfNotExists();
+    var scoreRecord = new PlayerScore(gameld, playerId, score, timePlayed);
+    TableOperation insertOperation = TableOperation.Insert(scoreRecord);
+    table.Execute(insertOperation);
+}
+```
+
+**You develop the following code to query the database**
+```csharp
+    CloudTableClient tableClient = account.CreateCloudTableClient();
+    CloudTable table = tableClient.GetTableReference("people");
+    TableQuery <CustomerEntity> query = new TableQuery <CustomerEntity>()
+    .Where(TableQuery.CombineFilters(
+        TableQuery.GenerateFilterCondition(PartitionKey, QueryComparisons.Equal, "Smith") ,
+        TableOperators.And, 
+        TableQuery.GenerateFilterCondition(Email,Querycomparisons.Equal "ssmith@contoso.com")));
+    await table.ExecuteQuerySegmentedAsync<CustonerEntity>(query, null);
+```
+
+**For each of the following statements, select Yes if the statement is true. Otherwise, select No**
+
+- SaveScore will work with Cosmos DB.
+    - Yes
+    - [No](#q119)  
+> The `SaveScore` method uses Azure Table Storage APIs (`CloudStorageAccount`, `CloudTableClient`, `CloudTable`) to interact with a table named scoreTable. Azure Cosmos DB supports a Table API mode, but this method is written explicitly for Azure Table Storage, not Cosmos DB.
+- https://learn.microsoft.com/en-us/azure/cosmos-db/table/quickstart-dotnet
+
+- SaveScore will update and replace a record if one already exists with the same playerId and gameId.
+    - Yes
+    - [No](#q119)
+> The method uses `TableOperation.Insert(scoreRecord)`, which attempts to insert a new record. This will fail with an error if a record with the same `PartitionKey` and `RowKey` already exists. To replace or update a record, `TableOperation.InsertOrReplace` should be used instead.
+
+- Leader board data for the game will be automatically partitioned using gameId.
+    - Yes
+    - [No](#q119) 
+> The partitioning of Azure Table Storage (or Cosmos DB using the Table API) is determined by the `PartitionKey` in the table schema. The `PartitionKey` is not explicitly set in the `SaveScore` method. Instead, it depends on the implementation of the `PlayerScore` class, which is not shown. Without explicitly setting `gameId` as the `PartitionKey`, there is no guarantee that data will be partitioned by `gameId`.
+
+- SaveScore will store the values for the gameId and playerId parameters in the database.
+    - [Yes](#q119)
+    - No
+> The `SaveScore` method creates a new instance of the `PlayerScore` class and passes `gameId` and `playerId` as parameters. Assuming the `PlayerScore` class correctly maps these parameters to table properties, these values will be stored in the database.
+
+- https://chatgpt.com/share/674377a6-0b9c-8000-90f0-b2961d283550
+
+---
+
+### Q120
+**You develop and deploy a web application to Azure App Service. The application accesses data stored in an Azure Storage account.  
+The account contains several containers with several blobs with large amounts of data. You deploy all Azure resources to a single region.  
+You need to move the Azure Storage account to the new region. You must copy all data to the new region.  
+What should you do first?**
+
+- [Export the Azure Storage account Azure Resource Manager template](#q120)
+- Initiate a storage account failover
+- Congure object replication for all blobs
+- Use the AzCopy command line tool
+- Create a new Azure Storage account in the current region
+- Create a new subscription in the current region
+
+> To move a storage account, create a copy of your storage account in another region. Then, move your data to that account by using AzCopy, or another tool of your choice and nally, delete the resources in the source region.  
+> To get started, export, and then modify a Resource Manager template.
+
+- https://chatgpt.com/share/6743785b-19f0-8000-91cd-9aea03c27bc7
+- https://learn.microsoft.com/en-us/azure/operational-excellence/relocation-storage-account?tabs=azure-portal
+
+---
+
+- •
