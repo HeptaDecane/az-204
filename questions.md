@@ -4024,5 +4024,134 @@ This is typically used for GET operations (e.g., to retrieve data only if it has
 ---
 
 ### Q128
+**An organization deploys a blob storage account. Users take multiple snapshots of the blob storage account over time.  
+You need to delete all snapshots of the blob storage account. You must not delete the blob storage account itself.  
+How should you complete the code segment?**
+```
+Azure.Storage.Blobs.Models.DeleteSnapshotsOption snapshotsOption = Azure.Storage.Blobs.Models.SLOT_1.SLOT_2;
+```
+- SLOT_1
+    - DeleteIfExists
+    - [DeleteSnapshotsOption](#q128)
+    - WithSnapshot
+    - WithSnapshotCore
+
+- SLOT_2
+    - IncludeSnapshots
+    - None
+    - [OnlySnapshots](#q128)
+
+```csharp
+public static async Task DeleteBlobSnapshotsAsync(BlobClient blob) {
+    // Delete a blob and all of its snapshots
+    await blob.DeleteAsync(snapshotsOption: DeleteSnapshotsOption.IncludeSnapshots);
+
+    // Delete only the blob's snapshots
+    await blob.DeleteAsync(snapshotsOption: DeleteSnapshotsOption.OnlySnapshots);
+}
+```
+
+- https://learn.microsoft.com/en-us/dotnet/api/azure.storage.blobs.models.deletesnapshotsoption?view=azure-dotnet
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-delete#delete-a-blob
+
+---
+
+### Q129
+**You are developing an application that monitors data added to an Azure Blob storage account.  
+You need to process each change made to the storage account.  
+How should you complete the code segment?**
+```
+var changeFeedClient = new BlobServiceClient("...").GetChangeFeedClient();
+var x = default(string);
+while (true){
+    var changeFeed = changeFeedClient.SLOT_1;
+    foreach (var c in changeFeed){
+        x = c.SLOT_2;
+        ProcessChanges(c.Values);
+    }
+}
+```
+
+- SLOT_1
+    - GetChanges()
+    - GetChangesAsync()
+    - [GetChanges(x).AsPages()](#q129)
+    - GetChanges(x).GetEnumerator()
+
+- SLOT_2
+    - [ContinuationToken](#q129)
+    - GetRawResponse().ReasonPhrase
+    - Values.Max(x => x.EventTime).ToString()
+    - Values.Min(x => x.EventTime).ToString()
+
+> `changeFeedClient.GetChanges(x).AsPages()` returns an `IEnumerable<Page<BlobChangeFeedEvent>>`  when you loop through these pages (i.e.,`Page<BlobChangeFeedEvent>`) you will get the options `page.ContinuationToken` and `page.Values` which are used in this example.
+```csharp
+var changeFeedClient = new BlobServiceClient("...").GetChangeFeedClient();
+var x = default(string);
+while (true) {
+    var changeFeed = changeFeedClient.GetChanges(x).AsPages();
+    foreach (var c in changeFeed) {
+        x = c.ContinuationToken;
+        ProcessChanges(c.Values);
+    }
+}
+```
+
+- https://chatgpt.com/share/6744c24d-6d20-8000-8f3d-ba4c81547b36
+- https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/storage/Azure.Storage.Blobs.ChangeFeed#resume-with-continuationtoken
+
+---
+
+### Q130
+**You develop an application that sells AI generated images based on user input. You recently started a marketing campaign that displays unique ads every second day.  
+Sales data is stored in Azure Cosmos DB with the date of each sale being stored in a property named `whenFinished`.  
+The marketing department requires a view that shows the number of sales for each unique ad.   
+You need to implement the query for the view.  
+How should you complete the query?** 
+
+```
+select SLOT_1, SLOT_2
+from c
+group by SLOT_3
+```
+
+- SLOT_1
+    - max(c.whenFinished)
+    - sum(c.whenFinished)
+    - count(c.whenFinished)
+
+- SLOT_2
+    - DateTimeBin(c.whenFinished, "day", 2)
+    - DateTimePart(c.whenFinished, "day", 2)
+    - DateTimeBin(c.whenFinished, "hour", 12)
+    - DateTimePart(c.whenFinished, "hour", 12)
+
+- SLOT_3
+    - DateTimeBin(c.whenFinished, "day", 2)
+    - DateTimePart(c.whenFinished, "day", 2)
+    - DateTimeBin(c.whenFinished, "hour", 12)
+    - DateTimePart(c.whenFinished, "hour", 12)
+
+> **SLOT_1: The required aggregation**  
+The marketing department needs the number of sales for each unique ad. Therefore, you should use `count(c.whenFinished)` in SLOT_1 to count the number of sales.
+>
+> **SLOT_2: Binning sales into 2-day intervals**  
+The marketing campaign runs with ads changing every second day, so you need to group sales into 2-day bins. The function `DateTimeBin(c.whenFinished, "day", 2)` bins dates into 2-day intervals and fits the requirement.
+>
+> **SLOT_3: Grouping criteria**
+Since you are grouping by 2-day intervals, SLOT_3 also needs to use `DateTimeBin(c.whenFinished, "day", 2)` to ensure grouping aligns with the 2-day binning logic.
+>
+> **DateTimeBin:** Groups or "bins" datetime values into fixed-sized intervals. It's typically used for creating time-based aggregations over a specified period (e.g., grouping data into daily, hourly, or custom time intervals).   
+> syntax: `DateTimeBin(datetime_field, granularity, size)`
+>
+> **DateTimePart:** Extracts a specific part of a datetime value (e.g., year, month, day, hour) for analysis or filtering. It does not group values but rather focuses on identifying a specific portion of the date or time.  
+> syntax: `DateTimePart(datetime_field, part)`
+
+
+- https://chatgpt.com/share/6744c772-07ac-8000-888b-39fcd40494dc
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/system-functions
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/datetimepart
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/datetimebin
+
 
 - •
