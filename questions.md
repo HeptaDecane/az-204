@@ -3788,4 +3788,241 @@ What should you do first?**
 
 ---
 
+### Q121
+**You are developing an application to collect the following telemetry data for delivery drivers:  
+first name, last name, package count, item id, and current location coordinates.   
+The app will store the data in Azure Cosmos DB. You need to congure Azure Cosmos DB to query the data.  
+Which values should you use?**
+
+- Azure Cosmos DB API
+    - Gremlin
+    - Table API
+    - [Core SQL](#q121)
+
+- Partition Key
+    - first name
+    - last name
+    - package count
+    - [item id](#q121)
+
+> **Core SQL:** Best for querying structured or semi-structured data (JSON). It supports SQL-like queries, making it ideal for handling and querying data like first name, last name, package count, item id, and current location coordinates.
+>
+> **Item ID:** This is likely to be a unique and stable identifier (e.g., for packages). Using item id as the partition key ensures even data distribution and efficient querying.
+
+- https://chatgpt.com/share/6743f80d-5064-8000-95bb-1ffdbe88e866
+- https://learn.microsoft.com/en-us/azure/cosmos-db/choose-api
+- https://learn.microsoft.com/en-us/azure/cosmos-db/partitioning-overview
+
+---
+
+### Q122
+**You are implementing an Azure solution that uses Azure Cosmos DB and the latest Azure Cosmos DB SDK. You add a change feed processor to a new container instance.  
+You attempt to read a batch of 100 documents. The process fails when reading one of the documents.  
+The solution must monitor the progress of the change feed processor instance on the new container as the change feed is read.   
+You must prevent the change feed processor from retrying the entire batch when one document cannot be read.  
+You need to implement the change feed processor to read the documents.  
+Which features should you use?**
+
+**Features:**
+- Change feed estimator
+- Requirement
+- Dead-letter queue
+- Deployment unit
+- Lease container
+
+**Requirements:**  
+- Monitor the progress of the change feed processor : SLOT_1  
+- Prevent the change feed processor from retrying the entire batch when one document cannot be read : SLOT_2  
+
+> SLOT_1: **Change feed estimator**  
+> You can use the change feed estimator to monitor the progress of your change feed processor instances as they read the change feed or use the life cycle notications to detect underlying failures.
+>
+> SLOT_2: **Dead-letter queue**   
+> To prevent your change feed processor from getting "stuck" continuously retrying the same batch of changes, you should add logic in your delegate code to write documents, upon exception, to a dead-letter queue. This design ensures that you can keep track of unprocessed changes while still being able to continue to process future changes. The dead-letter queue might be another Cosmos container. The exact data store does not matter, simply that the unprocessed changes are persisted.
+
+- https://chatgpt.com/share/6743fa9a-6730-8000-b728-f3a5099556fb
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/change-feed-processor?tabs=dotnet#error-handling
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-use-change-feed-estimator?tabs=dotnet
+
+---
+
+### Q123
+**You are developing an application that uses a premium block blob storage account. The application will process a large volume of transactions daily. You enable Blob storage versioning.  
+You are optimizing costs by automating Azure Blob Storage access tiers. You apply the following policy rules to the storage account.**
+```json
+{
+    "rules":[
+        {
+            "name": "versionRule",
+            "enabled": true,
+            "type": "Lifecycle",
+            "definition": {
+                "actions": {
+                    "version": {
+                        "tierToCool": {
+                            "daysAfterCreationGreaterThan": 60
+                        },
+                        "delete": {
+                            "daysAfterCreationGreaterThan": 365
+                        }
+                    }
+                },
+                "filters": {
+                    "blobTypes": ["blockBlob"],
+                    "prefixMatch": ["transactions"]
+                }
+            }
+        }
+    ]
+}
+```
+**For each of the following statements, select Yes if the statement is true. Otherwise, select No.**
+
+- Block blobs prefixed with transactions will transition blobs that have not been modified in over 60 days to cool storage, and delete blobs not modified in 365 days.
+    - Yes
+    - [No](#q123)
+> The `tierToCool` action applies to previous versions of block blobs after 60 days of creation, not based on modification. Similarly, deletion occurs after 365 days of creation, not modification. Would be true if `daysAfterModificationGreaterThan` was used.
+
+- Blobs are moved to cool storage if they have not been accessed for 60 days.
+    - Yes
+    - [No](#q123)
+> The policy moves versions of block blobs to the cool tier 60 days after their creation, regardless of access or modification status. Azure Blob Storage lifecycle policies do not evaluate blob access times. Would be true if `daysAfterLastAccessGreaterThan` was used.
+
+- The policy rule tiers previous versions within a container named transactions that are 60 days or older to the cool tier and deletes previous versions that are 365 days or older.
+    - [Yes](#q123)
+    - No
+> The lifecycle policy targets versions of block blobs that match the prefix `transactions`. It transitions these versions to the cool tier after 60 days and deletes them after 365 days, as specified in the policy.
+
+- Blobs will automatically be tiered from cool back to hot if accessed again after
+being tiered to cool.
+    - Yes
+    - [No](#q123)
+> `"enableAutoTierToHotFromCool": "true"` should be enabled. Also this option is not supported for snapshots & versions.
+
+
+- https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview
+- https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview#rule-actions
+
+---
+
+### Q124
+**An organization deploys Azure Cosmos DB.  
+You need to ensure that the index is updated as items are created, updated, or deleted.  
+What should you do?**
+
+- Set the indexing mode to Lazy.
+- Set the value of the automatic property of the indexing policy to False.
+- Set the value of the EnableScanInQuery option to True.
+- [Set the indexing mode to Consistent.] (#q124)
+
+> Azure Cosmos DB provides three indexing modes:   
+> **1. Consistent:** Ensures that the index is updated synchronously with create, update, or delete operations. This mode guarantees that queries will always return the most up-to-date data.  
+> **2. Lazy:** Index updates are performed asynchronously, which can result in stale index data during queries but may improve write performance.  
+> **3. None:** Indexing is disabled on the container. This mode is commonly used when a container is used as a pure key-value store without the need for secondary indexes. It can also be used to improve the performance of bulk operations.
+>
+> **Set the indexing mode to Lazy:** This would delay index updates and not meet the requirement for real-time index consistency.   
+> **Set the value of the automatic property of the indexing policy to False:** This disables automatic indexing, which would require you to manually manage indexes. This does not ensure real-time updates.  
+> **Set the value of the EnableScanInQuery option to True:** This option allows queries to scan the full database for results instead of using the index. It does not affect index updating behavior.  
+
+- https://chatgpt.com/share/6744214f-7b5c-8000-af59-2c5b58f66f3e
+- https://learn.microsoft.com/en-us/azure/cosmos-db/index-policy
+
+---
+
+### Q125
+**You are developing a .Net web application that stores data in Azure Cosmos DB. The application must use the Core API and allow millions of reads and writes.  
+The Azure Cosmos DB account has been created with multiple write regions enabled. The application has been deployed to the East US2 and Central US regions.  
+You need to update the application to support multi-region writes.  
+What are two possible ways to achieve this goal?**
+
+- [Update the ConnectionPolicy class for the Cosmos client and populate the PreferredLocations property based on the geo-proximity of the application.](#q125)
+- Update Azure Cosmos DB to use the Strong consistency level. Add indexed properties to the container to indicate region.
+- [Update the ConnectionPolicy class for the Cosmos client and set the UseMultipleWriteLocations property to true.](#q125)
+- Create and deploy a custom conict resolution policy.
+- Update Azure Cosmos DB to use the Session consistency level. Send the SessionToken property value from the FeedResponse object of the write action to the end-user by using a cookie.
+
+> **"You need to update the application to support multi-region writes"**  
+> i.e., is enable multi-region writes (bool, option C) and add the regions (option A)  
+> Then you have to apply the Conflict resolution policies.This can be LLW(default, not mentioned) or custom (option D).   
+> Hence, there is only ONE way to to support multi-region writes (both apply C AND A) and there are subsequently TWO ways to apply the Conflict resolution policies to solve write, update and delete conflicts of which one is mentioned in the question (D).  
+> To support multi-region writes answer would be A and C, but they have to be set both, not one or the other.
+
+- https://chatgpt.com/share/67443f52-4654-8000-8492-f6df8a44a7c3
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-multi-master?tabs=api-async
+- https://learn.microsoft.com/en-us/azure/cosmos-db/conflict-resolution-policies
+
+---
+
+### Q126
+**You are developing a solution to store documents in Azure Blob storage. Customers upload documents to multiple containers. Documents consist of PDF, CSV, Microsoft Office format and plain text files.  
+The solution must process millions of documents across hundreds of containers. The solution must meet the following requirements:  
+• Documents must be categorized by a customer identier as they are uploaded to the storage account.  
+• Allow ltering by the customer identier.  
+• Allow searching of information contained within a document.  
+• Minimize costs.  
+You create and congure a standard general-purpose v2 storage account to support the solution.  
+You need to implement the solution. What should you implement?**
+
+**Requirement:**
+
+- Search and filter by customer identifier
+    - Azure Cognitive Search
+    - [Azure Blob index tags](#q126)
+    - Azure Blob inventory policy
+    - Azure Blob metadata
+> Blob index tags allow you to assign key-value pairs to blobs, making them easily filterable using the Azure Blob storage service. This is an efficient and cost-effective option for filtering blobs without additional infrastructure.
+
+- Search information inside documents
+    - [Azure Cognitive Search](#q126)
+    - Azure Blob index tags
+    - Azure Blob inventory policy
+    - Azure Blob metadata
+> Azure AI Search (formerly known as "Azure Cognitive Search") can extract and index text from various document types (e.g., PDF, Microsoft Office files, plain text) and provide powerful full-text search capabilities.
+
+- https://chatgpt.com/share/674446a3-0ed8-8000-82d5-a77cfe7b3fc8
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-manage-find-blobs?tabs=azure-portal
+- https://learn.microsoft.com/en-us/azure/search/search-blob-storage-integration
+
+---
+
+### Q127
+**You are developing a web application by using the Azure SDK. The web application accesses data in a zone-redundant BlockBlobStorage storage account.  
+The application must determine whether the data has changed since the application last read the data. Update operations must use the latest data changes when writing data to the storage account.  
+You need to implement the update operations.  
+Which values should you use?**
+
+- HTTP Header value
+    - [ETag](#q127)
+    - Last Modified
+    - VersionId
+
+- Conditional header
+    - [If-Match](#q127)
+    - If-Modified-Since
+    - If-None-Match
+
+> **ETag (Entity Tag)** is a unique identifier assigned by Azure Blob Storage to the blob's version or state. Every time a blob is modified, its ETag changes. You can use ETags to check if the blob has been modified since the last time your application accessed it.  
+>
+> The **`If-Match`** conditional header ensures that an update operation (e.g., PUT or DELETE) is performed only if the ETag of the blob matches the value provided in the request. This approach prevents overwriting a blob if it has been updated by another process since the application last read it.
+>
+> **`Last Modified:`**  
+Represents the timestamp when the blob was last modified. It's less precise than ETag because it doesn't provide a way to uniquely identify changes and is susceptible to clock skew issues.  
+>
+> **`VersionId:`**  
+Used in accounts with versioning enabled to identify specific versions of blobs. While useful in versioning scenarios, it's not needed for detecting changes in a zone-redundant BlockBlobStorage account where versioning isn't explicitly mentioned.  
+>
+> **`If-Modified-Since:`**  
+A DateTime value. Specify this header to perform the operation only if the resource has been modified since the specified time.  
+>
+> **`If-None-Match:`**  
+Performs an action only if the blob's ETag does **not** match the provided value.
+This is typically used for GET operations (e.g., to retrieve data only if it has changed) rather than update operations.
+
+- https://learn.microsoft.com/en-us/azure/storage/blobs/concurrency-manage#optimistic-concurrency
+- https://learn.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations
+
+---
+
+### Q128
+
 - •
