@@ -4153,5 +4153,102 @@ Since you are grouping by 2-day intervals, SLOT_3 also needs to use `DateTimeBin
 - https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/datetimepart
 - https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/datetimebin
 
+---
+
+### Q131
+**You implement an Azure solution to include Azure Cosmos DB, the latest Azure Cosmos DB SDK, and the Core (SQL) API.  
+You also implement a change feed processor on a new container instance by using the Azure Functions trigger for Azure Cosmos DB.  
+A large batch of documents continues to fail when reading one of the documents in the batch. The same batch of documents is continuously retried by the triggered function and a new batch of documents must be read.   
+You need to implement the change feed processor to read the documents.  
+Which feature should you implement?**
+
+**Features:**
+- Lease container
+- Dead-letter queue
+- Life-cycle notifications
+- Change feed estimator  
+
+**Requirements:**
+- Read a new batch of documents while keeping track of the failing batch of documents. : SLOT_1
+- Handle errors in the change feed processor. : SLOT_2
+
+> SLOT_1: **Dead-letter queue**  
+> Dead-letter queues are designed to store problematic documents that fail processing, allowing the system to move on and process new documents without being stuck retrying the failing ones.
+>
+> SLOT_2: **Life-cycle notifications**  
+> Life-cycle notifications allow for handling custom events, such as logging errors or implementing retry logic, when processing documents in the change feed processor. Register a handler for `WithErrorNotification` to be notified when the current host encounters an exception during processing.
+
+```csharp
+Container.ChangeFeedMonitorErrorDelegate onErrorAsync = (string LeaseToken, Exception exception) =>
+{
+    if (exception is ChangeFeedProcessorUserException userException)
+    {
+        Console.WriteLine($"Lease {LeaseToken} processing failed with unhandled exception from user delegate {userException.InnerException}");
+    }
+    else
+    {
+        Console.WriteLine($"Lease {LeaseToken} failed with {exception}");
+    }
+
+    return Task.CompletedTask;
+};
+
+ChangeFeedProcessor changeFeedProcessor = monitoredContainer
+    .GetChangeFeedProcessorBuilder<ToDoItem>("changeFeedNotifications", handleChanges)
+    .WithErrorNotification(onErrorAsync)
+    .WithInstanceName("consoleHost")
+    .WithLeaseContainer(leaseContainer)
+    .Build();
+```
+
+- https://chatgpt.com/share/6745a756-54e8-8000-94fb-7c69a6b5f60f
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/change-feed-processor?tabs=dotnet#error-handling
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/change-feed-processor?tabs=dotnet#life-cycle-notifications
+
+---
+
+### Q132
+**You are developing an application to store business-critical data in Azure Blob storage.  
+The application must meet the following requirements:  
+• Data must not be modied or deleted for a user-specied interval.  
+• Data must be protected from overwrites and deletes.  
+• Data must be written once and allowed to be read many times.  
+You need to protect the data in the Azure Blob storage account.  
+Which two actions should you perform?**
+
+- [Congure a time-based retention policy for the storage account.](#q132)
+- Create an account shared-access signature (SAS).
+- Enable the blob change feed for the storage account.
+- [Enable version-level immutability support for the storage account.](#q132)
+- Enable point-in-time restore for containers in the storage account.
+- Create a service shared-access signature (SAS)
+
+> A time-based retention policy stores blob data in a Write-Once, Read-Many (WORM) format for a specified interval. When a time-based retentio policy is set, clients can create and read blobs, but can't modify or delete them. After the retention interval has expired, blobs can be deleted but
+not overwritten.  
+> Before you can apply a time-based retention policy to a blob version, you must enable support for version-level immutability.
+
+- https://chatgpt.com/share/6745b85a-58ec-8000-b734-6b8de9cad61b
+- https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview#time-based-retention-policies
+- https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-policy-configure-version-scope?tabs=azure-portal
+
+---
+
+### Q133
+**You are updating an application that stores data on Azure and uses Azure Cosmos DB for storage. The application stores data in multiple documents associated with a single username.  
+The application requires the ability to update multiple documents for a username in a single ACID operation.  
+You need to congure Azure Cosmos DB.  
+Which two actions should you perform?**
+
+- Create a collection sharded on username to store documents.
+- Congure Azure Cosmos DB to use the Gremlin API.
+- [Create an unsharded collection to store documents.](#q133)
+- [Congure Azure Cosmos DB to use the MongoDB API.](#q133)
+
+> The MongoDB API supports multi-document ACID transactions, which allow you to update multiple documents in a single atomic operation.  
+> Multi-document transactions are not supported across collections or in sharded collections in 4.0.
+
+- https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/use-multi-document-transactions#requirements
+
+---
 
 - •
