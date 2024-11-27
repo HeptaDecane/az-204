@@ -4251,4 +4251,332 @@ Which two actions should you perform?**
 
 ---
 
+### Q134
+You develop Azure solutions. You must connect to a No-SQL globally-distributed database by using the .NET API.  
+You need to create an object to congure and execute requests in the database. Which code segment should you use?  
+``` 
+database_name = 'MyDatabase' 
+database = client.create_database_if_not_exists(id=database_name)
+```
+```
+client = new CosmosClient(endpoint, key)
+```
+```
+container_name = 'MyContainer'
+container = database.create_container_if_not_exists(
+    id=container_name, 
+    partition_key=PartitionKey(path="/lastName"), 
+    offer_throughput=400 
+)
+```
+
+> **`client = new CosmosClient(endpoint, key)`** is the correct option for initializing a `CosmosClient` object in .NET, which is required to configure and execute requests in Azure Cosmos DB.
+
+- https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.cosmos.cosmosclient?view=azure-dotnet#examples
+
+---
+
+### Q135
+**You develop a web application that provides access to legal documents that are stored on Azure Blob Storage with version-level immutability policies.  
+Documents are protected with both time-based policies and legal hold policies. All time-based retention policies have the `AllowProtectedAppendWrites` property enabled.  
+You have a requirement to prevent the user from attempting to perform operations that would fail only when a legal hold is in effect and when all other policies are expired.  
+You need to meet the requirement.  
+Which two operations should you prevent?**
+
+- adding data to documents
+- [deleting documents](#q135)
+- creating documents
+- [overwriting existing documents](#q135)
+
+> **Adding data to documents:**  
+> The `AllowProtectedAppendWrites` property allows appending data to append blobs even if a time-based retention policy is active. However, appending is not impacted by a legal hold; this operation would succeed. Preventing this operation is unnecessary.
+>
+> **Deleting documents:**  
+> Documents cannot be deleted when a legal hold is in effect, even if the time-based retention policies are expired. Deletion would fail under the described condition. This operation should be prevented.
+>
+> **Creating documents:**  
+> Creating new blobs (documents) is not restricted by a legal hold or time-based immutability policies. Preventing this operation is unnecessary.
+>
+> **Overwriting existing documents:**  
+> Overwriting an existing blob is prohibited when legal hold is active or a time-based immutability policy applies. Overwriting would fail under the described condition. This operation should be prevented.
+
+
+- https://chatgpt.com/share/67469a77-327c-8000-8c21-03dfab9101c8
+- https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview#legal-holds
+
+---
+
+### Q136
+**You provisioned an Azure Cosmos DB for NoSQL account named account1 with the default consistency level.  
+You plan to congure the consistency level on a per request basis. The level needs to be set for consistent prex for read and write operations to account1.  
+You need to identify the resulting consistency level for read and write operations.  
+Which levels should you congure?**
+
+- Read operations
+    - strong
+    - session
+    - [consistent prefix](#q136)
+
+- Write operations
+    - strong
+    - [session](#q136)
+    - consistent prefix
+
+
+> **Default Consistency Level of Azure Cosmos DB:** When you provision an Azure Cosmos DB for NoSQL account, the default consistency level is typically set to **Session** unless explicitly changed.  
+>
+> Clients can override the default consistency level that is set by the service. The consistency level can be set on a per-request basis, which overrides the default consistency level set at the account level. Consistency can only be relaxed at the SDK instance or request level.  
+> `Strong > Bounded staleness > Session > Consistent prefix > Eventual`   
+> To move from weaker to stronger consistency, update the default consistency for the Azure Cosmos DB account.  
+>
+> Overriding the default consistency level only applies to reads within the SDK client. An account configured for strong consistency by default will still write and replicate data synchronously to every region in the account. When the SDK client instance or request overrides this with Session or weaker consistency, reads will be performed using a single replica.
+
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-manage-consistency?tabs=portal%2Cdotnetv2%2Capi-async#override-the-default-consistency-level
+
+---
+
+### Q137
+**You are developing an application to store millions of images in Azure blob storage. The images are uploaded to an Azure blob storage container named `companyimages` contained in an Azure blob storage account named `companymedia`.  
+The stored images are uploaded with multiple blob index tags across multiple blobs in the container.
+You must find all blobs whose tags match a search expression in the container.   
+The search expression must evaluate an index tag named status with a value of `final`.  
+You need to construct the GET method request URI.  
+How should you complete the URI?**
+
+**`https://SLOT_1.blob.core.windows.net/SLOT_2?restype=container&comp=blobs&where=SLOT_3`**
+
+**Parameters:**
+- Status='final'
+- Status<='final'
+- companymedia
+- companyimages
+
+> SLOT_1: This is the name of the storage account, which is `companymedia`.   
+> SLOT_2: This is the name of the blob container, which is `companyimages`.    
+> SLOT_3: This is the query for the `where` clause. It must filter blobs with an index tag `status` equal to `'final'`. Thus, it will be `Status='final'`.  
+> Correct URI: `https://companymedia.blob.core.windows.net/companyimages?restype=container&comp=blobs&where=Status='final'`  
+> 
+> `restype=container`: Indicates that the operation is performed at the container level.
+> `comp=blobs`: Specifies that the operation is related to listing blobs.
+> `where=Status='final'`: Filters blobs with the tag `status` set to `final`.
+
+- https://chatgpt.com/share/6746abaf-59c4-8000-b95a-3614f4df2b6a
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-manage-find-blobs?tabs=azure-portal#finding-data-using-blob-index-tags
+
+---
+
+### Q138
+**You develop two Python scripts to process data.  
+The Python scripts must be deployed to two, separate Linux containers running in an Azure Container Instance container group.   
+The containers must access external data by using the Server Message Block (SMB) protocol. Containers in the container group must run only once.  
+You need to congure the Azure Container Instance.   
+Which conguration value should you use?**
+
+**Configuration Settings:**
+- External data volume
+    - Secret
+    - Empty directory
+    - Cloned git repo
+    - [Azure file share](#q138)
+
+> To access external data using the SMB protocol, you need to use Azure Files, which supports SMB. This will allow the containers to mount the **Azure file share** and access the external data.
+
+- Container restart policy
+    - [Never](#q138)
+    - Always
+    - OnFailure
+
+> Since the containers must run only once, the restart policy should be set to **Never**. This ensures that the containers will not restart after they finish execution.
+
+- https://chatgpt.com/share/6746aead-f880-8000-9015-a32ba5240d62
+- https://learn.microsoft.com/en-us/azure/storage/files/files-smb-protocol?tabs=azure-portal
+- https://learn.microsoft.com/en-us/azure/container-instances/container-instances-restart-policy
+- [Q032](#q032)
+
+---
+
+### Q139
+**You are developing a static website hosted on Azure Blob Storage. You create a storage account and enable static website hosting.  
+The website must support the following requirements:  
+• Custom domain name  
+• Custom header values for all responses  
+• Custom SSL certicate  
+You need to implement the static website.  
+What should you congure?**
+
+**Requirements:**
+- Custom domain name
+    - Blob index tags
+    - [Azure Content Delivery Network (CDN)](#q139)
+    - Cross-Origin Resource Sharing (CORS)
+    - Azure Storage Service Encryption (SSE)
+
+- Custom header values
+    - Blob index tags
+    - [Azure Content Delivery Network (CDN)](#q139)
+    - Cross-Origin Resource Sharing (CORS)
+    - Azure Storage Service Encryption (SSE)
+
+- Custom SSL certificate
+    - Blob index tags
+    - [Azure Content Delivery Network (CDN)](#q139)
+    - Cross-Origin Resource Sharing (CORS)
+    - Azure Storage Service Encryption (SSE)
+
+> Static websites have some limitations. For example, If you want to configure headers, you'll have to use Azure Content Delivery Network (Azure CDN) and  To enable HTTPS, you'll have to use Azure CDN because Azure Storage doesn't yet natively support HTTPS with custom domains.  
+
+- https://chatgpt.com/share/6746b2ec-b5b4-8000-853d-ae2ca832b678
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website#mapping-a-custom-domain-to-a-static-website-url
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website#adding-http-headers
+
+---
+
+### Q140
+**You are developing an inventory tracking solution. The solution includes an Azure Function app containing multiple functions triggered by Azure Cosmos DB.   
+You plan to deploy the solution to multiple Azure regions.  
+The solution must meet the following requirements:  
+• Item results from Azure Cosmos DS must return the most recent committed version of an item.  
+• Items written to Azure Cosmos DB must provide ordering guarantees.  
+You need to congure the consistency level for the Azure Cosmos DB deployments.  
+Which consistency level should you use?**
+
+- consistent prefix
+- eventual
+- bounded staleness
+- [strong](#q140)
+- session
+
+> Azure Cosmos DB offers five consistency levels, each providing different trade-offs between performance, availability, and consistency guarantees:  
+> 1. **Eventual consistency:** Guarantees no ordering of operations; the data eventually becomes consistent. This does not meet the requirements as there are no ordering guarantees.  
+> 2. **Consistent prefix:** Ensures that reads never see out-of-order writes. While this provides ordering guarantees, it does not guarantee the most recent committed version of an item.  
+> 3. **Bounded staleness:** Guarantees a lag between writes and reads, within a bounded time or versions. This does not guarantee the most recent committed version of an item.  
+> 4. **Strong consistency:** Guarantees linearizability, meaning every read returns the most recent committed version of an item and provides global ordering of writes. This meets the requirements for both the most recent committed version and ordering guarantees.   
+> 5. **Session consistency:** Guarantees consistency for a single client session, but it doesn't apply globally across all regions.  
+> Since the requirements specify **the most recent committed version** and **ordering guarantees**, **strong consistency** is the only option that satisfies both.
+>
+> **Key Points:**   
+> Strong consistency ensures the highest level of consistency but has higher latency and is not available in multi-region write configurations (only in single write-region setups).  
+> In multi-region setups, strong consistency can still be achieved for reads if they are routed to the same region where the write occurs.  
+
+- https://chatgpt.com/share/6746c7fb-ef64-8000-bf94-e00332e512bb
+- https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels
+- https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels#write-latency-and-strong-consistency
+
+---
+
+### ~~Q141~~
+**You are developing an application that runs in several customer Azure Kubernetes Service clusters. Within each cluster, a pod runs that collects performance data to be analyzed later. 
+A large amount of data is collected so saving latency must be minimized.  
+The performance data must be stored so that pod restarts do not impact the stored data. Write latency should be minimized.  
+You need to congure blob storage.  
+How should you complete the YAML conguration?**
+```
+apiVersion: storage.k8s.io/v1
+kind: SLOT_1
+metadata:
+    name: data-store
+provisioner: kubernetes.i/SLOT_2
+parameters:
+    skuName: Premium LRS
+reclaimPolicy: SLOT_3
+```
+
+- SLOT_1
+    - PodStorage
+    - [StorageClass](#q141)
+    - PersistentVolume
+    - PersistentVolumeClaim
+
+- SLOT_2
+    - [azure-disk](#q141)
+    - azure-file
+    - portworx-volume
+    - scaleio
+
+- SLOT_3
+    - local
+    - [retain](#q141)
+    - delete
+
+> **SLOT_1: `StorageClass`**
+> A StorageClass defines the storage type and parameters (like skuName) that can be used by PersistentVolumes. This is appropriate as we need to define a reusable storage configuration for the pods.  
+> 
+> **SLOT_2: `azure-disk`**
+> Azure Disk provides low-latency, durable block storage, which is suitable for scenarios requiring minimal write latency.  
+> azure-file would be more appropriate for file sharing but has higher latency compared to azure-disk.  
+>
+> **SLOT_3: `retain`**
+>The reclaimPolicy determines what happens to the data when the pod is deleted. retain ensures that the data is preserved even if the pod or PersistentVolumeClaim is deleted, which aligns with the requirement to not lose performance data after pod restarts.
+
+- https://chatgpt.com/share/6746e73a-7d70-8000-98cb-34dce84cf162
+
+---
+
+### Q142 - Case study
+**<u>Background:</u>   
+VanArsdel, Ltd. is a global office supply company. The company is based in Canada and has retail store locations across the world. The company is developing several cloud-based solutions to support their stores, distributors, suppliers, and delivery services.**  
+
+**<u>Corporate website:</u>  
+The company provides a public website located at http://www.vanarsdelltd.com. The website consists of a React JavaScript user interface, HTML, CSS, image assets, and several APIs hosted in Azure Functions.**
+
+**<u>Retail Store Locations:</u>   
+The company supports thousands of store locations globally. Store locations send data every hour to an Azure Blob storage account to support inventory, purchasing and delivery services. Each record includes a location identier and sales transaction information.**  
+
+**<u>Inventory services:</u>  
+The company has contracted a third-party to develop an API for inventory processing that requires access to a specic blob within the retail store storage account for three months to include read-only access to the data.**
+
+**The application components must meet the following requirements:**
+
+- **Corporate website:**  
+    - **Secure the website by using SSL.**
+    - **Minimize costs for data storage and hosting.**
+    - **Implement native GitHub workows for continuous integration and continuous deployment (CI/CD).**
+    - **Distribute the website content globally for local use.**
+    - **Implement monitoring by using Application Insights and availability web tests including SSL certicate validity and custom header value verication.**
+    - **The website must have 99.95 percent uptime.**
+
+- **Retail store locations:**  
+    - **Azure Functions must process data immediately when data is uploaded to Blob storage. Azure Functions must update Azure Cosmos DB by using native SQL language queries.**
+    - **Audit store sale transaction information nightly to validate data, process sales nancials, and reconcile inventory.**
+
+- **Delivery services:**  
+    - **Store service telemetry data in Azure Cosmos DB by using an Azure Function. Data must include an item id, the delivery vehicle license plate, vehicle package capacity, and current vehicle location coordinates.**
+    - **Store delivery driver profile information in Azure Active Directory (Azure AD) by using an Azure Function called from the corporate website.**
+
+- **Security:**  
+    - **All Azure Functions must centralize management and distribution of conguration data for different environments and geographies, encrypted by using a company-provided RSA-HSM key.**
+    - **Authentication and authorization must use Azure AD and services must use managed identities where possible.**  
+
+**Issues:**   
+
+- **Retail Store Locations:**  
+    - **You must perform a point-in-time restoration of the retail store location data due to an unexpected and accidental deletion of data.**
+    - **Azure Cosmos DB queries from the Azure Function exhibit high Request Unit (RU) usage and contain multiple, complex queries that exhibit high point read latency for large items as the function app is scaling.**
+
+**You need to implement the delivery service telemetry data.  
+How should you congure the solution?**
+
+**Cosmos DB Configuration:**
+- API
+    - [Core (SQL)](#q142)
+    - Gremlin
+    - Table
+    - MongoDB
+
+- Partition Key
+    - [Item id](#q142)
+    - Vehicle license plate
+    - Vehicle package capacity
+    - Vehicle location coordinates
+  
+> **Cosmos DB API: Core (SQL)**  
+> The Core (SQL) API is the best choice for this scenario becausenIt supports Azure Functions accessing and querying data using native SQL queries, as required in the case study.
+>
+> **Partition Key: Item id**  
+> There are a wide range of possible values (one unique item ID per item). Because there's a unique item ID per item, the item ID does a great job at evenly balancing RU consumption and data storage.  
+
+- https://learn.microsoft.com/en-us/azure/cosmos-db/partitioning-overview#use-item-id-as-the-partition-key
+
+---
+
 - •
