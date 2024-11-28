@@ -4579,4 +4579,72 @@ How should you congure the solution?**
 
 ---
 
+### Q143
+**You create and publish a new Azure App Service web app.  
+User authentication and authorization must use Azure Active Directory (Azure AD).  
+You need to congure authentication and authorization.  
+What should you do first?**
+
+- [Add an identity provider.](#q143)
+- Map an existing custom DNS name.
+- Create and congure a new app setting.
+- Add a private certicate.
+- Create and congure a managed identity.
+
+> To configure authentication and authorization for an Azure App Service web app using Azure Active Directory (Azure AD), the first step is to add an identity provider. In this case, Azure AD serves as the identity provider. This step involves configuring Azure AD to enable the web app to authenticate users.
+
+- https://chatgpt.com/share/6747ef84-4f04-8000-b405-32d14c71ed82
+- https://learn.microsoft.com/en-us/azure/app-service/scenario-secure-app-authentication-app-service?tabs=workforce-configuration#3-configure-authentication-and-authorization
+
+---
+
+### Q144
+**You have an Azure Cosmos DB for NoSQL account.  
+You plan to develop two apps named App1 and App2 that will use the change feed functionality to track changes to containers. App1 will use the pull model and App2 will use the push model.  
+You need to choose the method to track the most recently processed change in App1 and App2.  
+Which component should you use?**
+
+- App1: SLOT_1
+- App2: SLOT_2
+
+**Components:**
+- Lease container
+- Integrated cache
+- Continuation token
+
+> **App1 (Pull Model):** This model involves explicitly querying the change feed and managing the state of what has been read.  
+> **Component - Continuation Token:** The pull model typically relies on continuation tokens to keep track of where the last read operation ended and to resume from that point.  
+>
+> **App2 (Push Model):** In this model, the change feed processor pushes changes to the application, and the application logic processes these changes.  
+> **Component - Lease Container:** The push model, especially when using the change feed processor, leverages a lease container to maintain state and ensure reliable processing.
+
+- https://chatgpt.com/share/6747f159-a758-8000-9d52-6d87f847780f
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/read-change-feed#reading-change-feed-with-a-pull-model
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/read-change-feed#reading-change-feed-with-a-push-model
+
+---
+
+### Q145
+**You have a Linux container-based console application that uploads image les from customer sites all over the world.  
+A back-end system that runs on Azure virtual machines processes the images by using the Azure Blobs API.  
+You are not permitted to make changes to the application.  
+Some customer sites only have phone-based internet connections.  
+You need to congure the console application to access the images.  
+What should you use?**
+
+- [Azure BlobFuse](#q145)
+- Azure Disks
+- Azure Storage Network File System (NFS) 3.0 support
+- Azure Files
+
+> BlobFuse is a virtual file system driver for Azure Blob Storage, allowing you to mount Blob Storage as a file system on Linux. It is suitable for scenarios where applications need to access Azure Blob Storage using file system semantics without modifying the application.
+
+- https://chatgpt.com/share/67482e3b-1a90-8000-9311-5de09bda7bba
+- https://learn.microsoft.com/en-us/azure/storage/blobs/blobfuse2-what-is
+
+---
+
+### Q146
+
+
 - •
