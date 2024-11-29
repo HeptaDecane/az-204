@@ -4645,6 +4645,442 @@ What should you use?**
 ---
 
 ### Q146
+**You are developing several microservices named serviceA, serviceB, and serviceC. You deploy the microservices to a new Azure Container Apps environment.  
+You have the following requirements:  
+• The microservices must persist data to storage.  
+• serviceA must persist data only visible to the current container and the storage must be restricted to the amount of disk space available in the container.  
+• serviceB must persist data for the lifetime of the replica and allow multiple containers in the replica to mount the same storage location.  
+• serviceC must persist data beyond the lifetime of the replica while allowing multiple containers to access the storage and enable per object permissions.  
+You need to congure storage for each microservice.  
+Which storage type should you use?**
 
+**Storage Types**  
+- Azure Blob Storage
+- Azure Files storage
+- Ephemeral volume
+- Container file system
+
+| Microservice | Storage Type | 
+| --- | --- |
+| serviceA | SLOT_1 |
+| serviceB | SLOT_2 |
+| serviceC | SLOT_3 |
+
+> **serviceA - Container file system:**  
+> The container file system provides ephemeral storage that is local to the container and limited by the container's disk space. This meets the requirement for storage visible only to the current container and restricted by available disk space.
+>
+> **serviceB - Ephemeral volume:**
+> Ephemeral volumes are suitable for sharing data within the lifetime of a replica. Multiple containers in the same replica can mount the same storage location, fulfilling the requirement for serviceB.
+>
+> **serviceC - Azure Files storage:**  
+> Azure Files storage supports persistence beyond the lifetime of the replica, allows multiple containers to access the storage, and supports per-object permissions. This makes it the best option for serviceC.
+
+- https://chatgpt.com/share/67493832-6fb8-8000-af1d-5a9481eebf2f
+- https://learn.microsoft.com/en-us/azure/container-apps/storage-mounts?tabs=smb&pivots=azure-portal
+
+---
+
+### Q147
+**You are developing a web service that will run on Azure virtual machines that use Azure Storage. You congure all virtual machines to use managed identities.  
+You have the following requirements:  
+• Secret-based authentication mechanisms are not permitted for accessing an Azure Storage account.   
+• Must use only Azure Instance Metadata Service endpoints.  
+You need to write code to retrieve an access token to access Azure Storage.**
+
+```
+import urllib. request
+url = "SLOT_1"
+queryString = ""
+response = urllib.request.urlopen(url + queryString)
+SLOT_2
+```
+
+- SLOT_1: 
+    - http://localhost:50342/oauth2/token
+    - http://169.254.169.254:50432/oauth2/token
+    - http://localhost/metadata/identity/oauth2/token
+    - http://169.254.169.254/metadata/identity/oauth2/token
+
+- SLOT_2:
+    ```
+    import xml.etree.ElementTree as e
+    e.parse(response.read())
+    ```
+    ```
+    import csv
+    csv.DictReader(response.read())
+    ```
+    ```
+    import yaml
+    return yaml.load(response.read())
+    ```
+    ```
+    import json
+    return json.loads(response.read())
+    ```
+
+> **SLOT_1:**  
+> The correct endpoint is: http://169.254.169.254/metadata/identity/oauth2/token  
+> This is the standard endpoint used for accessing the Azure Instance Metadata Service to obtain tokens for managed identities.  
+>
+> **SLOT_2:**
+> The response from the metadata service is in JSON format. To parse this response, the correct code is:   
+> ```
+> import json 
+> return json.loads(response.read())
+> ```  
+
+```py
+# Final Code:
+import urllib.request
+url = "http://169.254.169.254/metadata/identity/oauth2/token"
+queryString = "?api-version=2019-08-01&resource=https://storage.azure.com/"
+headers = {"Metadata": "true"}  # Required for IMDS requests
+request = urllib.request.Request(url + queryString, headers=headers)
+response = urllib.request.urlopen(request)
+import json
+return json.loads(response.read())
+```
+- https://chatgpt.com/share/67494104-4900-8000-a803-298f72add30a
+
+---
+
+### Q148
+**You are developing an Azure Function app.  
+The Azure Function app must enable a WebHook to read an image from Azure Blob Storage and create a new Azure Cosmos DB document.  
+You need to implement the Azure Function app.  
+Which conguration should you use?**
+
+- Trigger
+    - [HTTP](#q148)
+    - Timer
+    - Blob Storage
+    - Azure Cosmos DB
+
+- Input binding
+    - HTTP
+    - Timer
+    - [Blob Storage](#q148)
+    - Azure Cosmos DB
+
+- Output binding
+    - HTTP
+    - Timer
+    - Blob Storage
+    - [Azure Cosmos DB](#q148)
+
+> **Trigger:**  
+> Since the requirement is to enable a **WebHook**, you need an **HTTP Trigger**. This allows the function to be called via HTTP requests, which is how WebHooks typically work.
+>
+> **Input Binding:**  
+> The function reads an image from **Azure Blob Storage**, so a **Blob Storage input binding** is needed. This simplifies access to the blob, allowing the function to directly read the image without manually handling the Azure Storage SDK.
+>
+> **Output Binding:**  
+> The function creates a new document in **Azure Cosmos DB**, so an **Azure Cosmos DB output binding** is required. This allows the function to write the document to the database without manual SDK usage.
+
+- https://chatgpt.com/share/674941d1-b87c-8000-9e0c-394abfa7d196
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger?tabs=python-v2%2Cisolated-process%2Cnodejs-v4%2Cfunctionsv2&pivots=programming-language-csharp
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-blob-input?tabs=python-v2%2Cisolated-process%2Cnodejs-v4&pivots=programming-language-csharp
+- https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2-output?tabs=python-v2%2Cisolated-process%2Cnodejs-v4%2Cextensionv4&pivots=programming-language-csharp
+
+---
+
+### Q149
+**You create an Azure Cosmos DB for NoSQL database.  
+You plan to use the Azure Cosmos DB .NET SDK v3 API for NoSQL to upload the following files:**
+| File Name | File Size |  
+| --- | --- |
+| File1 | 1 MB |
+| File2 | 2 MB |
+| File3 | 3 MB |
+| File4 | 4 MB |
+| File5 | 5 MB |  
+
+**You receive the following error message when uploading the les: “413 Entity too large”.  
+You need to determine which files you can upload to the Azure Cosmos DB for NoSQL database.  
+Which files can you upload?**
+
+- File1, File2, File3, File4, and File5
+- [File1 and File2 only](#q149)
+- File1, File2, and File3 only
+- File1, File2, File3, and File4 only
+- File1 only
+
+> In Azure Cosmos DB for NoSQL, the maximum size for a single item (document) is **2 MB**. Any item larger than this limit will result in the error **"413 Entity too large"**. Therefore, the files that can be uploaded must be **2 MB or smaller**.
+
+- https://chatgpt.com/share/674952e8-2030-8000-b0dc-c2e294a571b1
+- https://learn.microsoft.com/en-us/azure/cosmos-db/concepts-limits#per-item-limits
+
+---
+
+### Q150
+**You are developing a Java application that uses Cassandra to store key and value data. You plan to use a new Azure Cosmos DB resource and the Cassandra API in the application.   
+You create an Azure Active Directory (Azure AD) group named Cosmos DB Creators to enable provisioning of Azure Cosmos accounts, databases, and containers.   
+The Azure AD group must not be able to access the keys that are required to access the data.  
+You need to restrict access to the Azure AD group.   
+Which role-based access control should you use?**
+
+- DocumentDB Accounts Contributor
+- Cosmos Backup Operator
+- [Cosmos DB Operator](#q150)
+- Cosmos DB Account Reader
+
+> **DocumentDB Accounts Contributor**  
+> Allows full management of Cosmos DB accounts, including access to keys. This role does not meet the requirement to restrict access to keys.  
+> 
+> **Cosmos Backup Operator**  
+> Provides permissions for backup and restore operations but does not allow provisioning or management of databases and containers. This role does not meet the requirement for provisioning capabilities.
+>
+> **Cosmos DB Operator**  
+> Grants permissions to create and manage Cosmos DB accounts, databases, and containers but explicitly denies access to the data and keys. This is the correct role for the scenario.
+>
+> **Cosmos DB Account Reader**  
+> Provides read-only access to Cosmos DB account metadata and keys but no permissions to create or manage accounts, databases, or containers. This role does not meet the requirement for provisioning capabilities.
+
+- https://chatgpt.com/share/6749550c-d418-8000-977a-9c23c576215f
+- https://azure.microsoft.com/en-us/updates?id=azure-cosmos-db-operator-role-for-role-based-access-control-rbac-is-now-available
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/security/how-to-grant-control-plane-role-based-access?tabs=built-in-definition%2Ccsharp&pivots=azure-interface-cli
+
+---
+
+### Q151
+**You are developing a website that will run as an Azure Web App. Users will authenticate by using their Azure Active Directory (Azure AD) credentials.  
+You plan to assign users one of the following permission levels for the website: admin, normal, and reader. A user's Azure AD group membership must be used to determine the permission level.  
+You need to congure authorization.  
+Solution: Congure the Azure Web App for the website to allow only authenticated requests and require Azure AD log on.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q151)
+
+> The solution partially addresses authentication but **does not fully address authorization**, which is the focus of the requirement. Configuring the Azure Web App to require Azure AD login ensures that only authenticated users can access the website, but it does not handle assigning permission levels (`admin`, `normal`, `reader`) based on **Azure AD group membership**.
+>
+> To meet the goal:  
+> **Authentication:** Configure the Azure Web App to allow only authenticated requests and require Azure AD login.   
+> **Authorization:** Implement role-based access control (RBAC) or group membership evaluation to assign users the appropriate permission levels (`admin`, `normal`, `reader`). This can be achieved by:  
+> - Using Azure AD group claims in the token.
+> - Checking group claims in the application code or middleware to assign permission levels.
+
+- https://chatgpt.com/share/67496517-ce24-8000-abdc-c6001f076a2d
+- https://learn.microsoft.com/en-us/archive/blogs/waws/azure-app-service-authentication-aad-groups
+
+---
+
+### Q152
+**You are developing a website that will run as an Azure Web App. Users will authenticate by using their Azure Active Directory (Azure AD) credentials.  
+You plan to assign users one of the following permission levels for the website: admin, normal, and reader. A user's Azure AD group membership must be used to determine the permission level.  
+You need to congure authorization.  
+Solution:  
+• Create a new Azure AD application. In the application's manifest, set value of the groupMembershipClaims option to All.  
+• In the website, use the value of the groups claim from the JWT for the user to determine permissions.  
+Does the solution meet the goal?**
+
+- [Yes](#q152)
+- No
+
+> This solution meets the goal because it correctly addresses both authentication and authorization: 
+>  
+> **Authentication:** Azure AD is used to authenticate users through the Azure AD application.  
+> 
+> **Authorization:** The `groupMembershipClaims` option in the Azure AD application's manifest is set to `All`, which ensures that group membership information is included in the **JWT (JSON Web Token)** as the groups claim.  
+The website can read the `groups` claim from the JWT to determine the user's Azure AD group memberships.  
+Based on group membership, the application can assign the appropriate permission levels (`admin`, `normal`, `reader`).  
+
+- https://chatgpt.com/share/67496517-ce24-8000-abdc-c6001f076a2d
+- https://learn.microsoft.com/en-us/archive/blogs/waws/azure-app-service-authentication-aad-groups
+
+---
+
+### Q153
+**You are developing a website that will run as an Azure Web App. Users will authenticate by using their Azure Active Directory (Azure AD) credentials.  
+You plan to assign users one of the following permission levels for the website: admin, normal, and reader. A user's Azure AD group membership must be used to determine the permission level.  
+You need to congure authorization.  
+Solution:  
+• Create a new Azure AD application. In the application's manifest, define application roles that match the required permission levels for the application.  
+• Assign the appropriate Azure AD group to each role. In the website, use the value of the roles claim from the JWT for the user to determine permissions.  
+Does the solution meet the goal?**
+
+- [Yes](#q153)
+- No
+
+> This solution meets the goal because it correctly configures authentication and authorization by leveraging Azure AD application roles and group assignments:  
+>
+> **Authentication:** Users authenticate using Azure AD credentials through the Azure AD application.  
+> 
+> **Authorization:** Defining **application roles** in the Azure AD application's manifest allows the roles to be included in the **roles claim** of the user's JWT.  
+> Assigning Azure AD groups to these roles ensures that group membership is mapped to the appropriate application roles (`admin`, `normal`, `reader`).  
+> The website can use the `roles` claim in the JWT to determine the user's permission level based on their assigned role.
+
+- https://chatgpt.com/share/67496517-ce24-8000-abdc-c6001f076a2d
+- https://learn.microsoft.com/en-us/archive/blogs/waws/azure-app-service-authentication-aad-groups
+
+---
+
+### Q154
+**You are developing an application to securely transfer data between on-premises le systems and Azure Blob storage. The application stores keys, secrets, and certicates in Azure Key Vault. The application uses the Azure Key Vault APIs.  
+The application must allow recovery of an accidental deletion of the key vault or key vault objects. Key vault objects must be retained for 90 days after deletion.  
+You need to protect the key vault and key vault objects.  
+Which Azure Key Vault feature should you use?**
+
+**Features:**
+- Access policy
+- Purge protection
+- Soft delete
+- Shared access signature
+
+
+**Actions:**
+- Enable retention period and accidental deletion : SLOT_1
+- Enforce retention period and accidental deletion : SLOT_2
+
+> **Enable retention period and accidental deletion:**  
+> This can be achieved by enabling **Soft Delete**. Soft Delete allows you to recover deleted keys, secrets, and certificates for a default retention period of 90 days.  
+> 
+> **Enforce retention period and accidental deletion:**  
+To enforce the retention period and prevent permanent deletion during the retention period, you enable **Purge Protection**. With Purge Protection, even administrators cannot permanently delete a vault or its contents during the retention period.
+
+- https://chatgpt.com/share/67498774-75f0-8000-8a2a-ff983159230e
+- https://learn.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview
+
+---
+
+### Q155
+**You provide an Azure API Management managed web service to clients. The back-end web service implements HTTP Strict Transport Security (HSTS).  
+Every request to the backend service must include a valid HTTP authorization header.  
+You need to congure the Azure API Management instance with an authentication policy.  
+Which two policies can you use?**
+
+- [Basic Authentication](#q155)
+- Digest Authentication
+- Certicate Authentication
+- [OAuth Client Credential Grant](#q155)
+
+> **Basic Authentication policy** allows you to configure API Management to send requests with a `Basic` authorization header containing a username and password to the backend service. This is a valid choice if the backend service requires basic authentication.
+>
+> **OAuth Client Credential Grant** policy allows API Management to acquire a token from an identity provider and include it in the `Authorization` header of requests to the backend. This is suitable if the backend requires an OAuth token for authorization. 
+>
+> **Digest authentication** is a challenge-response mechanism, but it is not supported natively as a policy in Azure API Management.  
+>
+> **Certificate Authentication** involves using a client certificate for mutual TLS authentication, which is not related to setting an HTTP authorization header.  
+
+- https://chatgpt.com/share/6749a243-f104-8000-8639-0d015eeb5d82
+- https://learn.microsoft.com/en-us/azure/api-management/api-management-policies#authentication-and-authorization
+
+---
+
+### Q156
+**You are developing an ASP.NET Core website that can be used to manage photographs which are stored in Azure Blob Storage containers.  
+Users of the website authenticate by using their Azure Active Directory (Azure AD) credentials.  
+You implement role-based access control (RBAC) role permissions on the containers that store photographs. You assign users to RBAC roles.  
+You need to congure the website's Azure AD Application so that user's permissions can be used with the Azure Blob containers.  
+How should you congure the application?**
+
+**Settings:**
+- client_id
+- profile
+- delegated
+- application
+- user_impersonation
+
+| API | Permission | Type | 
+| --- | --- | --- |
+| Azure Storage | SLOT_1 | SLOT_2 |
+| Microsoft Graph | User.Read | SLOT_3 |
+
+> **Azure Storage API:**  
+> **Permission:** The `user_impersonation` permission allows the application to act on behalf of the user and access Azure Storage resources (e.g., blobs and containers) using the user's role-based access control (RBAC) permissions.  
+> **Type:** The **delegated** permission type is appropriate here because users are authenticating interactively, and their permissions are required to access resources.  
+>
+> **Microsoft Graph API:**  
+> The `User.Read` permission is often included by default to allow the application to sign in the user and read their profile. This is also a **delegated** permission.  
+>
+> **client_id** and **profile**:  
+> These are not part of the API permissions configuration. The **client_id** is used to identify the Azure AD application, and **profile** is an optional scope that may appear in OAuth 2.0 requests.
+
+- https://chatgpt.com/share/6749a868-2d34-8000-8521-00fbd00190c9
+- https://stackoverflow.com/questions/31404128/azure-ad-app-application-permissions-vs-delegated-permissions
+- https://learn.microsoft.com/en-us/entra/identity-platform/permissions-consent-overview
+- https://learn.microsoft.com/en-us/azure/storage/blobs/authorize-access-azure-active-directory?tabs=dotnet
+- https://learn.microsoft.com/en-us/rest/api/storageservices/authorize-with-azure-active-directory
+
+---
+
+### Q157
+**You are developing an ASP.NET Core app that includes feature ags which are managed by Azure App Conguration.  
+You create an Azure App Conguration store named AppFeatureFlagStore that contains a feature flag named Export.  
+You need to update the app to meet the following requirements:  
+• Use the Export feature in the app without requiring a restart of the app.  
+• Validate users before users are allowed access to secure resources.  
+• Permit users to access secure resources.  
+How should you complete the code segment?**
+```
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env){
+    if (env.IsDevelopment())
+        app.UseDeveloperExceptionPage();
+    else
+        app. UseExceptionHandler("/Error");
+    
+    app.SLOT_1();
+    app.SLOT_2();
+    app.SLOT_3();
+
+    app.UseEndpoint(endpoints=>{
+        endpoints.MapRazorPages();
+    });
+}
+
+```
+
+- SLOT_1:
+    - [UseAuthentication](#q157)
+    - UseStaticFiles
+    - UseSession
+    - UseCookiePolicy
+
+- SLOT_2:
+    - [UseAuthorization](#q157)
+    - UseStaticFiles
+    - UseSession
+    - UseCookiePolicy
+
+- SLOT_3:
+    - [UseAzureAppConfiguration](#q157)
+    - UseRequestLocalization
+    - UseCors
+    - UseStaticFiles
+
+> **SLOT_1: UseAuthentication**  
+> To **validate users before accessing secure resources**, authentication middleware is required. This enables authentication for the app.  
+> 
+> **SLOT_2: UseAuthorization**  
+> To **permit users to access secure resources**, authorization middleware must follow authentication. It ensures that authenticated users have permission to access specific resources.  
+>
+> **SLOT_3: UseAzureAppConfiguration**  
+> To **use the Export feature without restarting the app**, the app must integrate with Azure App Configuration. The `UseAzureAppConfiguration` middleware refreshes feature flags dynamically during runtime.  
+
+```csharp
+// Final Code:
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    if (env.IsDevelopment())
+        app.UseDeveloperExceptionPage();
+    else
+        app.UseExceptionHandler("/Error");
+
+    app.UseAuthentication();         // SLOT_1
+    app.UseAuthorization();          // SLOT_2
+    app.UseAzureAppConfiguration();  // SLOT_3
+
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapRazorPages();
+    });
+}
+```
+
+- https://chatgpt.com/share/6749b2c0-a2f8-8000-a4b1-86507d63e677
+- https://learn.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-aspnet-core
+
+---
 
 - •
