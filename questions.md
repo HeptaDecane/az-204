@@ -6343,5 +6343,29 @@ How should you complete the manifest?**
 ---
 
 ### Q193
+**You manage a data processing application that receives requests from an Azure Storage queue. You need to manage access to the queue. You have the following requirements:    
+• Provide other applications access to the Azure queue.   
+• Ensure that you can revoke access to the queue without having to regenerate the storage account keys.   
+• Specify access at the queue level and not at the storage account level.   
+Which type of shared access signature (SAS) should you use?**  
+
+- [Service SAS with a stored access policy](#q193)
+- Account SAS 
+- User Delegation SAS 
+- Service SAS with ad hoc SAS
+
+> **Service SAS with a stored access policy** allows you to:    
+> - Provide access to a specific Azure Storage resource, such as a queue.
+> -   Manage and revoke access by modifying or deleting the stored access policy without regenerating storage account keys.
+> -   Define permissions at the resource (queue) level, meeting the requirements of this scenario.
+>
+> **Account SAS**: Grants access at the storage account level, which includes all services (Blob, Queue, Table, File). This doesn't meet the requirement to specify access at the queue level.  
+> **User Delegation SAS**: Requires Azure Active Directory (Azure AD) authentication. The scenario doesn't mention using Azure AD, and this SAS type applies to Blob storage only.  
+> **Service SAS with ad hoc SAS**: Provides access without a stored access policy. While it meets the queue-level access requirement, it doesn't allow revoking access easily without regenerating the SAS token.  
+
+- https://chatgpt.com/share/67592548-8444-8000-baff-95c3afc28539
+- https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview
+
+---
 
 - •
