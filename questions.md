@@ -3210,7 +3210,7 @@ This saves the updated metadata to the blob in Azure Blob Storage.
 A single device can produce 2 megabytes (MB) of data every 24 hours. Each store location has one to ve devices that send data.   
 You must store the device data in Azure Blob storage. Device data must be correlated based on a device identier. Additional stores are expected to open in the future.  
 You need to implement a solution to receive the device data.  
-Solution: Provision an Azure Event Grid. Congure the machine identier as the partition key and enable capture.  
+Solution: Provision an Azure Event Grid. configure the machine identier as the partition key and enable capture.  
 Does the solution meet the goal?**
 
 - Yes
@@ -3245,7 +3245,7 @@ Which object should you use?**
 ### Q106
 **You are maintaining an existing application that uses an Azure Blob GPv1 Premium storage account. Data older than three months is rarely used.  
 Data newer than three months must be available immediately. Data older than a year must be saved but does not need to be available immediately.  
-You need to congure the account to support a lifecycle management rule that moves blob data to archive storage for data not modied in the last year.  
+You need to configure the account to support a lifecycle management rule that moves blob data to archive storage for data not modied in the last year.  
 Which three actions should you perform in sequence? To answer, move the appropriate actions from the list of actions to the answer area and arrange them in the correct order.**
 
 - Upgrade the storage account to GPv2
@@ -3267,7 +3267,7 @@ Which three actions should you perform in sequence? To answer, move the appropri
 
 ### Q107
 **You must connect to a No-SQL globally-distributed database by using the .NET API.  
-You need to create an object to congure and execute requests in the database.  
+You need to create an object to configure and execute requests in the database.  
 Which code segment should you use?**
 
 - new Container(EndpointUri, PrimaryKey);
@@ -3307,7 +3307,7 @@ to ensure the data can be copied automatically.
 ---
 
 ### Q109
-**You are developing a web service that will run on Azure virtual machines that use Azure Storage. You congure all virtual machines to use managed identities.  
+**You are developing a web service that will run on Azure virtual machines that use Azure Storage. You configure all virtual machines to use managed identities.  
 You have the following requirements:  
 • Secret-based authentication mechanisms are not permitted for accessing an Azure Storage account.  
 • Must use only Azure Instance Metadata Service endpoints.  
@@ -3354,13 +3354,13 @@ The feature uses documents that have the following format:**
     "city" : "Seattle"
 }
 ```
-**You must display data for the new page in a specic order. You create the following query for the page:**  
+**You must display data for the new page in a specific order. You create the following query for the page:**  
 ```
 SELECT *
 FROM People p
 ORDER BY p. name, p.city DESC
 ```
-**You need to congure a Cosmos DB policy to support the query. How should you congure the policy?**
+**You need to configure a Cosmos DB policy to support the query. How should you configure the policy?**
 
 ```
 {
@@ -3430,7 +3430,7 @@ You need to implement the Azure Event Hub. Which settings should you use?**
 You need to deploy a solution that includes the following features:  
 • reverse proxy capabilities  
 • congurable trac routing  
-• TLS termination with a custom certicate  
+• TLS termination with a custom certificate  
 Which components should you use?**  
 
 **Componnts**
@@ -3677,7 +3677,7 @@ The delegate is the user-provided code (a delegate or callback) that processes e
 ### Q118
 
 **You are developing a web application that will use Azure Storage. Older data will be less frequently used than more recent data.  
-You need to congure data storage for the application. You have the following requirements:  
+You need to configure data storage for the application. You have the following requirements:  
 • Retain copies of data for five years.  
 • Minimize costs associated with storing data that is over one year old.  
 • Implement Zone Redundant Storage for application data.  
@@ -3775,7 +3775,7 @@ What should you do first?**
 
 - [Export the Azure Storage account Azure Resource Manager template](#q120)
 - Initiate a storage account failover
-- Congure object replication for all blobs
+- configure object replication for all blobs
 - Use the AzCopy command line tool
 - Create a new Azure Storage account in the current region
 - Create a new subscription in the current region
@@ -3791,7 +3791,7 @@ What should you do first?**
 ### Q121
 **You are developing an application to collect the following telemetry data for delivery drivers:  
 first name, last name, package count, item id, and current location coordinates.   
-The app will store the data in Azure Cosmos DB. You need to congure Azure Cosmos DB to query the data.  
+The app will store the data in Azure Cosmos DB. You need to configure Azure Cosmos DB to query the data.  
 Which values should you use?**
 
 - Azure Cosmos DB API
@@ -3960,7 +3960,7 @@ The solution must process millions of documents across hundreds of containers. T
 • Allow ltering by the customer identier.  
 • Allow searching of information contained within a document.  
 • Minimize costs.  
-You create and congure a standard general-purpose v2 storage account to support the solution.  
+You create and configure a standard general-purpose v2 storage account to support the solution.  
 You need to implement the solution. What should you implement?**
 
 **Requirement:**
@@ -4216,7 +4216,7 @@ The application must meet the following requirements:
 You need to protect the data in the Azure Blob storage account.  
 Which two actions should you perform?**
 
-- [Congure a time-based retention policy for the storage account.](#q132)
+- [configure a time-based retention policy for the storage account.](#q132)
 - Create an account shared-access signature (SAS).
 - Enable the blob change feed for the storage account.
 - [Enable version-level immutability support for the storage account.](#q132)
@@ -4236,13 +4236,13 @@ not overwritten.
 ### Q133
 **You are updating an application that stores data on Azure and uses Azure Cosmos DB for storage. The application stores data in multiple documents associated with a single username.  
 The application requires the ability to update multiple documents for a username in a single ACID operation.  
-You need to congure Azure Cosmos DB.  
+You need to configure Azure Cosmos DB.  
 Which two actions should you perform?**
 
 - Create a collection sharded on username to store documents.
-- Congure Azure Cosmos DB to use the Gremlin API.
+- configure Azure Cosmos DB to use the Gremlin API.
 - [Create an unsharded collection to store documents.](#q133)
-- [Congure Azure Cosmos DB to use the MongoDB API.](#q133)
+- [configure Azure Cosmos DB to use the MongoDB API.](#q133)
 
 > The MongoDB API supports multi-document ACID transactions, which allow you to update multiple documents in a single atomic operation.  
 > Multi-document transactions are not supported across collections or in sharded collections in 4.0.
@@ -4253,7 +4253,7 @@ Which two actions should you perform?**
 
 ### Q134
 You develop Azure solutions. You must connect to a No-SQL globally-distributed database by using the .NET API.  
-You need to create an object to congure and execute requests in the database. Which code segment should you use?  
+You need to create an object to configure and execute requests in the database. Which code segment should you use?  
 ``` 
 database_name = 'MyDatabase' 
 database = client.create_database_if_not_exists(id=database_name)
@@ -4308,9 +4308,9 @@ Which two operations should you prevent?**
 
 ### Q136
 **You provisioned an Azure Cosmos DB for NoSQL account named account1 with the default consistency level.  
-You plan to congure the consistency level on a per request basis. The level needs to be set for consistent prex for read and write operations to account1.  
+You plan to configure the consistency level on a per request basis. The level needs to be set for consistent prex for read and write operations to account1.  
 You need to identify the resulting consistency level for read and write operations.  
-Which levels should you congure?**
+Which levels should you configure?**
 
 - Read operations
     - strong
@@ -4369,7 +4369,7 @@ How should you complete the URI?**
 **You develop two Python scripts to process data.  
 The Python scripts must be deployed to two, separate Linux containers running in an Azure Container Instance container group.   
 The containers must access external data by using the Server Message Block (SMB) protocol. Containers in the container group must run only once.  
-You need to congure the Azure Container Instance.   
+You need to configure the Azure Container Instance.   
 Which conguration value should you use?**
 
 **Configuration Settings:**
@@ -4400,9 +4400,9 @@ Which conguration value should you use?**
 The website must support the following requirements:  
 • Custom domain name  
 • Custom header values for all responses  
-• Custom SSL certicate  
+• Custom SSL certificate  
 You need to implement the static website.  
-What should you congure?**
+What should you configure?**
 
 **Requirements:**
 - Custom domain name
@@ -4437,7 +4437,7 @@ You plan to deploy the solution to multiple Azure regions.
 The solution must meet the following requirements:  
 • Item results from Azure Cosmos DS must return the most recent committed version of an item.  
 • Items written to Azure Cosmos DB must provide ordering guarantees.  
-You need to congure the consistency level for the Azure Cosmos DB deployments.  
+You need to configure the consistency level for the Azure Cosmos DB deployments.  
 Which consistency level should you use?**
 
 - consistent prefix
@@ -4468,7 +4468,7 @@ Which consistency level should you use?**
 **You are developing an application that runs in several customer Azure Kubernetes Service clusters. Within each cluster, a pod runs that collects performance data to be analyzed later. 
 A large amount of data is collected so saving latency must be minimized.  
 The performance data must be stored so that pod restarts do not impact the stored data. Write latency should be minimized.  
-You need to congure blob storage.  
+You need to configure blob storage.  
 How should you complete the YAML conguration?**
 ```
 apiVersion: storage.k8s.io/v1
@@ -4523,7 +4523,7 @@ The company provides a public website located at http://www.vanarsdelltd.com. Th
 The company supports thousands of store locations globally. Store locations send data every hour to an Azure Blob storage account to support inventory, purchasing and delivery services. Each record includes a location identier and sales transaction information.**  
 
 **<u>Inventory services:</u>  
-The company has contracted a third-party to develop an API for inventory processing that requires access to a specic blob within the retail store storage account for three months to include read-only access to the data.**
+The company has contracted a third-party to develop an API for inventory processing that requires access to a specific blob within the retail store storage account for three months to include read-only access to the data.**
 
 **The application components must meet the following requirements:**
 
@@ -4532,7 +4532,7 @@ The company has contracted a third-party to develop an API for inventory process
     - **Minimize costs for data storage and hosting.**
     - **Implement native GitHub workows for continuous integration and continuous deployment (CI/CD).**
     - **Distribute the website content globally for local use.**
-    - **Implement monitoring by using Application Insights and availability web tests including SSL certicate validity and custom header value verication.**
+    - **Implement monitoring by using Application Insights and availability web tests including SSL certificate validity and custom header value verication.**
     - **The website must have 99.95 percent uptime.**
 
 - **Retail store locations:**  
@@ -4554,7 +4554,7 @@ The company has contracted a third-party to develop an API for inventory process
     - **Azure Cosmos DB queries from the Azure Function exhibit high Request Unit (RU) usage and contain multiple, complex queries that exhibit high point read latency for large items as the function app is scaling.**
 
 **You need to implement the delivery service telemetry data.  
-How should you congure the solution?**
+How should you configure the solution?**
 
 **Cosmos DB Configuration:**
 - API
@@ -4582,14 +4582,14 @@ How should you congure the solution?**
 ### Q143
 **You create and publish a new Azure App Service web app.  
 User authentication and authorization must use Azure Active Directory (Azure AD).  
-You need to congure authentication and authorization.  
+You need to configure authentication and authorization.  
 What should you do first?**
 
 - [Add an identity provider.](#q143)
 - Map an existing custom DNS name.
-- Create and congure a new app setting.
-- Add a private certicate.
-- Create and congure a managed identity.
+- Create and configure a new app setting.
+- Add a private certificate.
+- Create and configure a managed identity.
 
 > To configure authentication and authorization for an Azure App Service web app using Azure Active Directory (Azure AD), the first step is to add an identity provider. In this case, Azure AD serves as the identity provider. This step involves configuring Azure AD to enable the web app to authenticate users.
 
@@ -4625,11 +4625,11 @@ Which component should you use?**
 ---
 
 ### Q145
-**You have a Linux container-based console application that uploads image les from customer sites all over the world.  
+**You have a Linux container-based console application that uploads image files from customer sites all over the world.  
 A back-end system that runs on Azure virtual machines processes the images by using the Azure Blobs API.  
 You are not permitted to make changes to the application.  
 Some customer sites only have phone-based internet connections.  
-You need to congure the console application to access the images.  
+You need to configure the console application to access the images.  
 What should you use?**
 
 - [Azure BlobFuse](#q145)
@@ -4651,7 +4651,7 @@ You have the following requirements:
 • serviceA must persist data only visible to the current container and the storage must be restricted to the amount of disk space available in the container.  
 • serviceB must persist data for the lifetime of the replica and allow multiple containers in the replica to mount the same storage location.  
 • serviceC must persist data beyond the lifetime of the replica while allowing multiple containers to access the storage and enable per object permissions.  
-You need to congure storage for each microservice.  
+You need to configure storage for each microservice.  
 Which storage type should you use?**
 
 **Storage Types**  
@@ -4681,7 +4681,7 @@ Which storage type should you use?**
 ---
 
 ### Q147
-**You are developing a web service that will run on Azure virtual machines that use Azure Storage. You congure all virtual machines to use managed identities.  
+**You are developing a web service that will run on Azure virtual machines that use Azure Storage. You configure all virtual machines to use managed identities.  
 You have the following requirements:  
 • Secret-based authentication mechanisms are not permitted for accessing an Azure Storage account.   
 • Must use only Azure Instance Metadata Service endpoints.  
@@ -4796,7 +4796,7 @@ You plan to use the Azure Cosmos DB .NET SDK v3 API for NoSQL to upload the foll
 | File4 | 4 MB |
 | File5 | 5 MB |  
 
-**You receive the following error message when uploading the les: “413 Entity too large”.  
+**You receive the following error message when uploading the files: “413 Entity too large”.  
 You need to determine which files you can upload to the Azure Cosmos DB for NoSQL database.  
 Which files can you upload?**
 
@@ -4846,8 +4846,8 @@ Which role-based access control should you use?**
 ### Q151
 **You are developing a website that will run as an Azure Web App. Users will authenticate by using their Azure Active Directory (Azure AD) credentials.  
 You plan to assign users one of the following permission levels for the website: admin, normal, and reader. A user's Azure AD group membership must be used to determine the permission level.  
-You need to congure authorization.  
-Solution: Congure the Azure Web App for the website to allow only authenticated requests and require Azure AD log on.  
+You need to configure authorization.  
+Solution: configure the Azure Web App for the website to allow only authenticated requests and require Azure AD log on.  
 Does the solution meet the goal?**
 
 - Yes
@@ -4869,7 +4869,7 @@ Does the solution meet the goal?**
 ### Q152
 **You are developing a website that will run as an Azure Web App. Users will authenticate by using their Azure Active Directory (Azure AD) credentials.  
 You plan to assign users one of the following permission levels for the website: admin, normal, and reader. A user's Azure AD group membership must be used to determine the permission level.  
-You need to congure authorization.  
+You need to configure authorization.  
 Solution:  
 • Create a new Azure AD application. In the application's manifest, set value of the groupMembershipClaims option to All.  
 • In the website, use the value of the groups claim from the JWT for the user to determine permissions.  
@@ -4894,7 +4894,7 @@ Based on group membership, the application can assign the appropriate permission
 ### Q153
 **You are developing a website that will run as an Azure Web App. Users will authenticate by using their Azure Active Directory (Azure AD) credentials.  
 You plan to assign users one of the following permission levels for the website: admin, normal, and reader. A user's Azure AD group membership must be used to determine the permission level.  
-You need to congure authorization.  
+You need to configure authorization.  
 Solution:  
 • Create a new Azure AD application. In the application's manifest, define application roles that match the required permission levels for the application.  
 • Assign the appropriate Azure AD group to each role. In the website, use the value of the roles claim from the JWT for the user to determine permissions.  
@@ -4917,7 +4917,7 @@ Does the solution meet the goal?**
 ---
 
 ### Q154
-**You are developing an application to securely transfer data between on-premises le systems and Azure Blob storage. The application stores keys, secrets, and certicates in Azure Key Vault. The application uses the Azure Key Vault APIs.  
+**You are developing an application to securely transfer data between on-premises le systems and Azure Blob storage. The application stores keys, secrets, and certificates in Azure Key Vault. The application uses the Azure Key Vault APIs.  
 The application must allow recovery of an accidental deletion of the key vault or key vault objects. Key vault objects must be retained for 90 days after deletion.  
 You need to protect the key vault and key vault objects.  
 Which Azure Key Vault feature should you use?**
@@ -4947,12 +4947,12 @@ To enforce the retention period and prevent permanent deletion during the retent
 ### Q155
 **You provide an Azure API Management managed web service to clients. The back-end web service implements HTTP Strict Transport Security (HSTS).  
 Every request to the backend service must include a valid HTTP authorization header.  
-You need to congure the Azure API Management instance with an authentication policy.  
+You need to configure the Azure API Management instance with an authentication policy.  
 Which two policies can you use?**
 
 - [Basic Authentication](#q155)
 - Digest Authentication
-- Certicate Authentication
+- certificate Authentication
 - [OAuth Client Credential Grant](#q155)
 
 > **Basic Authentication policy** allows you to configure API Management to send requests with a `Basic` authorization header containing a username and password to the backend service. This is a valid choice if the backend service requires basic authentication.
@@ -4972,8 +4972,8 @@ Which two policies can you use?**
 **You are developing an ASP.NET Core website that can be used to manage photographs which are stored in Azure Blob Storage containers.  
 Users of the website authenticate by using their Azure Active Directory (Azure AD) credentials.  
 You implement role-based access control (RBAC) role permissions on the containers that store photographs. You assign users to RBAC roles.  
-You need to congure the website's Azure AD Application so that user's permissions can be used with the Azure Blob containers.  
-How should you congure the application?**
+You need to configure the website's Azure AD Application so that user's permissions can be used with the Azure Blob containers.  
+How should you configure the application?**
 
 **Settings:**
 - client_id
@@ -5082,5 +5082,1266 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 - https://learn.microsoft.com/en-us/azure/azure-app-configuration/enable-dynamic-configuration-aspnet-core
 
 ---
+
+### Q158
+**You have an application that includes an Azure Web app and several Azure Function apps. Application secrets including connection strings and certificates are stored in Azure Key Vault.  
+Secrets must not be stored in the application or application runtime environment. Changes to Azure Active Directory (Azure AD) must be minimized.  
+You need to design the approach to loading application secrets.  
+What should you do?**
+
+- [Create a single user-assigned Managed Identity with permission to access Key Vault and configure each App Service to use that Managed Identity.](#q158)
+- Create a single Azure AD Service Principal with permission to access Key Vault and use a client secret from within the App Services to access Key Vault.
+- Create a system assigned Managed Identity in each App Service with permission to access Key Vault.
+- Create an Azure AD Service Principal with Permissions to access Key Vault for each App Service and use a certificate from within the App Services to access Key Vault.
+
+> Since there are multiple apps involved (a Web App and several Function Apps), it's clear that using a Managed Identity is the appropriate approach. The key question is whether to create one identity for each app or to use a shared identity for all apps.  
+> If we choose system-assigned Managed Identities, each app would have its own identity, which would result in multiple identities being created. On the other hand, using a single user-assigned Managed Identity allows it to be shared across all apps. This approach minimizes changes to Azure Active Directory (AD) while still enabling secure access to Key Vault.
+
+- https://learn.microsoft.com/en-us/azure/app-service/app-service-key-vault-references?tabs=azure-cli#access-vaults-with-a-user-assigned-identity
+
+---
+
+### Q159
+**You are developing a medical records document management website. The website is used to store scanned copies of patient intake forms.  
+If the stored intake forms are downloaded from storage by a third party, the contents of the forms must not be compromised.  
+You need to store the intake forms according to the requirements.  
+Solution:  
+• Create an Azure Key Vault key named skey.  
+• Encrypt the intake forms using the public key portion of skey.  
+• Store the encrypted data in Azure Blob storage.  
+Does the solution meet the goal?**  
+
+- [Yes](#q159)
+- No
+
+> The answer is right, but not good. Because we should use symmetric key to encrypt file, instead of public key. The best practise is to encrypt file by symmetric key, and the symmetric key is protected by public key.
+
+- https://learn.microsoft.com/en-us/azure/key-vault/keys/quick-create-portal
+
+---
+
+### Q160
+**You are developing a medical records document management website. The website is used to store scanned copies of patient intake forms.  
+If the stored intake forms are downloaded from storage by a third party, the contents of the forms must not be compromised.  
+You need to store the intake forms according to the requirements.  
+Solution:  
+• Create an Azure Cosmos DB database with Storage Service Encryption enabled.  
+• Store the intake forms in the Azure Cosmos DB database.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q160)
+
+> Data is encrypted at rest but when downloaded it is not. So when downloaded by third party it is not encrypted so instead use an Azure Key vault and public key encryption.
+>
+> For storing scanned copies of forms securely:  
+>- **Azure Blob Storage** is a better choice. You can use it to store unstructured data like documents, images, or other binary files.  
+>- Enable **Azure Storage Service Encryption (SSE)** for the data at rest.  
+>- Use **Shared Access Signatures (SAS)** to control access and ensure only authorized users can download the forms.  
+>- Consider using **Azure Key Vault** for managing encryption keys, adding an additional layer of security.  
+
+- https://learn.microsoft.com/en-us/azure/cosmos-db/database-encryption-at-rest
+
+---  
+
+### Q161
+**You are developing a medical records document management website. The website is used to store scanned copies of patient intake forms.  
+If the stored intake forms are downloaded from storage by a third party, the contents of the forms must not be compromised.  
+You need to store the intake forms according to the requirements.  
+Solution: Store the intake forms as Azure Key Vault secrets.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q161)
+
+> Azure Key Vault is designed to store and manage cryptographic keys, secrets, and certificates, not large binary files or documents like scanned patient intake forms. Storing such documents in Key Vault would not be practical or cost-effective.
+
+- https://chatgpt.com/share/674d4ad9-acd0-8000-9d61-c47c9d585ec3
+
+---
+
+### Q162
+**You plan to deploy a new application to a Linux virtual machine (VM) that is hosted in Azure.  
+The entire VM must be secured at rest by using industry-standard encryption technology to address organizational security and compliance requirements.  
+You need to congure Azure Disk Encryption for the VM.  
+How should you complete the Azure CLI commands?**
+
+```
+az provider register -n Microsoft.KeyVault
+resourcegroup="myResourceGroup"
+az group create --name resourcegroup --location westus
+keyvault_name=myvaultname$RANDOM
+
+az SLOT_1 create \
+--name $keyvault_name \
+--resource-group resourcegroup \
+--location eastus \
+--enabled-for-disk-encryption True
+
+az SLOT_2 create \
+--vault-name Skeyvault_name \
+--name Name1 \
+--protection software
+
+az SLOT_3 create \
+--resource-group $resourcegroup \
+--name Name2 \
+--image Canonical:UbuntuServer: 16.04-LTS:latest \
+--admin-username azureuser \
+--generate-ssh-keys \
+--data-disk-sizes-gb 5
+
+az SLOT_4 enable \
+--resource-group §resourcegroup \
+--name Name2 \
+--disk-encryption-keyvault Skeyvault_name \
+--key-encryption-key Namel \
+--volume-type SLOT_5
+```
+- SLOT_1:
+    - vm
+    - [keyvault](#q162)
+    - keyvault key
+    - vm encryption
+
+- SLOT_2:
+    - vm
+    - keyvault
+    - [keyvault key](#q162)
+    - vm encryption
+
+- SLOT_3:
+    - [vm](#q162)
+    - keyvault
+    - keyvault key
+    - vm encryption
+
+- SLOT_4:
+    - vm
+    - keyvault
+    - keyvault key
+    - [vm encryption](#q162)
+
+- SLOT_5: 
+    - [all](#q162)
+    - data
+    - OS
+
+>To configure Azure Disk Encryption for a Linux VM using Azure CLI, let's analyze the required commands step by step.  
+>1. **Register the Key Vault provider and create a resource group**: This is already defined in the question.
+>2. **Create a Key Vault**: The Key Vault will be used to store encryption keys.
+>3. **Create a key in the Key Vault**: This key will encrypt the VM disks.
+>4. **Create a VM**: A Linux VM with specific configurations is created.
+>5. **Enable disk encryption**: The encryption is enabled for either the OS disk, data disk, or both.
+>
+>- **SLOT_1: `keyvault`**  - We are creating a Key Vault to store encryption keys.
+>- **SLOT_2: `keyvault key`** - We create a key within the Key Vault for encryption purposes.
+>- **SLOT_3: `vm`** - We create the virtual machine.
+>- **SLOT_4: `vm encryption`** - We enable encryption for the VM.
+>- **SLOT_5: `all`** - We encrypt both the OS and data disks.
+
+```bash
+az provider register -n Microsoft.KeyVault
+resourcegroup="myResourceGroup"
+az group create --name $resourcegroup --location westus
+keyvault_name=myvaultname$RANDOM
+
+az keyvault create \
+--name $keyvault_name \
+--resource-group $resourcegroup \
+--location eastus \
+--enabled-for-disk-encryption True
+
+az keyvault key create \
+--vault-name $keyvault_name \
+--name Name1 \
+--protection software
+
+az vm create \
+--resource-group $resourcegroup \
+--name Name2 \
+--image Canonical:UbuntuServer:16.04-LTS:latest \
+--admin-username azureuser \
+--generate-ssh-keys \
+--data-disk-sizes-gb 5
+
+az vm encryption enable \
+--resource-group $resourcegroup \
+--name Name2 \
+--disk-encryption-keyvault $keyvault_name \
+--key-encryption-key Name1 \
+--volume-type all
+
+```
+
+- https://chatgpt.com/share/674d4d9f-9d84-8000-b474-dd3ab490a515
+- https://learn.microsoft.com/en-us/azure/virtual-machines/linux/disk-encryption-cli-quickstart
+
+---
+
+### Q163
+**Your company is developing an Azure API hosted in Azure.  
+You need to implement authentication for the Azure API to access other Azure resources. You have the following requirements:  
+• All API calls must be authenticated.  
+• Callers to the API must not send credentials to the API.  
+Which authentication mechanism should you use?**
+
+- Basic
+- Anonymous
+- [Managed identity](#q163)
+- Client certificate
+
+> **Basic Authentication**: Requires the caller to send credentials (username and password) with each request, which violates the requirement that callers must not send credentials to the API.  
+> **Anonymous Authentication**: Does not require authentication, which violates the requirement that all API calls must be authenticated.  
+> **Managed Identity**: Managed identities for Azure resources enable the API to authenticate itself with other Azure services without requiring credentials to be sent explicitly by the callers.  
+> **Client Certificate Authentication**: Requires the client (caller) to present a certificate for authentication, which still involves sending credentials (the certificate), violating the second requirement.  
+
+- https://chatgpt.com/share/674e89da-b728-8000-829b-6dcdfd70e6cc
+- https://azure.microsoft.com/en-us/blog/keep-credentials-out-of-code-introducing-azure-ad-managed-service-identity/
+- https://learn.microsoft.com/en-us/azure/api-management/api-management-policies#authentication-policies
+- https://learn.microsoft.com/en-us/azure/api-management/authentication-managed-identity-policy
+
+---
+
+### Q164
+**You are developing an application. You have an Azure user account that has access to two subscriptions.  
+You need to retrieve a storage account key secret from Azure Key Vault.  
+In which order should you arrange the PowerShell commands to develop the solution?**
+
+- `$secretvalue = ConvertTo-SecureString $storAcctkey -AsPlainText -Force`
+- `Set-AzKeyVaultSecret -VaultName $vaultName -Name $secretName -SecretValue $secretvalue`
+- `Get-AzStorageAccountKey - ResourceGroupName $resGroup -Name $storAcct`
+- `Set-AzContext -SubscriptionId $subscriptionID`
+- `Get-AzKeyVaultSecret -VaultName $vaultName`
+- `Get-AzSubscription`
+
+> 1. **`Get-AzSubscription`**   
+> Use this to retrieve the list of subscriptions available to your Azure account. This allows you to determine which subscription to use.
+>
+> 2. **`Set-AzContext -SubscriptionId $subscriptionID`**  
+> Set the Azure context to the desired subscription by specifying the subscription ID.
+>
+> 3. **`Get-AzStorageAccountKey -ResourceGroupName $resGroup -Name $storAcct`**  
+> Retrieve the storage account keys for the specified storage account.
+>
+> 4. **`$secretvalue = ConvertTo-SecureString $storAcctkey -AsPlainText -Force`**  
+> Convert the retrieved storage account key to a secure string format to safely store it in Azure Key Vault.
+>
+> 5. **`Set-AzKeyVaultSecret -VaultName $vaultName -Name $secretName -SecretValue $secretvalue`**  
+> Store the secure string (storage account key) as a secret in the specified Azure Key Vault.
+>
+> 6. **`Get-AzKeyVaultSecret -VaultName $vaultName`**  
+Retrieve the stored secret from Azure Key Vault, if needed for verification.
+
+- https://chatgpt.com/share/674d50e2-1e88-8000-9f20-edb4afb30ea2
+
+---
+
+### Q165
+**You develop Azure solutions.  
+You must grant a virtual machine (VM) access to specific resource groups in Azure Resource Manager.  
+You need to obtain an Azure Resource Manager access token.  
+Solution: Use an X.509 certicate to authenticate the VM with Azure Resource Manager.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q165)
+
+> The solution does not meet the goal. While you can use an X.509 certificate to authenticate a service principal in Azure AD, this is not the recommended way to grant a VM access to specific resource groups in Azure Resource Manager.  
+> Instead, you should use Managed Identities for Azure resources. A managed identity is an identity registered in Azure Active Directory that is automatically managed by Azure. You can use this identity to authenticate to any service that supports Azure AD authentication, including Azure Resource Manager, without any credentials in your code.  
+
+- https://learn.microsoft.com/en-us/azure/role-based-access-control/overview
+- https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/tutorial-windows-managed-identities-vm-access?pivots=identity-windows-mi-vm-access-data-lake
+
+---
+
+### Q166
+**You develop Azure solutions.  
+You must grant a virtual machine (VM) access to specific resource groups in Azure Resource Manager.  
+You need to obtain an Azure Resource Manager access token.  
+Solution: Use the Reader role-based access control (RBAC) role to authenticate the VM with Azure Resource Manager.  
+Does the solution meet the goal?**
+
+- Yes
+- [No](#q166)
+
+> Azure RBAC is an authorization system built on Azure Resource Manager that provides fine-grained access management of Azure resources. Here we need to authenticate.   
+> Here we need to make use of managed identities for the virtual machine. Role-based access control is used for authorization and not authentication.  
+> Instead run the `Invoke-RestMethod` or `Invoke-WebRequest` cmdlet to make a request to the local managed identity for Azure resources endpoint.
+
+- https://learn.microsoft.com/en-us/azure/role-based-access-control/overview
+- https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/tutorial-windows-managed-identities-vm-access?pivots=identity-windows-mi-vm-access-data-lake
+
+---
+
+### Q167
+**You are building a website that is used to review restaurants. The website will use an Azure CDN to improve performance and add functionality to requests.  
+You build and deploy a mobile app for Apple iPhones. Whenever a user accesses the website from an iPhone, the user must be redirected to the app store.  
+You need to implement an Azure CDN rule that ensures that iPhone users are redirected to the app store.  
+How should you complete the Azure Resource Manager template?**
+
+```
+"conditions": [
+    {
+        "name": "IsDevice",
+        "parameters": {
+            "@odata.type": "#Microsoft.Azure.Cdn.Models.SLOT_1"
+            "operator": "Equal",
+            "matchValues": ["SLOT_2"]
+        }
+    },
+    {  
+        "name": "RequestHeader",  
+        "parameters": {  
+            "@odata.type": "#Microsoft.Azure.Cdn.Models.SLOT_3",  
+            "operator": "Contains",  
+            "selector": "SLOT_4" 
+            "matchValues": ["SLOT_5"]
+        }
+    }
+]
+```
+
+- SLOT_1:
+    - [DeliveryRulesDeviceConditionParameters](#q167)
+    - DeliveryRuleCookiesConditionParameters
+    - DeliveryRulePostArgsConditionParameters
+    - DeliveryRuleRequestHeaderConditionParameters
+
+- SLOT_2:
+    - iOS
+    - [mobile](#q167)
+    - iPhone
+    - desktop
+
+- SLOT_3:
+    - DeliveryRulesDeviceConditionParameters
+    - DeliveryRuleCookiesConditionParameters
+    - DeliveryRulePostArgsConditionParameters
+    - [DeliveryRuleRequestHeaderConditionParameters](#q167)
+
+- SLOT_4:
+    - FROM
+    - PRAGMA
+    - X-POWERED-BY
+    - [HTTP_USER_AGENT](#q167)
+
+- SLOT_5:
+    - iOS
+    - mobile
+    - [iPhone](#q167)
+    - desktop
+
+> **SLOT_1: `DeliveryRulesDeviceConditionParameters`**  
+> This parameter specifies that the rule applies to the type of device accessing the website.  
+> 
+> **SLOT_2: `mobile`**  
+Identifies requests made from a mobile device or desktop device.  
+>
+> **SLOT_3: `DeliveryRuleRequestHeaderConditionParameters`**  
+> This specifies that the condition checks request headers for additional validation.  
+> 
+> **SLOT_4: `HTTP_USER_AGENT`**   
+The HTTP_USER_AGENT header is used to identify the type of device or browser making the request. 
+> 
+> **SLOT_5: `iPhone`**  
+> This matches the user-agent string for iPhones, ensuring the rule targets iPhone users specifically.    
+
+- https://learn.microsoft.com/en-us/azure/cdn/cdn-standard-rules-engine-match-conditions
+- https://learn.microsoft.com/en-us/javascript/api/@azure/arm-cdn/isdevicematchconditionparametersmatchvaluesitem?view=azure-node-latest
+
+---
+
+### Q168
+You are developing a website that will run as an Azure Web App. Users will authenticate by using their Azure Active Directory (Azure AD) credentials.  
+You plan to assign users one of the following permission levels for the website: admin, normal, and reader. A user's Azure AD group membership must be used to determine the permission level.  
+You need to congure authorization.  
+Solution:  
+• Congure and use Integrated Windows Authentication in the website.  
+• In the website, query Microsoft Graph API to load the groups to which the user is a member.  
+Does the solution meet the goal?*
+
+- Yes
+- [No](#q168)
+
+> Integrated Windows Authentication (IWA) is not suitable for an Azure Web App scenario where Azure AD is used for authentication. Instead, Azure AD supports OpenID Connect and OAuth protocols for authentication and authorization.
+>
+> To meet the requirements:  
+>1. Configure Azure AD authentication for the Azure Web App.
+>2. Use the **Microsoft Graph API** to query group membership for the user and determine their permission level.  
+>
+> However, the inclusion of Integrated Windows Authentication is incorrect for this scenario as it is primarily used for on-premises environments or virtual networks, not Azure AD authentication.
+
+- https://chatgpt.com/share/674d8a2e-4148-8000-9ead-703990d3382e
+
+---
+
+### Q169
+**You develop Azure solutions.  
+You must grant a virtual machine (VM) access to specific resource groups in Azure Resource Manager.  
+You need to obtain an Azure Resource Manager access token.  
+Solution: Run the Invoke-RestMethod cmdlet to make a request to the local managed identity for Azure resources endpoint.  
+Does the solution meet the goal?**
+
+- [Yes](#q169)
+- No
+
+> When a virtual machine is assigned a managed identity in Azure, it can request an Azure Resource Manager access token by calling the local managed identity endpoint. Using the `Invoke-RestMethod` cmdlet to interact with the managed identity endpoint is the correct way to obtain an access token for accessing Azure Resource Manager or other Azure services.  
+> The managed identity endpoint is accessible at a local IP (`http://169.254.169.254/metadata/identity/oauth2/token`), and the request must include the appropriate parameters like the resource URL.
+
+- https://learn.microsoft.com/en-us/azure/role-based-access-control/overview
+- https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/tutorial-windows-managed-identities-vm-access?pivots=identity-windows-mi-vm-access-data-lake
+
+---
+
+### Q170
+**You are building a website to access project data related to teams within your organization. The website does not allow anonymous access.  
+Authentication is performed using an Azure Active Directory (Azure AD) app named internal.  
+The website has the following authentication requirements:  
+• Azure AD users must be able to login to the website.  
+• Personalization of the website must be based on membership in Active Directory groups.  
+You need to congure the application's manifest to meet the authentication requirements.  
+How should you congure the manifest?**
+
+```
+{  
+    "appld": "d61126e3-089b-4adb-b721-d5023213df7d",  
+    "displayName": "internal",  
+    "SLOT_1": "All",  
+    "SLOT_2": true  
+}
+```
+
+- SLOT_1:
+    - optionalClaims
+    - [groupMembershipClaims](#q170)
+
+- SLOT_2:
+    - allowPublicClient
+    - oauth2Permissions
+    - requiredResourceAccess
+    - [oauth2AllowImplicitFlow](#q170)
+
+> **`groupMembershipClaims`**: Setting this to "All" ensures that group claims (e.g., group IDs) are included in the token. This is necessary for personalization based on Active Directory group membership.  
+> **`oauth2AllowImplicitFlow`**: Setting this to true allows the app to use the OAuth 2.0 implicit grant flow, enabling it to retrieve tokens directly in the browser.  
+
+- https://chatgpt.com/share/674d8e32-2abc-8000-829b-83eed65d1204
+- https://learn.microsoft.com/en-us/entra/identity-platform/reference-app-manifest#groupmembershipclaims-attribute
+- https://learn.microsoft.com/en-us/entra/identity-platform/reference-app-manifest#oauth2permissions-attribute
+- https://learn.microsoft.com/en-us/entra/identity-platform/reference-app-manifest#oauth2allowimplicitflow-attribute
+
+---
+
+### Q171
+**You develop an app that allows users to upload photos and videos to Azure storage. The app uses a storage REST API call to upload the media to a blob storage account named Account1. You have blob storage containers named Container1 and Container2.  
+Uploading of videos occurs on an irregular basis.  
+You need to copy specific blobs from Container1 to Container2 when a new video is uploaded.  
+What should you do?**
+
+- Copy blobs to Container2 by using the Put Blob operation of the Blob Service REST API
+- [Create an Event Grid topic that uses the Start-AzureStorageBlobCopy cmdlet](#q171)
+- Use AzCopy with the Snapshot switch to copy blobs to Container2
+- Download the blob to a virtual machine and then upload the blob to Container2
+
+> Since the app uploads videos irregularly, you need an automated mechanism to detect when a new blob (video) is uploaded to **Container1**.  
+> Azure **Event Grid** can listen for blob creation events from Azure Blob Storage and trigger an action when a new video is uploaded.  
+> The **Start-AzureStorageBlobCopy** cmdlet allows you to initiate an asynchronous copy operation directly within Azure Storage, which is efficient and doesn't require downloading/uploading the blob manually.
+
+- https://chatgpt.com/share/674e80e9-0c98-8000-b815-f4dac3d36b0b
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-event-overview
+- https://learn.microsoft.com/en-us/powershell/module/azure.storage/start-azurestorageblobcopy?view=azurermps-6.13.0
+
+---
+
+### Q172
+**You are developing an ASP.NET Core website that uses Azure FrontDoor. The website is used to build custom weather data sets for researchers.  
+Data sets are downloaded by users as Comma Separated Value (CSV) files. The data is refreshed every 10 hours.  
+Specific files must be purged from the FrontDoor cache based upon Response Header values.  
+You need to purge individual assets from the Front Door cache.  
+Which type of cache purge should you use?**
+
+- [single path](#q172)
+- wildcard
+- root domain
+
+> Single path: Purges specific assets using their full path (e.g., `/data/weather.csv`). This is the correct choice for purging individual files based on specific criteria, such as Response Header values.  
+> Wildcard: Purges multiple files by matching patterns (e.g., `/data/*.csv`). This is useful for purging a group of files but is not suitable if you only need to target specific files.  
+> Root domain: Purges all cached content for the entire domain (e.g., `https://example.com/`). This is overly broad and unnecessary when dealing with individual files.  
+>
+> In this scenario, **specific files need to be purged**, so a **single path** purge is the most appropriate.
+
+- https://chatgpt.com/share/674e83cc-dfd8-8000-801f-d417f7842d5c
+- https://learn.microsoft.com/en-us/azure/frontdoor/standard-premium/how-to-cache-purge
+
+---
+
+### Q173
+**Your company is developing an Azure API.  
+You need to implement authentication for the Azure API.  
+You have the following requirements:  
+• All API calls must be secure.  
+• Callers to the API must not send credentials to the API.  
+Which authentication mechanism should you use?**
+
+- Basic
+- Anonymous
+- [Managed identity](#q173)
+- Client certicate
+
+> **Basic Authentication:** Requires sending username and password with each API call. This DOES NOT meet the requirement of not sending credentials.  
+> **Anonymous Authentication:** Provides NO security. Clearly not acceptable when secure API calls are required.  
+> **Client Certificate:** Requires sending a client certificate with each request. This still involves sending some form of credentials.  
+> 
+> **Managed Identity:**  
+>- Provides authentication without sending explicit credentials
+>- Leverages Azure's built-in identity management
+>- Automatically manages authentication between Azure services
+>- Eliminates the need to handle and rotate credentials manually
+>- Provides a secure way to authenticate API calls
+
+- [Q163](#q163)
+
+---
+
+### Q174
+**You are a developer for a SaaS company that offers many web services.   
+All web services for the company must meet the following requirements:   
+• Use API Management to access the services  
+• Use OpenID Connect for authentication  
+• Prevent anonymous usage  
+A recent security audit found that several web services can be called without any authentication.  
+Which API Management policy should you implement?**
+
+- jsonp
+- authentication-certicate
+- check-header
+- [validate-jwt](#q174)
+
+> The **validate-jwt** policy is specifically designed to enforce authentication by validating JSON Web Tokens (JWTs). Since the company uses **OpenID Connect for authentication**, OpenID Connect generates JWT tokens to secure APIs. This policy ensures that only authenticated requests with valid JWTs are allowed, thereby preventing unauthorized or anonymous access.
+>
+> **jsonp**: This policy is used to support JSONP requests, primarily for cross-domain data sharing. It is unrelated to authentication or authorization.  
+> **authentication-certificate**: This policy enforces authentication using client certificates. However, the question specifies OpenID Connect, not certificate-based authentication.  
+> **check-header**: This policy validates the presence of specific HTTP headers, but it does not authenticate users or verify tokens.
+
+- https://chatgpt.com/share/674ed0ee-4d20-8000-8bb1-07d843e918f4
+- https://learn.microsoft.com/en-us/azure/api-management/api-management-howto-protect-backend-with-aad#overview
+- https://learn.microsoft.com/en-us/azure/api-management/validate-jwt-policy
+
+---
+
+### Q175
+**Contoso, Ltd. provides an API to customers by using Azure API Management (APIM). The API authorizes users with a JWT token.  
+You must implement response caching for the APIM gateway. The caching mechanism must detect the user ID of the client that accesses data for a given location and cache the response for that user ID.  
+You need to add the following policies to the policies file:  
+• a set-variable policy to store the detected user identity   
+• a cache-lookup-value policy   
+• a cache-store-value policy  
+• a find-and-replace policy to update the response body with the user prole information  
+To which policy section should you add the policies?**
+
+**Policy Section:**
+- Inbound
+- Outbound
+
+**Policy:**
+- Set-variable : SLOT_1
+- Cache-lookup-value : SLOT_2
+- Cache-store-value : SLOT_3
+- Find-and-replace : SLOT_4
+
+
+> **Set-variable: Inbound**  
+> Purpose: Extract and store the user identity from the JWT token for use in subsequent policies.   
+> This happens before the request is processed, so the user identity can be used for caching decisions or other operations.
+```xml
+<inbound>
+  <base />
+  <!-- Extract the 'sub' claim from the JWT token and store it in a variable named 'userId' -->
+  <set-variable name="userId" value="@((string)context.Request.Headers.GetValueOrDefault('Authorization')?.Split(' ')[1] != null ? 
+    jwt.Decode((string)context.Request.Headers.GetValueOrDefault('Authorization').Split(' ')[1])?.Claims['sub'] : 
+    'anonymous')" />
+</inbound>
+```
+>
+> **Cache-lookup-value: Inbound**  
+> Purpose: Check if a cached response exists for the user and return it if available.  
+> This should happen before forwarding the request to the backend, so if a cached response is found, the request doesn't need to proceed further.  
+```xml
+<inbound>
+    <base />
+    <cache-lookup vary-by-developer="true | false" vary-by-developer-groups="true | false" downstream-caching-type="none | private | public" mustrevalidate="true | false">
+    <vary-by-query-parameter>parameter name</vary-by-query-parameter> 
+    <!-- optional, can repeated several times -->
+    </cache-lookup>
+</inbound>
+```
+>
+> **Cache-store-value: Outbound**  
+> Purpose: Store the response in the cache after receiving it from the backend for future requests.  
+> This happens after the backend processes the request and the response is returned.  
+```xml
+<outbound>
+    <base />
+    <cache-store duration="3600" />
+</outbound>
+```
+>
+> **Find-and-replace: Outbound**
+> Purpose: Modify the response body (e.g., add user profile information) before sending it back to the client.  
+> This should be done just before the response is sent to the client.  
+```xml
+<outbound>
+<!-- Update response body with user prole-->
+    <base />
+    <find-and-replace
+        from='"$userprole$"'
+        to="@((string)context.Variables["userprole"])" 
+    />
+</outbound>
+```
+
+- https://chatgpt.com/share/674edccc-151c-8000-9e4e-d670dde525f4
+- https://learn.microsoft.com/en-us/azure/api-management/cache-store-policy#examples
+- https://learn.microsoft.com/en-us/azure/api-management/set-variable-policy
+- https://learn.microsoft.com/en-us/azure/api-management/cache-lookup-value-policy
+- https://learn.microsoft.com/en-us/azure/api-management/cache-store-policy
+- https://learn.microsoft.com/en-us/azure/api-management/find-and-replace-policy
+
+---
+
+### Q176
+**You are developing an Azure solution.  
+You need to develop code to access a secret stored in Azure Key Vault.  
+How should you complete the code segment?**
+
+**Code Segments:**
+- DefaultAzureCredential
+- ClientSecretCredential
+- CloudClients
+- SecretClient
+
+```
+string var1 = Environment.GetEnvironmentVariable("KEY_VAULT_URI");
+var var2 = SLOT_1(new Uri(var1), new SLOT_2());
+```
+> **SLOT_1 = `SecretClient`**:  
+> This is the client class used to interact with Azure Key Vault secrets.
+>
+> **SLOT_2 = `DefaultAzureCredential`**:  
+> This is a credential class from Azure.Identity that automatically handles authentication by attempting various authentication mechanisms, such as:  
+>- Managed Identity (if running in Azure)
+>- Visual Studio/Visual Studio Code authentication
+>- Azure CLI authentication
+>- Environment variables (for local development)
+
+```csharp
+// complete code
+string var1 = Environment.GetEnvironmentVariable("KEY_VAULT_URI");
+var var2 = new SecretClient(new Uri(var1), new DefaultAzureCredential());
+```
+
+- https://chatgpt.com/share/674efa3a-5050-8000-9e89-ab7a648c056c
+
+---
+
+### Q177
+**You are developing an Azure App Service REST API.  
+The API must be called by an Azure App Service web app. The API must retrieve and update user prole information stored in Azure Active Directory (Azure AD).    
+You need to congure the API to make the updates.  
+Which two tools should you use?**
+
+- [Microsoft Graph API](#q177)
+- [Microsoft Authentication Library (MSAL)](#q177)
+- Azure API Management
+- Microsoft Azure Security Center
+- Microsoft Azure Key Vault SDK
+
+> **Microsoft Graph API:** Microsoft Graph is the API designed to interact with Azure Active Directory. It provides endpoints to retrieve and update user profile information, making it the correct choice for this requirement.  
+>
+> **Microsoft Authentication Library (MSAL):** MSAL is used to authenticate the API and acquire the necessary access tokens to call Microsoft Graph API securely. It handles the authentication flow and ensures that the API has the required permissions.
+>
+> **Azure API Management:** This is used for managing and securing APIs, but it does not directly handle interactions with Azure AD or user profile updates.
+> 
+> **Microsoft Azure Security Center:** This is a security management tool for monitoring and securing Azure resources, not for calling or interacting with APIs.
+> 
+> **Microsoft Azure Key Vault SDK:** This is used to manage secrets, keys, and certificates, not for accessing or updating Azure AD user profiles.
+
+- https://chatgpt.com/share/674fcfd2-306c-8000-9ead-7dc5e4104647
+- https://learn.microsoft.com/en-us/entra/identity-platform/msal-overview
+
+---
+
+### Q178
+**You develop a REST API. You implement a user delegation SAS token to communicate with Azure Blob storage.  
+The token is compromised.  
+You need to revoke the token.  
+What are two possible ways to achieve this goal?**
+
+- [Revoke the delegation key.](#q178)
+- Delete the stored access policy.
+- Regenerate the account key.
+- [Remove the role assignment for the security principle.](#q178)
+
+> If you believe that a SAS has been compromised, you should revoke it. You can revoke a user delegation SAS either by revoking the user delegation key, or by changing or removing RBAC role assignments and POSIX ACLs for the security principal that's used to create the SAS.
+
+- https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas#revoke-a-user-delegation-sas
+
+---
+
+### Q179
+**You are developing an Azure-hosted application that must use an on-premises hardware security module (HSM) key.  
+The key must be transferred to your existing Azure Key Vault by using the Bring Your Own Key (BYOK) process.    
+You need to securely transfer the key to Azure Key Vault.   
+Which four actions should you perform in sequence?**
+
+- Generate a key transfer blob file by using the HSM vendor-provided tool.
+- Generate a Key Exchange Key (KEK).
+- Create a custom policy definition in Azure Policy.
+- Run the az keyvault key import command.
+- Run the az keyvault key restore command.
+- Retrieve the Key Exchange Key (KEK) public key.
+
+> **1. Generate a Key Exchange Key (KEK).**  
+> The KEK is used to encrypt the key being transferred. Azure Key Vault provides this KEK, and it must be retrieved to start the process.
+>
+> **2. Retrieve the Key Exchange Key (KEK) public key.**  
+> You need to obtain the public key of the KEK, which will be used to encrypt the key on the on-premises HSM.
+>
+> **3. Generate a key transfer blob file by using the HSM vendor-provided tool.**  
+> Using the HSM vendor's tool, encrypt the on-premises key with the KEK public key and generate a key transfer blob file. It produces a Key Transfer Blob (a `.byok` file).
+>
+> **4. Run the az keyvault key import command.**  
+> Finally, use the Azure CLI `az keyvault key import` command to import the encrypted key blob into Azure Key Vault.
+
+- https://chatgpt.com/share/674fd547-6ab4-8000-ba0a-34938347c7a3
+- https://learn.microsoft.com/en-us/azure/key-vault/keys/byok-specification#user-steps
+
+---
+
+### Q180
+**You develop and deploy an Azure Logic app that calls an Azure Function app. The Azure Function app includes an OpenAPI (Swagger) denition and uses an Azure Blob storage account.  
+All resources are secured by using Azure Active Directory (Azure AD).  
+The Azure Logic app must securely access the Azure Blob storage account. Azure AD resources must remain if the Azure Logic app is deleted.  
+You need to secure the Azure Logic app.  
+What should you do?**
+
+- [Create a user-assigned managed identity and assign role-based access controls.](#q180)
+- Create an Azure AD custom role and assign the role to the Azure Blob storage account.
+- Create an Azure Key Vault and issue a client certicate.
+- Create a system-assigned managed identity and issue a client certicate.
+- Create an Azure AD custom role and assign role-based access controls.
+
+> **Create a user-assigned managed identity and assign role-based access controls.**  
+> This type of managed identity is independent of the Azure resource (e.g., the Logic App), meaning it remains active even if the Logic App is deleted. This satisfies the requirement that Azure AD resources must remain if the Logic App is deleted.  
+> You can assign the user-assigned managed identity the necessary role, such as the **Storage Blob Data Contributor**, to securely access the Azure Blob storage account.  
+>
+> **Create an Azure AD custom role and assign the role to the Azure Blob storage account**
+> Custom roles are not necessary in this case because built-in roles like Storage Blob Data Contributor can fulfill the requirement. Additionally, this does not solve the identity persistence requirement.
+>
+> **Create an Azure Key Vault and issue a client certificate**  
+> While certificates can be used to secure access, the question specifically points to using Azure AD for securing resources. Managed identities are a better fit for this scenario.
+>
+> **Create a system-assigned managed identity and issue a client certificate**  
+> A system-assigned managed identity is tied to the lifecycle of the Azure resource (Logic App). If the Logic App is deleted, the identity is also removed, which violates the requirement for identity persistence.
+>
+> **Create an Azure AD custom role and assign role-based access controls**  
+> Similar to option 2, custom roles are unnecessary, and this does not address the need for a persistent managed identity.  
+
+- https://chatgpt.com/share/674fd9bd-7794-8000-9269-63df010fb9e6
+- https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview
+
+---
+
+### Q181
+**You are developing an application that uses a premium block blob storage account. You are optimizing costs by automating Azure Blob Storage access tiers.  
+You apply the following policy rules to the storage account. You must determine the implications of applying the rules to the data.**
+```json
+{
+    "rules":[
+        {
+            "name": "agingDataRule",
+            "enabled": true,
+            "type": "Lifecycle",
+            "definition": {
+                "filters": {
+                    "blobTypes": [ "blockBlob" ],
+                    "prefixMatch": [ "container1/salesorders", "container2/inventory" ]
+                },
+                "actions": {
+                    "baseBlob": {
+                        "tierToCool": { "daysAfterModificationGreaterThan": 60 },
+                        "tierToArchive": { "daysAfterModificationGreaterThan": 120 }
+                    }
+                }
+            }
+        },
+        {
+            "enabled": true,
+            "name": "lastAccessedDataRule",
+            "type": "Lifecycle",
+            "definition": {
+                "actions": {
+                    "baseBlob": {
+                        "enableAutoTierToHotFromCool": true,
+                        "tierToCool": { "daysAfterLastAccessTimeGreaterThan": 30 }
+                    }
+                },
+                "filters": {
+                    "blobTypes": [ "blockBlob" ]
+                }
+            }
+        },
+        {
+            "name": "expirationDataRule",
+            "enabled": true,
+            "type": "Lifecycle",
+            "definition": {
+                "filters": {
+                    "blobTypes": [ "blockBlob" ]
+                },
+                "actions": {
+                    "baseBlob": {
+                        "delete": { "daysAfterModificationGreaterThan": 730 }
+                    }
+                }
+            }
+        }
+    ]
+}
+```
+**For each of the following statements, select Yes if the statement is true. Otherwise, select No**
+
+- Block blobs prefixed with container1/salesorders or container2/inventory which have not been modified in over 60 days are moved to cool storage Blobs that have not been modified in 120 days are moved to the archive tier.
+    - Yes
+    - [No](#q181)
+
+- Blobs are moved to cool storage if they have not been accessed for 30 days.
+    - Yes
+    - [No](#q181)
+
+- Blobs will automatically be tiered from cool back to hot if accessed again after being tiered to cool.
+    - Yes
+    - [No](#q181)
+
+- All block blobs older than 730 days will be deleted.
+    - [Yes](#q181)
+    - No
+
+> **Premium block blob storage** accounts are specifically designed to store **block blobs** and do not support other blob types such as append blobs or page blobs. 
+> | | |
+> | --- | --- |
+> | Access tiers (hot, cool, cold, and archive) | Not Yet Supported |
+> | Lifecycle management policies (tiering) | Not Yet Supported |
+> | Lifecycle management policies (delete blob) | Fully Supported |
+> 
+> **`agingDataRule`**:  
+> - Targets block blobs with prefixes `container1/salesorders` and `container2/inventory`.
+> - Blobs not modified for **60 days** are moved to **cool storage**.
+> - Blobs not modified for **120 days** are moved to the **archive tier**. 
+>   
+> **`lastAccessedDataRule`**:   
+> - Targets all block blobs.
+> - Blobs not accessed for **30 days** are moved to **cool storage**.
+> - If a blob in **cool storage** is accessed again, it is **auto-tiered back to hot storage**.  
+> 
+> **`expirationDataRule`**:  
+> - Targets all block blobs.
+> - Blobs not modified for **730 days** are deleted.
+
+- https://chatgpt.com/share/674fe94c-1014-8000-96d1-6014f9b456bb
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-feature-support-in-storage-accounts
+
+---
+
+### Q182
+**You are developing a solution that will use a multi-partitioned Azure Cosmos DB database. You plan to use the latest Azure Cosmos DB SDK for development.  
+The solution must meet the following requirements:  
+• Send insert and update operations to an Azure Blob storage account.  
+• Process changes to all partitions immediately.  
+• Allow parallelization of change processing.  
+You need to process the Azure Cosmos DB operations.  
+What are two possible ways to achieve this goal?**
+
+- Create an Azure App Service API and implement the change feed estimator of the SDK. Scale the API by using multiple Azure App Service instances.
+- Create a background job in an Azure Kubernetes Service and implement the change feed feature of the SDK.
+- [Create an Azure Function to use a trigger for Azure Cosmos DB. Congure the trigger to connect to the container.](#q182)
+- [Create an Azure Function that uses a FeedIterator object that processes the change feed by using the pull model on the container. Use a FeedRange object to parallelize the processing of the change feed across multiple functions.](#q182)
+
+> Azure Functions is the simplest option if you are just getting started using the change feed. Due to its simplicity, it is also the recommended option for most change feed use cases. When you create an Azure Functions trigger for Azure Cosmos DB, you select the container to connect, and the Azure Function gets triggered whenever there is a change in the container. Because Azure Functions uses the change feed processor behind the scenes, it automatically parallelizes change processing across your container's partitions.
+>
+> Azure Function with `FeedIterator` and `FeedRange` for Change Feed This method manually handles the change feed processing, allowing for detailed control over parallelization and processing logic.
+
+
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/read-change-feed#reading-change-feed-with-a-pull-model
+https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/change-feed-pull-model?tabs=dotnet#use-feedrange-for-parallelization
+
+---
+
+### Q183
+**You have an Azure Web app that uses Cosmos DB as a data store. You create a CosmosDB container by running the following PowerShell script:**
+```powershell
+$resourceGroupName = "testResourceGroup"
+$accountName = "testCosmosAccount"
+$databaseName = "testDatabase"
+$containerName = "testContainer"
+$partitionKeyPath = "/EmployeeId"
+$autoscaleMaxThroughput = 5000
+
+New-AzCosmosDBSqlContainer
+-ResourceGroupName $resourceGroupName
+-AccountName $accountName
+-DatabaseName $databaseName
+-Name $containerName
+-PartitionKeyKind Hash
+-PartitionKeyPath $partitionKeyPath
+-AutoscaleMaxThroughput $autoscaleMaxThroughput
+```
+**You create the following queries that target the container:**
+```sql
+SELECT * FROM c WHERE c.EmployeeId > '12345'
+SELECT * FROM c WHERE c.UserID = '12345'
+```
+**For each of the following statements, select Yes if the statement is true. Otherwise, select No**
+
+- The minimum throughput for the container is 400 R/Us.
+    - Yes
+    - [No](#q183)
+> When using autoscale in Azure Cosmos DB, the minimum throughput is dynamically scaled. The autoscale mode allows throughput to scale from **10% of the maximum throughput** to the specified maximum (in this case, 5000 RU/s).   
+> With a maximum throughput of 5000 RU/s, the minimum is **10% of 5000**, which is **500 RU/s**.
+
+- The first query statement is an in-partition query.
+    - Yes
+    - [No](#q183)
+> `SELECT * FROM c WHERE c.EmployeeId > '12345'`  
+> An **in-partition query** operates within a single logical partition.  
+> Here, the query uses `EmployeeId`, which is the partition key path (`/EmployeeId`). However, because the condition `c.EmployeeId > '12345'` is a **range-based filter**, Cosmos DB cannot guarantee that the query will always hit a single partition. Range-based queries can span multiple partitions if multiple partitions exist for the data.
+
+- The second query statement is a cross-partition query.
+    - [Yes](#q183)
+    - No
+> `SELECT * FROM c WHERE c.UserID = '12345'`  
+> A **cross-partition query** accesses data across multiple logical partitions.  
+> Here, the query filters on `UserID`, which is not the partition key (`EmployeeId`). Since `UserID` is not tied to the partition key, Cosmos DB will need to check across all partitions to satisfy the query, making it a cross-partition query.
+ 
+- https://chatgpt.com/share/67501a9b-3d98-8000-8e25-d501c06b6be4
+- https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-query-container
+- https://learn.microsoft.com/en-us/azure/cosmos-db/how-to-choose-offer
+
+---
+
+### Q184
+**You are developing a web application that makes calls to the Microsoft Graph API. You register the application in the Azure portal and upload a valid X509 certicate.  
+You create an appsettings.json le containing the certicate name, client identier for the application, and the tenant identier of the Azure Active Directory (Azure AD).  
+You create a method named ReadCerticate to return the X509 certicate by name.  
+You need to implement code that acquires a token by using the certicate.   
+How should you complete the code segment?**
+```
+AuthenticationConfig config = AuthenticationConfig.ReadFromJsonFile("appsettings.json");
+X509Certificate2 certificate = ReadCertificate(config.CertificateName);
+var app = SLOT_1.Create(config.ClientId)
+.WithCertificate(certificate)
+.WithAuthority(new Uri(config.Authority))
+.Build();
+string[] scopes = new string[] { $"{config.ApiUrl}.default" };
+AuthenticationResult result = await app.AcquireTokenForClient(SLOT_2).ExecuteAsync();
+```
+
+- SLOT_1:
+    - [ConfidentialClientApplicationBuilder](#q184)
+    - GetAccountAsync()
+    - GetAccountsAsync()
+    - ConfidentialClientApplication
+
+- SLOT_2:
+    - [scopes](#q184)
+    - app
+    - config
+
+> To complete the code for acquiring a token by using the X509 certificate, you need to use the `ConfidentialClientApplicationBuilder` to create the application and specify the scopes for `AcquireTokenForClient`.
+>
+> **SLOT_1: `ConfidentialClientApplicationBuilder`**  
+> The `ConfidentialClientApplicationBuilder` is used to build a confidential client application, which is required when using a certificate for authentication.
+>
+> **SLOT_2: `scopes`**
+> The `AcquireTokenForClient` method requires an array of scopes (permissions) to acquire the access token. In this case, the scopes are derived from the `config.ApiUrl` value, appended with `.default` to indicate application-level permissions.
+
+- https://chatgpt.com/share/67501e4c-39a0-8000-9a4a-f0a7256d2f4f
+- https://learn.microsoft.com/en-us/entra/msal/dotnet/getting-started/initializing-client-applications#initializing-a-confidential-client-application-from-configuration-options
+- https://learn.microsoft.com/en-us/entra/identity-platform/scenario-daemon-acquire-token?tabs=idweb
+
+---
+
+### Q185
+**You develop a containerized application. You plan to deploy the application to a new Azure Container instance by using a third-party continuous integration and continuous delivery (CI/CD) utility.  
+The deployment must be unattended and include all application assets. The third-party utility must only be able to push and pull images from the registry.  
+The authentication must be managed by Azure Active Directory (Azure AD). The solution must use the principle of least privilege.  
+You need to ensure that the third-party utility can access the registry.  
+Which authentication options should you use?**
+
+- Registry authentication method
+    - [Service principal](#q185)
+    - Individual identity
+    - Repository-scoped access token
+    - Managed identity for Azure resources
+
+- RBAC role
+    - AcrPull
+    - Owner
+    - [AcrPush](#q185)
+    - Contributor
+
+> Applications and container orchestrators can perform unattended or "headless" authentication by using an Azure **Active Directory (Azure AD) service principal**.  
+> Incorrect Answers:  
+> - **Individual AD** identity does not support unattended push/pull  
+> - **Repository-scoped** access token is not integrated with AD identity  
+> - **Managed identity** for Azure resources is used to authenticate to an Azure container registry from another Azure resource.  
+>
+> **AcrPush** provides pull/push permissions only and meets the principle of least privilege.
+
+- https://learn.microsoft.com/en-us/azure/container-registry/container-registry-roles?tabs=azure-cli
+- https://learn.microsoft.com/en-us/azure/container-registry/container-registry-authentication?tabs=azure-cli#authentication-options
+
+---
+
+### Q186
+**You deploy an Azure App Service web app. You create an app registration for the app in Azure Active Directory (Azure AD) and Twitter.  
+The app must authenticate users and must use SSL for all communications. The app must use Twitter as the identity provider.  
+You need to validate the Azure AD request in the app code.  
+What should you validate?**
+
+- ID token header
+- [ID token signature](#q186)
+- HTTP response code
+- Tenant ID
+
+> When you use Twitter as an identity provider and integrate it with Azure AD, Azure AD issues an ID token after successful authentication. The app must validate the ID token to ensure its authenticity and that it has not been tampered with. This is done by validating: 
+> 1. **ID Token Signature**: Ensures the token was issued by Azure AD and has not been altered.
+> 2. **Issuer**: Confirms the token originates from a trusted Azure AD instance.
+> 3. **Audience (aud)**: Ensures the token is intended for your application.
+> 4. **Expiration (exp)**: Confirms the token is still valid and not expired.
+Validating the **ID token signature** is critical because it verifies that the token was signed by Azure AD using its private key. The public key (available through the OpenID Connect metadata document) is used to validate the signature.
+
+- https://chatgpt.com/share/67502ae5-6e70-8000-ad7f-2042a652871d
+- https://learn.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview#validation
+
+---
+
+### Q187
+**A development team is creating a new REST API. The API will store data in Azure Blob storage. You plan to deploy the API to Azure App Service.  
+Developers must access the Azure Blob storage account to develop the API for the next two months. The Azure Blob storage account must not be accessible by the developers after the two-month time period.  
+You need to grant developers access to the Azure Blob storage account.   
+What should you do?**
+
+- [Generate a shared access signature (SAS) for the Azure Blob storage account and provide the SAS to all developers.](#q187)
+- Create and apply a new lifecycle management policy to include a last accessed date value. Apply the policy to the Azure Blob storage account.
+- Provide all developers with the access key for the Azure Blob storage account. Update the API to include the Coordinated Universal Time
+(UTC) timestamp for the request header.
+- Grant all developers access to the Azure Blob storage account by assigning role-based access control (RBAC) roles.
+
+> **SAS tokens** are time-bound credentials that provide granular access to Azure Blob Storage. You can configure a SAS with specific permissions (e.g., read, write, list) and set it to expire after two months. Once the SAS token expires, the developers will no longer have access to the storage account.
+
+- https://chatgpt.com/share/67502c51-11a8-8000-b8a5-c8d2d5113761
+- https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview
+
+---
+
+### Q188
+**You develop a web application.  
+You need to register the application with an active Azure Active Directory (Azure AD) tenant.  
+Which three actions should you perform in sequence?**
+
+- Select Manifest from the middle-tier service registration.
+- In Enterprise Applications, select New application.
+- Add a Cryptographic key.
+- Create a new application and provide the name, account type, and redirect URI.
+- Select the Azure AD instance.
+- Use an access token to access the secure resource.
+- In App Registrations, select New registration.
+
+> **1. Select the Azure AD instance.**  
+> Start by selecting the Azure AD tenant where you want to register the application.
+> 
+> **2. In App Registrations, select New registration.**  
+> Navigate to the App registrations blade in Azure AD and choose New registration to begin the registration process.
+> 
+> **3. Create a new application and provide the name, account type, and redirect URI.**  
+> Enter the application details, including its name, supported account types (e.g., single tenant or multi-tenant), and the redirect URI used for authentication flows.
+>
+> This sequence is correct because it aligns with the typical process of registering an application in Azure AD. Other options (like "Add a Cryptographic key" or "Select Manifest") are additional configurations done later, and "Use an access token" pertains to application usage, not registration.
+
+- https://chatgpt.com/share/67503032-8d98-8000-b72d-c83d762916dd
+- https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app?tabs=certificate
+
+---
+
+### Q189
+**You have a new Azure subscription. You are developing an internal website for employees to view sensitive data.   
+The website uses Azure Active Directory (Azure AD) for authentication.  
+You need to implement multifactor authentication for the website.  
+Which two actions should you perform?**
+
+- Congure the website to use Azure AD B2C.
+- In Azure AD, create a new conditional access policy.
+- Upgrade to Azure AD Premium.
+- In Azure AD, enable application proxy.
+- In Azure AD conditional access, enable the baseline policy
+
+> **1. Upgrade to Azure AD Premium:**  
+> Azure AD Premium is required to configure Conditional Access policies, which are necessary to enforce MFA. Conditional Access is not available in the Free or Basic tiers of Azure AD.
+>
+> **2. In Azure AD, create a new conditional access policy:**
+> Conditional Access policies allow you to enforce MFA for users accessing specific applications or under specific conditions. You can create a policy that requires MFA when accessing the internal website.
+>
+> **Incorrect options:**  
+> **Configure the website to use Azure AD B2C:**  
+> Azure AD B2C is for customer-facing applications, not internal employee authentication.  
+> **In Azure AD, enable application proxy:**  
+> Application Proxy is used to publish internal applications for external access. While useful, it is unrelated to enabling MFA.  
+> **In Azure AD conditional access, enable the baseline policy:**  
+> Baseline policies are deprecated in favor of Conditional Access policies, which offer more flexibility and control.  
+
+- https://chatgpt.com/share/675032af-0744-8000-a7f2-ea5dfa75b552
+- https://learn.microsoft.com/en-us/entra/identity/authentication/tutorial-enable-azure-mfa
+
+---
+
+### Q190
+**An organization plans to deploy Azure storage services.  
+You need to congure shared access signature (SAS) for granting access to Azure Storage.  
+Which SAS types should you use?**  
+
+**SAS types:**
+- Account-level
+- Service-level
+- User delegation
+
+**Requirements:**
+- Delegate access to resources in one or more of the storage services : SLOT_1
+- Delegate access to a resource in a single storage service : SLOT_2
+- Secure a resource by using Azure AD credentials : SLOT_3
+
+> SLOT_1: **Account-level SAS**  
+> Account-level SAS provides access to multiple services (Blob, Queue, File, and Table) in a storage account. It allows flexibility across services and resources.
+>
+> SLOT_2: **Service-level SAS**  
+> Service-level SAS is scoped to a single service (e.g., Blob, Queue, or Table) and provides finer granularity for granting access to a specific resource within that service.
+>
+> SLOT_3: **User delegation SAS**  
+> User delegation SAS relies on Azure AD credentials to provide access. This is the most secure option as it integrates with Azure AD for identity-based access management.
+
+- https://chatgpt.com/share/67512159-48e8-8000-b8ae-63585d88e855
+
+---
+
+### Q191
+**You are developing an ASP.NET Core app that includes feature ags which are managed by Azure App Conguration.   
+You create an Azure AppConguration store named AppFeatureagStore as shown in the exhibit:**  
+| Key | Label | State |
+| --- | --- | --- |
+| Export | Export | Off |  
+
+**You must be able to use the feature in the app by using the following markup:**   
+```xml
+<feature name="Export">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Export">Export Data</a>
+    </li>
+</feature>
+```
+
+**You need to update the app to use the feature flag. Which values should you use?**   
+**Code Section:**
+
+- Controller attribute
+    - [FeatureGate](#q191)
+    - Route
+    - ServiceFilter
+    - TypeFilter
+
+- Startup method
+    - [AddAzureAppConfiguration](#q191)
+    - AddControllersWithViews
+    - AddUserSecrets
+
+- AppConfig endpoint setting
+    - [https://appfeatureflagstore.azconfig.io](#q191)
+    - https://appfeatureflagstore.vault.azure.net
+    - https://export.azconfig.io
+    - https://export.vault.azure.net
+
+> **Controller Attribute : `FeatureGate`**  
+> The `FeatureGate` attribute is used to conditionally enable or disable features based on feature flags in Azure App Configuration.  
+> With MVC controllers, you can use the `FeatureGate` attribute to control whether a whole controller class or a specific action is enabled
+>
+> **Startup Method : `AddAzureAppConfiguration`**  
+> The `AddAzureAppConfiguration` method integrates Azure App Configuration with the application, enabling it to retrieve configuration settings, including feature flags.  
+>
+> **AppConfig Endpoint Setting: `https://appfeatureflagstore.azconfig.io`**  
+> This endpoint is the correct URL for accessing the Azure App Configuration store named `AppFeatureFlagStore`.
+
+- https://chatgpt.com/share/67512436-bbc0-8000-902b-3c2b0c0a8e57
+- https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core
+- https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-feature-flags-dotnet-core#controller-actions
+
+---
+
+### Q192
+**You have a single page application (SPA) web application that manages information based on data returned by Microsoft Graph from another company's AzureActive Directory (Azure AD) instance.  
+Users must be able to authenticate and access Microsoft Graph by using their own company's Azure AD instance.  
+You need to congure the application manifest for the app registration.  
+How should you complete the manifest?**
+```
+{
+    "oauth2AllowImplicitFlow": SLOT_1,
+    "SLOT_2": [{
+        "resourceAppId": "00000003-0000-0000-c000-000000000000",  
+        "resourceAccess": [{  
+            "id": "24a6cdd6-fab1-4aaf-91b8-3cc8225e90d0",  
+            "type": "Scope"  
+        }]
+    }],
+    "signInAudience": SLOT_3
+}
+```
+
+- SLOT_1:
+    - add
+    - false
+    - spa
+    - [true](#q192)
+
+- SLOT_2:
+    - addIns  
+    - orgRestrictions  
+    - availableToOtherTenants  
+    - [requiredResourceAccess](#q192)
+
+- SLOT_3:
+    - All  
+    - AzureADMyOrg  
+    - [AzureADMultipleOrgs](#q192)
+    - AzureADandPersonalMicrosoftAccount
+
+> 1. oauth2AllowImplicitFlow: **`true`**  
+> The oauth2AllowImplicitFlow attribute Species whether this web app can request OAuth2.0 implicit ow access tokens. The default is false. This flag is used for browser-based apps, like JavaScript single-page apps.  
+> In implicit flow, the app receives tokens directly from the Azure Active Directory (Azure AD) authorize endpoint, without any server-to-server exchange. All authentication logic and session handling is done entirely in the JavaScript client with either a page redirect or a pop-up box.
+>
+> 2. SLOT_2: **`requiredResourceAccess`**  
+> This property specifies the API permissions the app requires.  
+> Since the app needs to access **Microsoft Graph**, the `resourceAppId` for Graph is `00000003-0000-0000-c000-000000000000`, and the `resourceAccess` specifies the required scope (delegated or application permission).  
+>
+> 3. signInAudience: **`AzureADMultipleOrgs`**
+> This defines which user accounts can sign in to the application.  
+> - `AzureADMyOrg`: Only users in the app's tenant (single-tenant).  
+> - `AzureADMultipleOrgs`: Users from multiple Azure AD tenants (multi-tenant).  
+> - `AzureADandPersonalMicrosoftAccount`: Users from Azure AD tenants and Microsoft accounts.  
+> Since users must authenticate with **their own company's Azure AD instance**, it must support **multiple tenants**.  
+
+- https://chatgpt.com/share/67512bd7-00bc-8000-9459-fd361e51fb29
+- https://learn.microsoft.com/en-us/entra/identity-platform/reference-app-manifest
+
+---
+
+### Q193
 
 - •
