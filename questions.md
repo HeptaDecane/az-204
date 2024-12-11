@@ -6369,7 +6369,86 @@ Which type of shared access signature (SAS) should you use?**
 ---
 
 ### Q194
+**You are developing an application to store and retrieve data in Azure Blob storage. The application will be hosted in an on-premises virtual machine (VM).  
+The VM is connected to Azure by using a Site-to-Site VPN gateway connection. The application is secured by using Azure Active Directory (Azure AD) credentials.  
+The application must be granted access to the Azure Blob storage account with a start time, expiry time, and read permissions.  
+The Azure Blob storage account access must use the Azure AD credentials of the application to secure data access. Data access must be able to be revoked if the client application security is breached.  
+You need to secure the application access to Azure Blob storage.  
+Which security features should you use?**
+
+Application (Client)
+- Storage Account Access Key
+- System-assigned Managed Identity
+- [Shared access signature (SAS) token](#q194)
+
+Azure Storage (Server)
+- [Stored Access Policy](#q194)
+- User-assigned Managed Identity
+- Cross-Origin Resource Sharing (CORS)
 
 
-###### end
+> **Application (Client): Shared access signature (SAS) token**  
+> A SAS token can be used to grant time-limited, granular access to Azure Blob Storage with specific permissions (e.g., read, write, delete).  
+> The token can be generated with a start time, expiry time, and specific permissions, as required.
+>
+> **Azure Storage (Server): Stored Access Policy**  
+> By creating a stored access policy on the Azure Blob Storage account, you can manage and revoke SAS tokens by deleting or updating the stored access policy, fulfilling the requirement to revoke access if the application security is compromised.
+>
+> **Managed identities cannot be used in this scenario** because the application is hosted in an on-premises virtual machine (VM). Managed identities are only available for Azure resources like Azure VMs, App Services, and Functions. Since the VM is on-premises, it cannot use a managed identity for authentication to Azure resources.
+
+- https://chatgpt.com/share/67593010-595c-8000-8719-09db0b5f66ae
+
+---
+
+### Q195
+**You are building a web application that uses the Microsoft identity platform for user authentication.  
+You are implementing user identication for the web application.  
+You need to retrieve a claim to uniquely identify a user.  
+Which claim type should you use?**
+
+- aud
+- nonce
+- [oid](#q195)
+- idp
+
+> **`aud` (Audience):**  
+> This claim identifies the audience (or recipient) for whom the token is intended.  
+> It is used to validate that the token is meant for your application but does not uniquely identify a user.  
+>
+> **`nonce`:**
+> A value included in the token to mitigate replay attacks.  
+> It is specific to a single authentication request and does not uniquely identify a user.  
+>
+> **`oid` (Object ID):**
+> A unique identifier for the user in the Microsoft Entra ID (formerly Azure Active Directory).  
+> It is immutable and specific to the user's account in the directory, making it the best choice for uniquely identifying a user.  
+>
+> **`idp` (Identity Provider):**  
+> Indicates the identity provider that authenticated the user (e.g., Microsoft, Google).  
+> It does not uniquely identify a user.  
+
+- https://chatgpt.com/share/6759318f-bfec-8000-92e9-84bfa370e709
+- https://learn.microsoft.com/en-us/entra/identity-platform/claims-validation#validate-the-subject
+- https://learn.microsoft.com/en-us/entra/identity-platform/access-token-claims-reference#payload-claims
+
+---
+
+### Q196
+**You are developing an Azure Function that calls external APIs by providing an access token for the API.  
+The access token is stored in a secret named token in an Azure Key Vault named mykeyvault.  
+You need to ensure the Azure Function can access to the token.  
+Which value should you store in the Azure Function App conguration?**
+
+- KeyVault:mykeyvault;Secret:token
+- App:Settings:Secret:mykeyvault:token
+- AZUREKVCONNSTR_ https://mykeyveult.vault.ezure.net/secrets/token/
+- [@Microsoft.KeyVault(SecretUri=https://mykeyvault.vault.azure.net/secrets/token/)](#q196)
+
+> To allow an Azure Function to retrieve a secret from Azure Key Vault, you use the **Key Vault reference syntax** in the application settings of the Azure Function App. The syntax follows this format:  
+> `@Microsoft.KeyVault(SecretUri=<SecretURI>)`   
+> The `SecretUri` is the full URI to the secret in Azure Key Vault, which includes the Key Vault name, the secret name, and optionally the version.  
+> This syntax enables the Azure Function to dynamically retrieve the secret value from Azure Key Vault when it runs.
+
+- https://chatgpt.com/share/675932f9-b6a4-8000-a3b2-82c821ddf4c3
+
 •
