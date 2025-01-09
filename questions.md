@@ -6496,4 +6496,26 @@ What are two possible ways to achieve this goal?**
 
 ---
 
+### Q200
+**You are developing a user portal for a company.  
+You need to create a report for the portal that lists information about employees who are subject matter experts for a specic topic.  
+You must ensure that administrators have full control and consent over the data.  
+Which technology should you use?**
+
+- [x] Microsoft Graph data connect
+- [ ] Microsoft Graph API
+- [ ] Microsoft Graph connectors
+
+> **Microsoft Graph data connect** is a tool that allows large-scale data extraction from the Microsoft Graph, providing a secure method to access Microsoft 365 data at scale. It is designed to work with Azure Data Factory, enabling administrators to create pipelines that transfer Microsoft 365 data into Azure storage for analysis and reporting. Data connect supports granular consent and governance controls, allowing administrators to have full control over the data, including what data is accessed and how it is used. This makes it suitable for scenarios where large volumes of data need to be analyzed or processed while ensuring that administrative consent and control are maintained.
+>
+> **Graph API** is great for accessing real-time data from Microsoft 365, it doesn't inherently provide the same level of administrative consent or control as Microsoft Graph data connect. This API is better suited for dynamic, real-time integrations rather than creating large-scale reports.
+>
+> **Microsoft Graph connectors** are used to connect third-party data sources to Microsoft 365 search experiences, such as indexing external content for search in Microsoft 365 apps. This is unrelated to creating employee reports or giving administrators control over data.
+
+- https://chatgpt.com/c/677f6bd3-b6d0-8000-a316-ed652364efd1
+- https://learn.microsoft.com/en-us/graph/overview#access-microsoft-graph-data-at-scale
+- https://learn.microsoft.com/en-us/graph/overview#when-should-i-use-microsoft-graph-api-or-data-connect
+
+---
+ 
 •
