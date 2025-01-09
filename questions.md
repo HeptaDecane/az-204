@@ -6450,5 +6450,50 @@ Which value should you store in the Azure Function App conguration?**
 > This syntax enables the Azure Function to dynamically retrieve the secret value from Azure Key Vault when it runs.
 
 - https://chatgpt.com/share/675932f9-b6a4-8000-a3b2-82c821ddf4c3
+- https://learn.microsoft.com/en-us/azure/app-service/app-service-key-vault-references?tabs=azure-powershell#source-app-settings-from-key-vault
+
+---
+
+### Q197
+**A company maintains multiple web and mobile applications. Each application uses custom in-house identity providers as well as social identity providers.  
+You need to implement single sign-on (SSO) for all the applications.  
+What should you do?**
+
+- [x] Use Azure Active Directory B2C (Azure AD B2C) with custom policies.
+- [ ] Use Azure Active Directory B2B (Azure AD B2B) and enable external collaboration.
+- [ ] Use Azure Active Directory B2C (Azure AD B2C) with user ows.
+- [ ] Use Azure Active Directory B2B (Azure AD B2B).
+
+> Azure AD B2C is designed specifically for customer-facing applications where you need to support a variety of identity providers, including social identities (like Facebook, Google, etc.) and custom (or in-house) identity providers. Custom policies (also known as Identity Experience Framework policies) in Azure AD B2C allow for deep customization of the authentication experience, enabling complex scenarios including integrating with various identity providers, custom user attributes, and multifactor authentication flows. This option provides the flexibility needed to implement SSO while accommodating the diverse identity requirements described.
+
+- https://chatgpt.com/c/677f5a76-be9c-8000-8262-1d7de88e43f5
+- https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-flow-overview#user-flows
+- https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-flow-overview#custom-policies
+- https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-flow-overview#comparing-user-flows-and-custom-policies
+
+---
+
+### Q198
+**You develop a Python application for image rendering that uses GPU resources to optimize rendering processes.  
+You deploy the application to an Azure Container Instances (ACI) Linux container.  
+The application requires a secret value to be passed when the container is started. The value must only be accessed from within the container.  
+You need to pass the secret value.  
+What are two possible ways to achieve this goal?**
+
+- [x] Create an environment variable Set the `secureValue` property to the secret value.
+- [ ] Add the secret value to the container image. Use a managed identity.
+- [ ] Add the secret value to the application code Set the container startup command.
+- [ ] Add the secret value to an Azure Blob storage account. Generate a SAS token.
+- [x] Mount a secret volume containing the secret value in a secrets file.
+
+> Use a secret volume to supply sensitive information to the containers in a container group. The secret volume stores your secrets in files within the volume, accessible by the containers in the container group. By storing secrets in a secret volume, you can avoid adding sensitive data like SSH keys or database credentials to your application code.  
+>
+> Secret volumes are currently restricted to Linux containers. Another method for providing sensitive information to containers (including Windows containers) is by using secure environment variables.
+
+- https://chatgpt.com/c/677f6a0b-1854-8000-bf24-9e7515c9058d
+- https://learn.microsoft.com/en-us/azure/container-instances/container-instances-volume-secret
+- https://learn.microsoft.com/en-us/azure/container-instances/container-instances-environment-variables#secure-values
+
+---
 
 •
