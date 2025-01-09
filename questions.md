@@ -6517,5 +6517,117 @@ Which technology should you use?**
 - https://learn.microsoft.com/en-us/graph/overview#when-should-i-use-microsoft-graph-api-or-data-connect
 
 ---
+
+### Q201
+**You are a developer building a web site using a web app. The web site stores conguration data in Azure App Conguration.  
+Access to Azure App Conguration has been congured to use the identity of the web app for authentication. 
+Security requirements specify that no other authentication systems must be used.  
+You need to load conguration data from Azure App Congfiuration.  
+How should you complete the code?**
+
+```
+Host.CreateDefaultBuilder(args)
+.ConfigureWebHostDefaults(wb => {
+    wb.ConfigureAppConfiguration((hc, config) => {
+        var settings = config.Build();
+        config.SLOT_1(options => options.Connect(new Uri(settings["AppConfig: Endpoint"]),new SLOT_2()));
+    });
+});
+```
+
+- SLOT_1:
+    - [ ] AddAzureKeyVault
+    - [ ] DefaultAzureCredential
+    - [ ] ChainedTokenCredential
+    - [ ] ManagedIdentityCredential
+    - [x] AddAzureAppConfiguration
  
+ > The `AddAzureAppConfiguration` method is used to integrate Azure App Configuration into your application. This is required to load configuration data from Azure App Configuration.
+
+ - SLOT_2:
+    - [ ] AddAzureKeyVault
+    - [ ] DefaultAzureCredential
+    - [ ] ChainedTokenCredential
+    - [x] ManagedIdentityCredential
+    - [ ] AddAzureAppConfiguration
+
+> To meet the security requirements (using the web app's identity), `ManagedIdentityCredential` is the correct choice. This credential allows the web app to authenticate to Azure App Configuration using its managed identity, avoiding the need for other authentication systems.  
+>
+> `DefaultAzureCredential`, while versatile, uses a chain of multiple authentication mechanisms, including:
+> - Managed Identity  
+> - Environment variables  
+> - Azure CLI credentials  
+> - Visual Studio credentials, etc.  
+> Since `DefaultAzureCredential` falls back to other mechanisms if managed identity is not available, it technically violates the strict requirement to **only use the web app's identity**.
+
+```csharp
+// Final Code: 
+Host.CreateDefaultBuilder(args)
+.ConfigureWebHostDefaults(wb => {
+    wb.ConfigureAppConfiguration((hc, config) => {
+        var settings = config.Build();
+        config.AddAzureAppConfiguration(options => 
+            options.Connect(new Uri(settings["AppConfig:Endpoint"]), new ManagedIdentityCredential()));
+    });
+});
+
+```
+
+- https://chatgpt.com/c/677f7219-9bec-8000-806b-8153e22f711d
+- https://learn.microsoft.com/en-us/azure/azure-app-configuration/howto-integrate-azure-managed-service-identity?pivots=framework-dotnet
+
+---
+
+### Q202
+**You are building an application that stores sensitive customer data in Azure Blob storage. The data must be encrypted with a key that is unique for each customer.  
+If the encryption key has been corrupted it must not be used for encryption.  
+You need to ensure that the blob is encrypted.  
+How should you complete the code segment?**
+
+```
+Uri blobUri = ...; TokenCredential c = ...;
+byte[] key = ...; string verify = ...;
+
+var x = new SLOT_1;
+
+if (SLOT_2) {
+    var o = new BlobClientOptions() {
+        SLOT_3 = x
+    };
+
+    var blobClient = new BlobClient(blobUri, c, o);
+}
+```
+
+- SLOT_1:
+    - [ ] AesManaged(key)
+    - [ ] AsnEncodedData(key)
+    - [x] CustomerProvidedKey(key)
+    - [ ] BlobContainerEncryptionScopeOptions { DefaultEncryptionScope = key }
+
+> The `CustomerProvidedKey` class is used to specify the encryption key provided by the customer for client-side encryption in Azure Blob Storage.
+
+- SLOT_2:
+    - [ ] x.IV == verify
+    - [ ] x.RawData == verify
+    - [x] x.EncryptionKeyHash == verify
+    - [ ] x.PreventEncryptionScopeOverride == verify
+
+> The `CustomerProvidedKey` includes an `Encryption` property (or equivalent mechanism) to verify that the provided key is valid and has not been corrupted. This ensures the key is safe to use for encryption.
+
+- SLOT_3:
+    - [ ] Version = x
+    - [ ] Transport = x
+    - [ ] EncryptionScope = x
+    - [x] CustomerProvidedKey = x
+
+> The `BlobClientOptions` class has a `CustomerProvidedKey` property, which accepts an instance of the `CustomerProvidedKey` class to apply the customer-provided encryption key to blob operations.
+
+> The value of `verify` will typically be a `cryptographic hash or signature` of the encryption key. This value is used to ensure that the key provided matches an expected, verifiable value, allowing you to confirm that the key has not been corrupted or altered.
+
+- https://chatgpt.com/c/677f76dc-aadc-8000-be15-3fb88685cd6a
+- https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-customer-provided-key
+
+---
+
 •
