@@ -6630,4 +6630,127 @@ if (SLOT_2) {
 
 ---
 
+### Q203
+**You are developing a web application that uses the Microsoft Identity platform for user and resource authentication. The web application called several REST APIs.  
+You are implementing various authentication and authorization ows for the web application.  
+You need to validate the claims in the authentication token.  
+Which token type should you use?**
+
+**Requirement:**
+
+- Identify users for the application by using a JWT token that contains claims.
+    - [ ] Access
+    - [x] ID
+    - [ ] Refresh
+    - [ ] SAML
+> The ID token is used to represent the authenticated user. It contains claims about the user, such as their name, email, and unique identifier.
+
+- Identify the permissions granted to APIs by using a JWT token that contains claims.
+    - [x] Access
+    - [ ] ID
+    - [ ] Refresh
+    - [ ] SAML
+> The access token is used to access protected resources. It contains claims that indicate the permissions the user or application has been granted.
+
+- Provide the web application with long-term access to resources on behalf of users without requiring interaction with those users.
+    - [ ] Access
+    - [ ] ID
+    - [x] Refresh
+    - [ ] SAML
+> The refresh token allows the application to obtain new access tokens without requiring the user to log in again. This is used for long-term access.
+
+- Provide XML representations of claims that can be consumed by applications that use WS-Federation.
+    - [ ] Access
+    - [ ] ID
+    - [ ] Refresh
+    - [x] SAML
+> SAML (Security Assertion Markup Language) is used for exchanging authentication and authorization data between parties in an XML format. It is commonly used with WS-Federation.
+
+- https://chatgpt.com/c/677f8a6d-6190-8000-9f36-18f3e41e6497
+
+---
+
+### Q204
+**You are developing a content management application for technical manuals. The application is deployed as an Azure Static Web app.  
+Authenticated users can view pages under `/manuals` but only contributors can access the page `/manuals/new.html`.  
+You need to congure the routing for the web app.  
+How should you complete the conguration?**
+
+```
+"routes": [
+  {
+    "route": "SLOT_1",
+    "allowedRoles": ["SLOT_2"]
+  },
+  {
+    "route": "SLOT_3",
+    "allowedRoles": ["SLOT_4"]
+  }
+]
+```
+
+- SLOT_1:
+    - [ ] /manuals*
+    - [ ] contributors
+    - [ ] authenticated
+    - [x] /manuals/new.html
+
+- SLOT_2:
+    - [ ] /manuals*
+    - [x] contributors
+    - [ ] authenticated
+    - [ ] /manuals/new.html
+
+- SLOT_3:
+    - [x] /manuals*
+    - [ ] contributors
+    - [ ] authenticated
+    - [ ] /manuals/new.html
+
+- SLOT_4:
+    - [ ] /manuals*
+    - [ ] contributors
+    - [x] authenticated
+    - [ ] /manuals/new.html
+
+> Rule evaluation stops at the first match. A match occurs when the route property and a value in the methods array (if specified) match the request, Each request can match at most one rule.  
+> If `authenticated` came first all users including contributors would have access to `/manuals/new.html` page which goes against the requirement
+
+- https://learn.microsoft.com/en-us/azure/static-web-apps/configuration#routes
+- https://learn.microsoft.com/en-us/azure/static-web-apps/authentication-authorization
+
+---
+
+### Q205
+**You are developing a web application that uses the Microsoft identity platform for user and resource authentication. The web application calls several REST APIs.  
+A REST API call must read the user's calendar. The web application requires permission to send an email as the user.  
+You need to authorize the web application and the API.  
+Which parameter should you use?**
+
+- [ ] tenant
+- [ ] code_challenge
+- [ ] state
+- [ ] client_id
+- [x] scope
+
+> The `scope` parameter specifies the permissions or access levels (scopes) that the web application is requesting when using the Microsoft identity platform.  
+> In this case:  
+> - Reading the user's calendar and sending an email as the user are specific permissions. These are defined as scopes in the Microsoft Graph API (e.g., `Calendars.Read` and `Mail.Send`).
+> - The `scope` parameter is sent during the OAuth 2.0 authorization request to indicate the specific resources and permissions the application needs.
+>
+> `tenant`: Specifies the Azure AD tenant (e.g., common, organizations, or a specific tenant ID).
+>
+> `code_challenge`: Used for the PKCE (Proof Key for Code Exchange) flow to increase security.
+>
+> `state`: Used to maintain state between the authorization request and response for preventing CSRF attacks.
+>
+> `client_id`: Identifies the application during the OAuth flow.
+
+- https://chatgpt.com/c/677fa80f-f10c-8000-b828-39d56f16879c
+- https://learn.microsoft.com/en-us/entra/identity-platform/scopes-oidc
+
+---
+
+
+
 •
