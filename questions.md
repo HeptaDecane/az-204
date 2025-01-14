@@ -6751,6 +6751,141 @@ Which parameter should you use?**
 
 ---
 
+### Q206
+**You develop and deploy a web app to Azure App service. The web app allows users to authenticate by using social identity providers through the Azure B2C service.  
+All user prole information is stored in Azure B2C.  
+You must update the web app to display common user properties from Azure B2C to include the following information:  
+• Email address  
+• Job title  
+• First name  
+• Last name  
+• Office location  
+You need to implement the user properties in the web app.  
+Which code library and API should you use?**
 
+**Requirement:**
+- API to access user properties
+    - [x] Microsoft Graph
+    - [ ] Azure AD Graph
+    - [ ] Azure Key Vault
+    - [ ] Azure AD entitlement management
+
+> **Microsoft Graph** is the API designed for accessing Microsoft 365 services, including Azure AD and Azure AD B2C. It allows you to retrieve user profile information, such as email address, job title, first name, last name, and office location, directly from Azure AD B2C.
+
+
+- Code library to interface to Azure AD B2C
+    - [x] Microsoft Authentication Library (MSAL)
+    - [ ] Microsoft Azure Key Vault SDK
+    - [ ] Azure Identity library
+
+> **Microsoft Authentication Library (MSAL)** is the recommended library for integrating authentication and authorization into applications. It supports Azure AD and Azure AD B2C, allowing you to authenticate users and access resources using tokens obtained from Azure AD B2C.
+
+- https://chatgpt.com/c/678602f1-01e0-8000-a880-f65d48236e4e
+- https://learn.microsoft.com/en-us/azure/active-directory-b2c/microsoft-graph-operations
+- https://learn.microsoft.com/en-us/entra/msal/dotnet/acquiring-tokens/desktop-mobile/social-identities
+
+---
+
+### Q207
+**You develop and deploy the following `staticwebapp.cong.json` file to the app_location value specied in the workflow file of an Azure Static Web app:**
+```json
+{
+    "routes": [
+        {
+            "route": "/api/*",
+            "methods": ["GET"],
+            "allowedRoles": ["registeredusers"]
+        },
+        {
+            "route": "/api/*",
+            "methods": ["PUT", "POST", "PATCH", "DELETE"],
+            "allowedRoles": ["administrator"]
+        },
+        {
+            "route": "/login",
+            "rewrite": "/.auth/login/github"
+        },
+        {
+            "route": "/.auth/login/twitter",
+            "statusCode": 404
+        },
+        {
+            "route": "/logout",
+            "redirect": "/.auth/logout"
+        }
+    ],
+    "navigationFallback": {
+        "rewrite": "/index.html",
+        "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
+    },
+    "responseOverrides": {
+        "400": {
+            "rewrite": "/invalid-invitation-error.html"
+        },
+        "401": {
+            "redirect": "/.auth/login/aad",
+            "statusCode": 302
+        },
+        "403": {
+            "rewrite": "/forbidden.html"
+        },
+        "404": {
+            "rewrite": "/404.html"
+        }
+    },
+    "mimeTypes": {
+        ".json": "text/json"
+    }
+}
+```
+**For each of the following statements, select Yes if the statement is true. Otherwise, select No.**
+**Statements:**
+
+- Unauthenticated users are challenged to authenticate with GitHub.
+    - [ ] Yes
+    - [x] No
+>  Unauthorized users receive a `401` response code, which subsequently redirects to `/.auth/login/aad` with a status code 302 (refer `responseOverrides`). You will only be redirected to GitHub if the unauthenticated user routes to `"/login"`.
+
+
+- A non-existent file in the /images/ folder will generate a 404 response code.
+    - [ ] Yes
+    - [x] No
+> The files in the path `/images/*` with extensions `png`, `jpg` and `gif` are excluded from the fallback which means if the files with the mentioned extensions do not exist in the path, an `404` will be returned. The `index.html` fallback will be returned only if the file has an extension other than the excluded extensions. For example, if the file with name `/images/xyz.svg` will return `index.html` because the `.svg` extension is not excluded. But if the file is `/images/unknown.jpg` and the file is not exist on the path will return `404`.
+
+
+- HTTP GET method requests from authenticated users in the role named `registeredusers` are sent to the API folder.
+    - [x] Yes
+    - [ ] No
+> Route `/api/*`: Authenticated users with the `registeredusers` role can access this route with GET requests.
+
+- Authenticated users that are not in the role named `registeredusers` and unauthenticated users are served a 401 HTTP error when accessing the API folder.
+    - [ ] Yes
+    - [x] No
+> In this case, if the user does not have `registeredusers` role, the 403 status code will be returned for the authenticated users.  
+> Unauthenticated users are redirected to `/.auth/login/aad`
+
+- https://learn.microsoft.com/en-us/azure/static-web-apps/configuration#example-configuration-file
+  
+---
+
+### Q208
+**You develop and deploy an Azure App Service web app named App1. You create a new Azure Key Vault named Vault1.  
+You import several API keys, passwords, certicates, and cryptographic keys into Vault1.  
+You need to grant App1 access to Vault1 and automatically rotate credentials. Credentials must not be stored in code.  
+What should you do?**
+
+- [ ] Enable App Service authentication for App1. Assign a custom RBAC role to Vault1.
+- [ ] Add a TLS/SSL binding to App1.
+- [ ] Upload a self-signed client certicate to Vault1. Update App1 to use the client certicate.
+- [x] Assign a managed identity to App1.
+
+> Managed identities provide an identity for Azure services, allowing them to authenticate to and interact with other Azure services without needing credentials in the code. By assigning a managed identity to `App1` and setting the appropriate access policies in `Vault1`, `App1` can securely access the keys, secrets, and certificates.
+
+- https://chatgpt.com/c/6786101b-f458-8000-aa50-7ef741a7861b
+- https://learn.microsoft.com/en-us/entra/architecture/service-accounts-managed-identities
+
+---
+
+### Q209
 
 •
